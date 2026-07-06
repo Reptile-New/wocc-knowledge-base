@@ -34,9 +34,13 @@ python3 -m http.server 8080
 3. Push. La GitHub Action se lance automatiquement toutes les heures (configurable
    dans le fichier `.yml`, section `cron`), vérifie s'il y a un nouveau tag sur le
    jeu, et si oui, régénère `data/` et commite le résultat toute seule.
-4. Active GitHub Pages sur ce repo (Settings → Pages → branche `main`, dossier `/site`
-   ou racine selon ta config) pour avoir un lien public vers le site de recherche,
-   toujours à jour, sans rien faire.
+4. Active GitHub Pages sur ce repo, une seule fois : **Settings → Pages → Build and
+   deployment → Source : "GitHub Actions"**. Le workflow
+   `.github/workflows/deploy-pages.yml` s'occupe ensuite de tout : il publie
+   `site/index.html` (avec les données `data/*.json` à côté) à chaque changement sur
+   `main`, y compris après chaque mise à jour automatique de la knowledge base. Le
+   lien public apparaît dans Settings → Pages une fois le premier déploiement
+   terminé (onglet Actions → workflow "Deploy WoCC Codex sur GitHub Pages").
 
 ## Ce que ça remplace / n'remplace pas
 
