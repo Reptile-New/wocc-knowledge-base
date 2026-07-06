@@ -8,7 +8,7 @@
     "intervalSeconds": 3600,
     "hpScale": {
       "base": 40000,
-      "perPlayer": 40000,
+      "perPlayer": 5000,
       "max": 1000000
     }
   }

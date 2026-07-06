@@ -2604,6 +2604,7 @@
     "elite": true,
     "canSwim": false,
     "ccImmune": true,
+    "slowImmune": true,
     "hpBase": 4000,
     "hpPerLevel": 800,
     "dmgBase": 54,
@@ -2632,7 +2633,7 @@
     },
     "aoeSlow": {
       "radius": 40,
-      "mult": 0.2,
+      "mult": 0.7,
       "duration": 6,
       "every": 5,
       "name": "Howling Gale",
@@ -2735,7 +2736,7 @@
         "rollGroup": "thunzharr_t2_belt"
       }
     ],
-    "scale": 50,
+    "scale": 8,
     "color": 8227481
   },
   "thunzharr_stormling": {

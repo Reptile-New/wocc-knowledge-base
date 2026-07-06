@@ -28,7 +28,9 @@
       "q_greyjaw",
       "q_bandits",
       "q_ringleader",
-      "q_mogger"
+      "q_mogger",
+      "q_archetype_acceptance",
+      "q_prof_make_amends"
     ],
     "greeting": "Keep your blade close, $C. The Vale is not what it was."
   },

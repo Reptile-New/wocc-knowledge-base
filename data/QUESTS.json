@@ -397,6 +397,46 @@
     "minLevel": 6,
     "suggestedPlayers": 3
   },
+  "q_archetype_acceptance": {
+    "id": "q_archetype_acceptance",
+    "name": "A Craft to Call Your Own",
+    "giverNpcId": "marshal_redbrook",
+    "turnInNpcId": "marshal_redbrook",
+    "text": "Every artisan of Eastbrook eventually settles on one craft to call their own. Prove yourself with a single deed, $N, and declare your path.",
+    "completionText": "Your path is chosen; walk it well.",
+    "objectives": [
+      {
+        "type": "kill",
+        "targetMobId": "forest_wolf",
+        "count": 1,
+        "label": "Forest Wolf slain"
+      }
+    ],
+    "xpReward": 100,
+    "copperReward": 0,
+    "itemRewards": {},
+    "retired": true
+  },
+  "q_prof_make_amends": {
+    "id": "q_prof_make_amends",
+    "name": "Making Amends",
+    "giverNpcId": "marshal_redbrook",
+    "turnInNpcId": "marshal_redbrook",
+    "text": "To set aside one craft for another, an artisan must first make amends for the path not walked, $N.",
+    "completionText": "Amends made; a new path is open to you.",
+    "objectives": [
+      {
+        "type": "kill",
+        "targetMobId": "forest_wolf",
+        "count": 2,
+        "label": "Forest Wolf slain"
+      }
+    ],
+    "xpReward": 50,
+    "copperReward": 0,
+    "itemRewards": {},
+    "retired": true
+  },
   "q_fenbridge_muster": {
     "id": "q_fenbridge_muster",
     "name": "Muster at Fenbridge",
