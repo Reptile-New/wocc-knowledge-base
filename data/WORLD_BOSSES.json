@@ -1,0 +1,15 @@
+[
+  {
+    "templateId": "thunzharr_waking_peak",
+    "pos": {
+      "x": 110,
+      "z": 760
+    },
+    "intervalSeconds": 3600,
+    "hpScale": {
+      "base": 40000,
+      "perPlayer": 40000,
+      "max": 1000000
+    }
+  }
+]

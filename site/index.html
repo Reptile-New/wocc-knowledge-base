@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WoCC Codex — base de données du jeu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12161c;
+    --bg-raised: #191f27;
+    --bg-card: #1d232c;
+    --stone-line: #2a323d;
+    --text: #e8e3d3;
+    --text-dim: #9aa3ad;
+    --accent: #4fd1ff;
+    --accent-dim: #2a7d99;
+    --common: #9aa0a6;
+    --rare: #4f8dfb;
+    --epic: #b264f0;
+    --legendary: #f97316;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 800px 400px at 20% -10%, rgba(79,209,255,0.06), transparent),
+      radial-gradient(ellipse 600px 300px at 90% 10%, rgba(178,100,240,0.05), transparent);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 40px 32px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 0.02em;
+    margin: 0 0 4px;
+    background: linear-gradient(120deg, var(--text) 40%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin: 0 0 20px;
+  }
+
+  .search-wrap {
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--stone-line);
+    color: var(--text);
+    padding: 14px 18px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent-dim); }
+
+  /* Signature : trait d'énergie façon éclair sous la barre de recherche */
+  .storm-line {
+    height: 2px;
+    margin-top: 10px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background-size: 200% 100%;
+    animation: crackle 3.5s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  @keyframes crackle {
+    0%, 100% { background-position: 200% 0; opacity: 0.3; }
+    45% { opacity: 0.9; }
+    50% { background-position: -200% 0; opacity: 0.5; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .storm-line { animation: none; opacity: 0.5; }
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin: 24px 0 16px;
+    border-bottom: 1px solid var(--stone-line);
+  }
+  .tab {
+    padding: 10px 18px;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    user-select: none;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:hover:not(.active) { color: var(--text); }
+
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .filters select {
+    background: var(--bg-raised);
+    color: var(--text);
+    border: 1px solid var(--stone-line);
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+  }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 0 32px 60px; }
+
+  .count {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--stone-line);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0 0 4px;
+  }
+  .card-meta {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .chip {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rarity-common { background: rgba(154,160,166,0.15); color: var(--common); }
+  .rarity-rare { background: rgba(79,141,251,0.15); color: var(--rare); }
+  .rarity-epic { background: rgba(178,100,240,0.15); color: var(--epic); }
+  .rarity-legendary { background: rgba(249,115,22,0.15); color: var(--legendary); }
+
+  .stat-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .loot-list {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+  }
+  .loot-list div { display: flex; justify-content: space-between; padding: 2px 0; }
+  .loot-list span.chance { color: var(--accent); }
+
+  .empty {
+    color: var(--text-dim);
+    text-align: center;
+    padding: 60px 0;
+    font-size: 0.9rem;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    padding: 20px;
+    border-top: 1px solid var(--stone-line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>WoCC Codex</h1>
+  <p class="subtitle" id="meta-line">Base de données du jeu — chargement…</p>
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="Rechercher un mob, un objet, une quête…" />
+  </div>
+  <div class="storm-line"></div>
+</header>
+
+<main>
+  <div class="tabs">
+    <div class="tab active" data-tab="items">Objets</div>
+    <div class="tab" data-tab="mobs">Mobs</div>
+    <div class="tab" data-tab="quests">Quêtes</div>
+  </div>
+
+  <div class="filters" id="filters"></div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  Généré automatiquement depuis le code source de World of ClaudeCraft. Zéro appel IA, zéro token — recherche 100% locale.
+</footer>
+
+<script>
+const DATA_PATH = '../data/';
+let ITEMS = [], MOBS = [], QUESTS = [];
+let activeTab = 'items';
+let filters = { rarity: '', slot: '', family: '' };
+
+async function loadData() {
+  const [items, mobs, quests, meta] = await Promise.all([
+    fetch(DATA_PATH + 'ITEMS.json').then(r => r.json()).catch(() => ({})),
+    fetch(DATA_PATH + 'MOBS.json').then(r => r.json()).catch(() => ({})),
+    fetch(DATA_PATH + 'QUESTS.json').then(r => r.json()).catch(() => ({})),
+    fetch(DATA_PATH + '_meta.json').then(r => r.json()).catch(() => null),
+  ]);
+  ITEMS = Object.values(items);
+  MOBS = Object.values(mobs);
+  QUESTS = Object.values(quests);
+  document.getElementById('meta-line').textContent = meta
+    ? `Base de données du jeu — tag ${meta.tag}, générée le ${new Date(meta.extractedAt).toLocaleString('fr-FR')}`
+    : 'Base de données du jeu (données non trouvées — lance scripts/extract.mjs puis sers ce dossier avec les données à côté)';
+  buildFilters();
+  render();
+}
+
+function buildFilters() {
+  const el = document.getElementById('filters');
+  el.innerHTML = '';
+  if (activeTab === 'items') {
+    const rarities = [...new Set(ITEMS.map(i => i.quality).filter(Boolean))];
+    const slots = [...new Set(ITEMS.map(i => i.slot).filter(Boolean))];
+    el.appendChild(makeSelect('rarity', 'Toutes raretés', rarities));
+    el.appendChild(makeSelect('slot', 'Tous les slots', slots));
+  } else if (activeTab === 'mobs') {
+    const families = [...new Set(MOBS.map(m => m.family).filter(Boolean))];
+    el.appendChild(makeSelect('family', 'Toutes familles', families));
+  }
+}
+
+function makeSelect(key, placeholder, options) {
+  const sel = document.createElement('select');
+  sel.innerHTML = `<option value="">${placeholder}</option>` +
+    options.sort().map(o => `<option value="${o}">${o}</option>`).join('');
+  sel.value = filters[key] || '';
+  sel.addEventListener('change', () => { filters[key] = sel.value; render(); });
+  return sel;
+}
+
+function matchesSearch(text, q) {
+  return !q || (text || '').toLowerCase().includes(q);
+}
+
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  let results = [];
+
+  if (activeTab === 'items') {
+    results = ITEMS.filter(i =>
+      matchesSearch(i.name, q) &&
+      (!filters.rarity || i.quality === filters.rarity) &&
+      (!filters.slot || i.slot === filters.slot)
+    );
+  } else if (activeTab === 'mobs') {
+    results = MOBS.filter(m =>
+      matchesSearch(m.name, q) &&
+      (!filters.family || m.family === filters.family)
+    );
+  } else {
+    results = QUESTS.filter(qd => matchesSearch(qd.name || qd.id, q));
+  }
+
+  document.getElementById('count').textContent = `${results.length} résultat${results.length > 1 ? 's' : ''}`;
+
+  if (!results.length) {
+    grid.innerHTML = '<div class="empty">Aucun résultat. Essaie un autre terme ou change les filtres.</div>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  results.slice(0, 150).forEach(r => frag.appendChild(
+    activeTab === 'items' ? renderItemCard(r) :
+    activeTab === 'mobs' ? renderMobCard(r) :
+    renderQuestCard(r)
+  ));
+  grid.appendChild(frag);
+}
+
+function renderItemCard(item) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  const rarityClass = 'rarity-' + (item.quality || 'common');
+  const statLine = item.stats
+    ? Object.entries(item.stats).map(([k, v]) => `${k} +${v}`).join('  ')
+    : '';
+  const dmgLine = item.weapon
+    ? `dégâts ${item.weapon.min}-${item.weapon.max}` + (item.weapon.speed ? `  vitesse ${item.weapon.speed}` : '')
+    : '';
+  card.innerHTML = `
+    <p class="card-name">${item.name}</p>
+    <div>
+      <span class="chip ${rarityClass}">${item.quality || 'common'}</span>
+      <span class="chip" style="background:rgba(255,255,255,0.06);color:var(--text-dim)">${item.slot || '—'}</span>
+    </div>
+    ${dmgLine ? `<div class="stat-line">${dmgLine}</div>` : ''}
+    ${statLine ? `<div class="stat-line">${statLine}</div>` : ''}
+    ${item.requiredClass ? `<div class="card-meta" style="margin-top:8px">Classes : ${item.requiredClass.join(', ')}</div>` : ''}
+    <div class="card-meta" style="margin-top:6px">Vente : ${item.sellValue ?? 0} cuivre</div>
+  `;
+  return card;
+}
+
+function renderMobCard(mob) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  const badges = [
+    mob.worldBoss ? 'world boss' : null,
+    mob.boss ? 'boss' : null,
+    mob.rare ? 'rare' : null,
+    mob.elite ? 'élite' : null,
+  ].filter(Boolean);
+  const loot = (mob.loot || []).slice(0, 6).map(l => `
+    <div><span>${l.itemId || 'copper'}</span><span class="chance">${l.chance != null ? Math.round(l.chance * 100) + '%' : ''}</span></div>
+  `).join('');
+  card.innerHTML = `
+    <p class="card-name">${mob.name}</p>
+    <div class="card-meta">niveau ${mob.minLevel}${mob.maxLevel !== mob.minLevel ? '-' + mob.maxLevel : ''} · ${mob.family || ''}</div>
+    ${badges.length ? badges.map(b => `<span class="chip" style="background:rgba(79,209,255,0.1);color:var(--accent)">${b}</span>`).join('') : ''}
+    <div class="stat-line">PV base ${mob.hpBase}${mob.hpPerLevel ? ` (+${mob.hpPerLevel}/niv)` : ''}</div>
+    ${loot ? `<div class="loot-list">${loot}</div>` : ''}
+  `;
+  return card;
+}
+
+function renderQuestCard(quest) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <p class="card-name">${quest.name || quest.id}</p>
+    <div class="card-meta">donneur : ${quest.giverNpcId || '—'}</div>
+    <div class="stat-line">${quest.xpReward ? `${quest.xpReward} XP` : ''}${quest.copperReward ? ` · ${quest.copperReward} cuivre` : ''}</div>
+  `;
+  return card;
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelector('.tab.active').classList.remove('active');
+    tab.classList.add('active');
+    activeTab = tab.dataset.tab;
+    filters = { rarity: '', slot: '', family: '' };
+    buildFilters();
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', render);
+
+loadData();
+</script>
+
+</body>
+</html>

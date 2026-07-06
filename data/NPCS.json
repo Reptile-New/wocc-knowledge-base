@@ -1,0 +1,499 @@
+{
+  "the_merchant": {
+    "id": "the_merchant",
+    "name": "The Merchant",
+    "title": "Keeper of the World Market",
+    "pos": {
+      "x": 0,
+      "z": 9.5
+    },
+    "facing": 3.141592653589793,
+    "color": 13938487,
+    "questIds": [],
+    "market": true,
+    "greeting": "Welcome to the World Market, $C. Buy from every adventurer in the realm — or set out your own wares and let coin find you."
+  },
+  "marshal_redbrook": {
+    "id": "marshal_redbrook",
+    "name": "Marshal Redbrook",
+    "title": "Town Marshal",
+    "pos": {
+      "x": 4,
+      "z": 6
+    },
+    "facing": 3.141592653589793,
+    "color": 12031243,
+    "questIds": [
+      "q_wolves",
+      "q_greyjaw",
+      "q_bandits",
+      "q_ringleader",
+      "q_mogger"
+    ],
+    "greeting": "Keep your blade close, $C. The Vale is not what it was."
+  },
+  "trader_wilkes": {
+    "id": "trader_wilkes",
+    "name": "Trader Wilkes",
+    "title": "Provisioner",
+    "pos": {
+      "x": -7,
+      "z": 3
+    },
+    "facing": 1.5707963267948966,
+    "color": 1999945,
+    "questIds": [
+      "q_boars",
+      "q_supplies"
+    ],
+    "vendorItems": [
+      "baked_bread",
+      "spring_water",
+      "roasted_boar",
+      "tough_jerky",
+      "minor_healing_potion",
+      "minor_mana_potion",
+      "linen_pouch",
+      "travelers_knapsack",
+      "copper_mining_pick",
+      "iron_mining_pick",
+      "mithril_mining_pick",
+      "handaxe",
+      "felling_axe",
+      "ironbark_axe",
+      "gathering_sickle",
+      "bronze_sickle",
+      "silverleaf_sickle"
+    ],
+    "greeting": "Fresh bread, clean water, fair prices. What can I get you?"
+  },
+  "apothecary_lin": {
+    "id": "apothecary_lin",
+    "name": "Apothecary Lin",
+    "title": "Herbalist",
+    "pos": {
+      "x": 11,
+      "z": -3
+    },
+    "facing": -1.5707963267948966,
+    "color": 8207512,
+    "questIds": [
+      "q_spiders"
+    ],
+    "greeting": "Careful where you step in the eastern woods, friend."
+  },
+  "brother_aldric": {
+    "id": "brother_aldric",
+    "name": "Brother Aldric",
+    "title": "Priest of the Vale",
+    "pos": {
+      "x": -14,
+      "z": -10
+    },
+    "facing": 0.8,
+    "color": 16251385,
+    "questIds": [
+      "q_bones",
+      "q_whispers",
+      "q_names_of_the_dead",
+      "q_silence_the_call",
+      "q_rite",
+      "q_sexton",
+      "q_hollow",
+      "q_gravecallers_trail",
+      "q_fenbridge_muster"
+    ],
+    "greeting": "The Light keep you. Even the dead find no rest here of late."
+  },
+  "smith_haldren": {
+    "id": "smith_haldren",
+    "name": "Smith Haldren",
+    "title": "Armorer & Weaponsmith",
+    "pos": {
+      "x": 7,
+      "z": 16.5
+    },
+    "facing": -2.7,
+    "color": 7371644,
+    "questIds": [],
+    "vendorItems": [
+      "eastbrook_arming_sword",
+      "bronzework_mace",
+      "vale_carving_knife",
+      "hickory_shortstaff",
+      "eastbrook_chain_vest",
+      "valespun_robe",
+      "tanned_leather_jerkin",
+      "hobnail_boots",
+      "eastbrook_wool_trousers"
+    ],
+    "greeting": "Mind the sparks, $C. Good steel is the difference between a scar and a grave."
+  },
+  "fisherman_brandt": {
+    "id": "fisherman_brandt",
+    "name": "Fisherman Brandt",
+    "title": "Old Salt",
+    "pos": {
+      "x": -16,
+      "z": 6
+    },
+    "facing": -0.75,
+    "color": 2388387,
+    "questIds": [
+      "q_murlocs"
+    ],
+    "vendorItems": [
+      "simple_fishing_pole"
+    ],
+    "greeting": "Blrb-glub— sorry, been listening to those fish-men too long."
+  },
+  "foreman_odell": {
+    "id": "foreman_odell",
+    "name": "Foreman Odell",
+    "title": "Mine Foreman",
+    "pos": {
+      "x": -4,
+      "z": -14
+    },
+    "facing": -2.14,
+    "color": 10502144,
+    "questIds": [
+      "q_mine"
+    ],
+    "greeting": "Whole dig's crawling with those dirt-caked vermin!"
+  },
+  "warden_fenwick": {
+    "id": "warden_fenwick",
+    "name": "Warden Fenwick",
+    "title": "Warden of Fenbridge",
+    "pos": {
+      "x": 3,
+      "z": 304
+    },
+    "facing": 3.141592653589793,
+    "color": 8278281,
+    "questIds": [
+      "q_fenbridge_muster",
+      "q_prowlers",
+      "q_deepfen",
+      "q_deepfen_purge",
+      "q_trolls",
+      "q_deacon"
+    ],
+    "greeting": "Hold at the gate, $C. Past those reeds, the fen does the killing for us."
+  },
+  "brother_aldric_fen": {
+    "id": "brother_aldric_fen",
+    "name": "Brother Aldric",
+    "title": "Priest of the Vale",
+    "pos": {
+      "x": -8,
+      "z": 296
+    },
+    "facing": 0.8,
+    "color": 16251385,
+    "questIds": [
+      "q_aldrics_fallen_star",
+      "q_idols",
+      "q_drowned",
+      "q_drowned_censers",
+      "q_no_rest",
+      "q_summoners",
+      "q_bastion_door",
+      "q_mistcaller",
+      "q_highwatch_summons"
+    ],
+    "greeting": "The Light keep you above the water, $N. The dead in this fen do not sleep — they wade."
+  },
+  "provisioner_hale": {
+    "id": "provisioner_hale",
+    "name": "Provisioner Hale",
+    "title": "Provisioner",
+    "pos": {
+      "x": -4,
+      "z": 308
+    },
+    "facing": 1.5707963267948966,
+    "color": 1999945,
+    "questIds": [
+      "q_prowler_pelts",
+      "q_fen_supplies",
+      "q_the_codfather",
+      "q_grubjaw"
+    ],
+    "vendorItems": [
+      "fenbridge_rye",
+      "marsh_mint_tea",
+      "smoked_eel",
+      "silvermist_cordial",
+      "lesser_healing_potion",
+      "lesser_mana_potion",
+      "bogiron_mace",
+      "fenreed_staff",
+      "mirefen_skinner",
+      "bogiron_hauberk",
+      "marshcloth_robe",
+      "reedwoven_jerkin",
+      "fenwalker_boots",
+      "reedwoven_trousers"
+    ],
+    "greeting": "Dry boots, dry bread, dry powder — at Fenbridge you get two of the three on a good day."
+  },
+  "herbalist_yara": {
+    "id": "herbalist_yara",
+    "name": "Herbalist Yara",
+    "title": "Herbalist",
+    "pos": {
+      "x": 10,
+      "z": 295
+    },
+    "facing": -1.5707963267948966,
+    "color": 8207512,
+    "questIds": [
+      "q_widows",
+      "q_broodmother"
+    ],
+    "greeting": "Mind the thicket west of the road. The webs are thick as sailcloth this season."
+  },
+  "scout_maren": {
+    "id": "scout_maren",
+    "name": "Scout Maren",
+    "title": "Marshal's Scout",
+    "pos": {
+      "x": 6,
+      "z": 312
+    },
+    "facing": -0.6,
+    "color": 8218120,
+    "questIds": [
+      "q_troll_fetishes",
+      "q_cult_camp",
+      "q_olen"
+    ],
+    "greeting": "Quiet feet and a short blade keep you breathing out here. Speak quick — I am due back in the reeds."
+  },
+  "captain_thessaly": {
+    "id": "captain_thessaly",
+    "name": "Captain Thessaly",
+    "title": "Highwatch Captain",
+    "pos": {
+      "x": 4,
+      "z": 664
+    },
+    "facing": -2,
+    "color": 8753822,
+    "questIds": [
+      "q_highwatch_summons",
+      "q_stalkers",
+      "q_stalkers_return",
+      "q_old_cragmaw",
+      "q_ogre_bounty",
+      "q_crushers",
+      "q_drogmar",
+      "q_revenants",
+      "q_revenant_vanguard"
+    ],
+    "greeting": "Two hundred years this wall has held, $C. It will not break on my watch — but it groans."
+  },
+  "brother_aldric_highwatch": {
+    "id": "brother_aldric_highwatch",
+    "name": "Brother Aldric",
+    "title": "Priest of the Vale",
+    "pos": {
+      "x": -10,
+      "z": 656
+    },
+    "facing": 0.8,
+    "color": 16251385,
+    "questIds": [
+      "q_zealots",
+      "q_cult_orders",
+      "q_necromancers",
+      "q_wyrm_sigils",
+      "q_breaking_the_seal",
+      "q_voice_below",
+      "q_sanctum_gate",
+      "q_velkhar",
+      "q_gravewyrm",
+      "q_nythraxis_restless_dead",
+      "q_nythraxis_graves",
+      "q_nythraxis_sealed_crypt",
+      "q_nythraxis_bound_guardian",
+      "q_nythraxis_scourges_end"
+    ],
+    "greeting": "From a chapel yard in the Vale to the roof of the world... the trail we have followed ends here. I can feel the mountain listening."
+  },
+  "brother_aldric_raid": {
+    "id": "brother_aldric_raid",
+    "name": "Brother Aldric",
+    "title": "Priest of the Vale",
+    "pos": {
+      "x": 0,
+      "z": 0
+    },
+    "facing": 0,
+    "color": 14143668,
+    "questIds": [
+      "q_nythraxis_scourges_end"
+    ],
+    "dynamic": true,
+    "greeting": "From a chapel yard in the Vale to the roof of the world... the trail we have followed ends here. I can feel the mountain listening."
+  },
+  "scout_maren_highwatch": {
+    "id": "scout_maren_highwatch",
+    "name": "Scout Maren",
+    "title": "Marshal's Scout",
+    "pos": {
+      "x": 7,
+      "z": 670
+    },
+    "facing": -2.4,
+    "color": 7244605,
+    "questIds": [
+      "q_ogre_edges",
+      "q_ogre_totems",
+      "q_korgath"
+    ],
+    "greeting": "I tracked cultists through the fen at your side, and the trail led here. The peaks are worse, $C. Stay sharp."
+  },
+  "quartermaster_bree": {
+    "id": "quartermaster_bree",
+    "name": "Quartermaster Bree",
+    "title": "Highwatch Quartermaster",
+    "pos": {
+      "x": -5,
+      "z": 668
+    },
+    "facing": 1.6,
+    "color": 13273642,
+    "questIds": [
+      "q_stalker_pelts",
+      "q_stalker_cloaks",
+      "q_glowing_wax"
+    ],
+    "vendorItems": [
+      "trail_hardtack",
+      "meltwater_flask",
+      "roast_mountain_goat",
+      "glacier_melt",
+      "healing_potion",
+      "mana_potion",
+      "highwatch_breastplate",
+      "peakwool_robe",
+      "stalkerhide_jerkin",
+      "cragwalker_boots",
+      "windguard_leggings"
+    ],
+    "greeting": "Wool, hardtack, and steel-shod boots — Highwatch runs on all three, and I am short of everything."
+  },
+  "armorer_hode": {
+    "id": "armorer_hode",
+    "name": "Armorer Hode",
+    "title": "Master Armorer",
+    "pos": {
+      "x": -2,
+      "z": 672
+    },
+    "facing": 2.8,
+    "color": 7437694,
+    "questIds": [],
+    "vendorItems": [
+      "highwatch_warblade",
+      "craghorn_staff",
+      "icevein_dirk"
+    ],
+    "greeting": "Forge is hot and the grindstone is turning. If it cuts, I sell it."
+  },
+  "loremaster_caddis": {
+    "id": "loremaster_caddis",
+    "name": "Loremaster Caddis",
+    "title": "Loremaster",
+    "pos": {
+      "x": 12,
+      "z": 655
+    },
+    "facing": -1.2,
+    "color": 3894949,
+    "questIds": [
+      "q_kobold_tunnels",
+      "q_elementals",
+      "q_shard_cores",
+      "q_kazzix"
+    ],
+    "greeting": "Mind the loose shale, $C. The mountain has been... restless of late. I intend to learn why."
+  },
+  "auctioneer_voss": {
+    "id": "auctioneer_voss",
+    "name": "Auctioneer Voss",
+    "title": "Keeper of the World Market",
+    "pos": {
+      "x": 16,
+      "z": 666
+    },
+    "facing": -2.2,
+    "color": 9329366,
+    "questIds": [],
+    "market": true,
+    "greeting": "The World Market is open here too, $C. Buy from every adventurer in the realm, or set out your own wares."
+  },
+  "tidewatcher_ondrel": {
+    "id": "tidewatcher_ondrel",
+    "name": "Ondrel Vane",
+    "title": "Tidewatcher",
+    "pos": {
+      "x": -66,
+      "z": 786
+    },
+    "facing": -2.4,
+    "color": 8365769,
+    "questIds": [
+      "q_glimmermere_light",
+      "q_tarn_waders",
+      "q_drowned_choir",
+      "q_palecoil",
+      "q_silence_the_choir",
+      "q_drowned_moon"
+    ],
+    "greeting": "The mere drinks the moonlight, $C, and gives back the drowned. I have watched that gate for thirty nights — and tonight it is open."
+  },
+  "brother_halven": {
+    "id": "brother_halven",
+    "name": "Brother Halven",
+    "title": "Reliquary Keeper",
+    "pos": {
+      "x": -5,
+      "z": -52
+    },
+    "facing": 0,
+    "color": 2827808,
+    "questIds": [],
+    "greeting": "The reliquary below has shifted again."
+  },
+  "brother_halven_marsh": {
+    "id": "brother_halven_marsh",
+    "name": "Brother Halven",
+    "title": "Reliquary Keeper",
+    "pos": {
+      "x": -95,
+      "z": 505
+    },
+    "facing": 3.141592653589793,
+    "color": 2827808,
+    "questIds": [],
+    "greeting": "The trail led north. Another reliquary, another rite. Choose your tier, and I'll hold the rope until you return."
+  },
+  "spirit_healer": {
+    "id": "spirit_healer",
+    "name": "The Pale Keeper",
+    "title": "Warden of the Dead",
+    "pos": {
+      "x": 0,
+      "z": 0
+    },
+    "facing": 3.141592653589793,
+    "color": 16774352,
+    "questIds": [],
+    "greeting": "Rest now, spirit. I can return you to your body, but the crossing back leaves you weak.",
+    "dynamic": true
+  }
+}

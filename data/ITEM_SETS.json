@@ -1,0 +1,192 @@
+{
+  "deathlord": {
+    "id": "deathlord",
+    "name": "Barrowlord Battlegear",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "ap": 40
+        },
+        "text": "Increases attack power by 40."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "str": 15,
+          "sta": 15
+        },
+        "text": "Increases Strength by 15 and Stamina by 15."
+      }
+    ]
+  },
+  "wyrmshadow": {
+    "id": "wyrmshadow",
+    "name": "Nightfang Vestments",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "ap": 40
+        },
+        "text": "Increases attack power by 40."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "agi": 15,
+          "crit": 0.02
+        },
+        "text": "Increases Agility by 15 and critical strike chance by 2%."
+      }
+    ]
+  },
+  "necromancers": {
+    "id": "necromancers",
+    "name": "Mournweave Raiment",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "knockbackResistance": 1
+        },
+        "text": "You cannot be knocked back (100% knockback resistance)."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "int": 10,
+          "sta": 10
+        },
+        "text": "Increases Intellect by 10 and Stamina by 10."
+      }
+    ]
+  },
+  "crownforged": {
+    "id": "crownforged",
+    "name": "Bonewrought Regalia",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "ap": 40
+        },
+        "text": "Increases attack power by 40."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "str": 15,
+          "sta": 15,
+          "haste": 0.15
+        },
+        "text": "Increases Strength by 15, Stamina by 15, and attack and casting speed by 15%."
+      }
+    ]
+  },
+  "nighttalon": {
+    "id": "nighttalon",
+    "name": "Direfang Pelt",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "ap": 40
+        },
+        "text": "Increases attack power by 40."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "agi": 15,
+          "crit": 0.02,
+          "haste": 0.15
+        },
+        "text": "Increases Agility by 15, critical strike chance by 2%, and attack and casting speed by 15%."
+      }
+    ]
+  },
+  "soulflame": {
+    "id": "soulflame",
+    "name": "Wraithfire Regalia",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "knockbackResistance": 1
+        },
+        "text": "You cannot be knocked back (100% knockback resistance)."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "int": 15,
+          "spi": 15,
+          "haste": 0.15
+        },
+        "text": "Increases Intellect by 15, Spirit by 15, and attack and casting speed by 15%."
+      }
+    ]
+  },
+  "stormcallers": {
+    "id": "stormcallers",
+    "name": "Galecall Vestments",
+    "bonuses": [
+      {
+        "pieces": 2,
+        "effect": {
+          "knockbackResistance": 1
+        },
+        "text": "You cannot be knocked back (100% knockback resistance)."
+      },
+      {
+        "pieces": 3,
+        "effect": {
+          "int": 15,
+          "spi": 15,
+          "haste": 0.15
+        },
+        "text": "Increases Intellect by 15, Spirit by 15, and attack and casting speed by 15%."
+      }
+    ]
+  },
+  "vale_arcanist": {
+    "id": "vale_arcanist",
+    "name": "Vale Arcanist's Regalia",
+    "bonuses": [
+      {
+        "pieces": 3,
+        "effect": {
+          "haste": 0.15
+        },
+        "text": "Increases attack and casting speed by 15%."
+      }
+    ]
+  },
+  "boundstone_vanguard": {
+    "id": "boundstone_vanguard",
+    "name": "Boundstone Vanguard",
+    "bonuses": [
+      {
+        "pieces": 3,
+        "effect": {
+          "haste": 0.15
+        },
+        "text": "Increases attack and casting speed by 15%."
+      }
+    ]
+  },
+  "greyjaw_stalker": {
+    "id": "greyjaw_stalker",
+    "name": "Greyjaw Stalker's Kit",
+    "bonuses": [
+      {
+        "pieces": 3,
+        "effect": {
+          "haste": 0.15
+        },
+        "text": "Increases attack and casting speed by 15%."
+      }
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+# Se déclenche automatiquement à chaque nouvelle release publiée sur
+# levy-street/world-of-claudecraft, régénère les données du jeu en JSON,
+# et commite le résultat dans CE repo (le tien, dédié à la knowledge base).
+#
+# Pour que ça marche, ce fichier doit vivre dans un repo GitHub qui t'appartient
+# (pas dans le repo du jeu lui-même, sur lequel tu n'as pas la main).
+#
+# Deux façons de le déclencher :
+#   1. "repository_dispatch" : le plus fiable, mais demande un petit relais
+#      (voir note en bas de fichier) car GitHub ne permet pas nativement de
+#      s'abonner aux releases d'un AUTRE repo que le tien.
+#   2. "schedule" : plus simple à mettre en place. Ce fichier utilise cette
+#      option, réglée sur 5 minutes — le minimum autorisé par GitHub pour un
+#      cron planifié (impossible d'aller plus vite sans un vrai webhook).
+#
+# IMPORTANT : à 5 minutes d'intervalle, on ne peut PAS se permettre de
+# retélécharger l'archive complète du jeu (~230 Mo) à chaque passage — ça
+# gaspillerait bande passante et minutes Actions pour rien la plupart du
+# temps. Le job est donc coupé en deux étapes : une vérification légère du
+# tag (quelques octets, via l'API GitHub) qui tourne à chaque déclenchement,
+# et l'extraction lourde qui ne se lance QUE si le tag a changé.
+
+name: Update WoCC knowledge base
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # toutes les 5 minutes (minimum autorisé par GitHub)
+  workflow_dispatch: {}      # bouton "Run workflow" manuel dans l'onglet Actions
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+      latest_tag: ${{ steps.check.outputs.latest_tag }}
+    steps:
+      - name: Checkout ce repo (pour lire le dernier tag connu)
+        uses: actions/checkout@v4
+
+      - name: Comparer le tag connu au dernier tag publié (requête légère)
+        id: check
+        env:
+          # Fourni automatiquement par GitHub Actions, aucune config requise.
+          # Sans ce token, la limite tombe à 60 requêtes/heure PAR ADRESSE IP —
+          # partagée entre tous les workflows tournant sur les runners GitHub
+          # au même moment, donc risquée à ce rythme. Avec le token : 5000/h.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          KNOWN_TAG="none"
+          if [ -f data/_meta.json ]; then
+            KNOWN_TAG=$(node -p "require('./data/_meta.json').tag")
+          fi
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/levy-street/world-of-claudecraft/tags?per_page=1" \
+            -H "User-Agent: wocc-knowledge-pipeline" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            | node -p "JSON.parse(require('fs').readFileSync(0))[0].name")
+          echo "latest_tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
+          if [ "$LATEST_TAG" == "$KNOWN_TAG" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  update:
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ce repo (la knowledge base)
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Installer les dépendances du pipeline
+        run: npm install esbuild --no-save
+
+      - name: Extraire les données du nouveau tag (${{ needs.check.outputs.latest_tag }})
+        run: node scripts/extract.mjs ${{ needs.check.outputs.latest_tag }} ./data
+
+      - name: Commiter les nouvelles données
+        run: |
+          git config user.name "wocc-knowledge-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git commit -m "chore: update knowledge base to ${{ needs.check.outputs.latest_tag }}"
+          git push
+
+# -----------------------------------------------------------------------------
+# Note sur l'option 1 (déclenchement immédiat à la release, au lieu d'attendre
+# le prochain passage du cron) : GitHub ne permet pas de t'abonner directement
+# aux releases d'un repo qui n'est pas le tien. Il faut soit :
+#   - Un petit relais (une Cloud Function / un Zapier / un webhook GitHub sur
+#     le repo du jeu, si ses mainteneurs t'y autorisent) qui appelle l'API
+#     "repository_dispatch" de TON repo à chaque release.
+#   - Ou simplement vivre avec le délai du cron (5 min ici) : dans les faits,
+#     GitHub ne garantit pas une exécution pile à l'heure programmée en
+#     période de forte charge, donc compte plutôt sur un délai de quelques
+#     minutes à un quart d'heure dans le pire des cas — largement suffisant
+#     pour ce cas d'usage.
+# -----------------------------------------------------------------------------
+
