@@ -3,394 +3,1098 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>WoCC Codex — base de données du jeu</title>
+<title>WoCC Codex — l'encyclopédie de World of ClaudeCraft</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #12161c;
-    --bg-raised: #191f27;
-    --bg-card: #1d232c;
-    --stone-line: #2a323d;
-    --text: #e8e3d3;
-    --text-dim: #9aa3ad;
-    --accent: #4fd1ff;
-    --accent-dim: #2a7d99;
-    --common: #9aa0a6;
-    --rare: #4f8dfb;
-    --epic: #b264f0;
-    --legendary: #f97316;
+    --bg: #0b0d12;
+    --bg-panel: #12151d;
+    --bg-card: #161a24;
+    --bg-card-hover: #1a1f2b;
+    --bg-modal: #141822;
+    --line: #262c3a;
+    --line-soft: #1e2431;
+    --gold: #c8a04b;
+    --gold-bright: #e6c37a;
+    --text: #dfe3ea;
+    --dim: #8b93a3;
+    --faint: #5b6272;
+
+    /* Couleurs de rareté (convention MMO classique) */
+    --q-poor: #9d9d9d;
+    --q-common: #eef1f5;
+    --q-uncommon: #1eff00;
+    --q-rare: #2f8bff;
+    --q-epic: #a335ee;
+    --q-legendary: #ff8000;
+
+    --hostile: #e5544a;
+    --friendly: #58c46a;
+    --xp: #b58cf5;
   }
 
   * { box-sizing: border-box; }
+  html { scrollbar-gutter: stable; }
 
   body {
     margin: 0;
     background: var(--bg);
     background-image:
-      radial-gradient(ellipse 800px 400px at 20% -10%, rgba(79,209,255,0.06), transparent),
-      radial-gradient(ellipse 600px 300px at 90% 10%, rgba(178,100,240,0.05), transparent);
+      radial-gradient(ellipse 900px 420px at 18% -8%, rgba(200,160,75,0.07), transparent 70%),
+      radial-gradient(ellipse 700px 380px at 85% -5%, rgba(47,139,255,0.05), transparent 70%);
     color: var(--text);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
+    line-height: 1.5;
   }
 
+  a { color: inherit; }
+
+  /* ---------- entête ---------- */
   header {
-    padding: 40px 32px 24px;
-    max-width: 1200px;
+    max-width: 1240px;
     margin: 0 auto;
+    padding: 44px 28px 0;
   }
+
+  .brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
 
   h1 {
     font-family: 'Cinzel', serif;
     font-weight: 700;
-    font-size: 2rem;
-    letter-spacing: 0.02em;
-    margin: 0 0 4px;
-    background: linear-gradient(120deg, var(--text) 40%, var(--accent) 100%);
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    letter-spacing: 0.04em;
+    margin: 0;
+    background: linear-gradient(120deg, var(--gold-bright) 20%, var(--gold) 55%, #8a6b2f 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  .subtitle {
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    margin: 0 0 20px;
+  .brand .version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    border: 1px solid rgba(200,160,75,0.35);
+    background: rgba(200,160,75,0.08);
+    padding: 3px 10px;
+    border-radius: 20px;
   }
 
-  .search-wrap {
+  .subtitle { color: var(--dim); font-size: 0.9rem; margin: 6px 0 22px; }
+
+  .gold-rule {
+    height: 1px;
+    margin: 0 0 22px;
+    background: linear-gradient(90deg, transparent, rgba(200,160,75,0.55) 20%, rgba(200,160,75,0.55) 80%, transparent);
     position: relative;
   }
+  .gold-rule::after {
+    content: '◆';
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    font-size: 9px;
+    background: var(--bg);
+    padding: 0 10px;
+  }
 
-  .search-wrap input {
+  .search-wrap { position: relative; }
+  .search-wrap svg {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    width: 17px; height: 17px; stroke: var(--faint); fill: none; stroke-width: 2;
+    pointer-events: none;
+  }
+  #search {
     width: 100%;
-    background: var(--bg-raised);
-    border: 1px solid var(--stone-line);
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
     color: var(--text);
-    padding: 14px 18px;
+    padding: 15px 18px 15px 46px;
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
-    border-radius: 6px;
+    border-radius: 10px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color .18s, box-shadow .18s;
   }
-  .search-wrap input:focus { border-color: var(--accent-dim); }
-
-  /* Signature : trait d'énergie façon éclair sous la barre de recherche */
-  .storm-line {
-    height: 2px;
-    margin-top: 10px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    background-size: 200% 100%;
-    animation: crackle 3.5s ease-in-out infinite;
-    opacity: 0.7;
-  }
-  @keyframes crackle {
-    0%, 100% { background-position: 200% 0; opacity: 0.3; }
-    45% { opacity: 0.9; }
-    50% { background-position: -200% 0; opacity: 0.5; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .storm-line { animation: none; opacity: 0.5; }
+  #search::placeholder { color: var(--faint); }
+  #search:focus {
+    border-color: rgba(200,160,75,0.6);
+    box-shadow: 0 0 0 3px rgba(200,160,75,0.12);
   }
 
-  .tabs {
+  /* ---------- onglets ---------- */
+  nav.tabs {
     display: flex;
-    gap: 4px;
-    margin: 24px 0 16px;
-    border-bottom: 1px solid var(--stone-line);
+    gap: 6px;
+    margin: 22px 0 0;
+    flex-wrap: wrap;
   }
   .tab {
-    padding: 10px 18px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 15px;
     cursor: pointer;
-    color: var(--text-dim);
-    font-size: 0.9rem;
+    color: var(--dim);
+    font-size: 0.88rem;
     font-weight: 500;
-    border-bottom: 2px solid transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
     user-select: none;
+    transition: color .15s, background .15s;
   }
-  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .tab:hover:not(.active) { color: var(--text); }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .tab.active {
+    color: var(--gold-bright);
+    background: rgba(200,160,75,0.09);
+    border-color: rgba(200,160,75,0.35);
+  }
+  .tab .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--faint);
+    background: rgba(255,255,255,0.05);
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+  .tab.active .n { color: var(--gold); background: rgba(200,160,75,0.12); }
 
-  .filters {
+  /* ---------- contenu ---------- */
+  main { max-width: 1240px; margin: 0 auto; padding: 18px 28px 70px; }
+
+  .toolbar {
     display: flex;
+    align-items: center;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin: 4px 0 18px;
   }
-  .filters select {
-    background: var(--bg-raised);
+  .toolbar select {
+    background: var(--bg-panel);
     color: var(--text);
-    border: 1px solid var(--stone-line);
-    padding: 8px 10px;
-    border-radius: 5px;
+    border: 1px solid var(--line);
+    padding: 8px 32px 8px 12px;
+    border-radius: 8px;
     font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.84rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b93a3' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
   }
-
-  main { max-width: 1200px; margin: 0 auto; padding: 0 32px 60px; }
-
+  .toolbar select:focus { outline: none; border-color: rgba(200,160,75,0.5); }
   .count {
-    color: var(--text-dim);
-    font-size: 0.8rem;
-    margin-bottom: 14px;
+    margin-left: auto;
+    color: var(--faint);
+    font-size: 0.78rem;
     font-family: 'JetBrains Mono', monospace;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+    gap: 13px;
   }
 
+  /* ---------- cartes ---------- */
   .card {
     background: var(--bg-card);
-    border: 1px solid var(--stone-line);
-    border-radius: 8px;
-    padding: 16px;
+    border: 1px solid var(--line-soft);
+    border-left-width: 3px;
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: transform .12s, border-color .12s, background .12s;
+    position: relative;
   }
-  .card-name {
-    font-weight: 600;
-    font-size: 1rem;
-    margin: 0 0 4px;
+  .card:hover {
+    transform: translateY(-2px);
+    background: var(--bg-card-hover);
+    border-color: var(--line);
   }
-  .card-meta {
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-  }
-  .chip {
-    display: inline-block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-right: 6px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .rarity-common { background: rgba(154,160,166,0.15); color: var(--common); }
-  .rarity-rare { background: rgba(79,141,251,0.15); color: var(--rare); }
-  .rarity-epic { background: rgba(178,100,240,0.15); color: var(--epic); }
-  .rarity-legendary { background: rgba(249,115,22,0.15); color: var(--legendary); }
+  .card:hover .card-name { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
-  .stat-line {
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card-name { font-weight: 600; font-size: 0.98rem; margin: 0; line-height: 1.3; }
+  .card-sub { font-size: 0.76rem; color: var(--dim); margin-top: 3px; }
+  .card-body { margin-top: 9px; }
+
+  .lvl {
+    flex-shrink: 0;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--text);
-    margin-top: 8px;
-    line-height: 1.6;
+    font-size: 0.68rem;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    padding: 2px 7px;
+    border-radius: 6px;
+    white-space: nowrap;
   }
-  .loot-list {
-    margin-top: 8px;
-    font-size: 0.78rem;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text-dim);
+
+  .badge {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 5px;
+    margin: 6px 6px 0 0;
   }
-  .loot-list div { display: flex; justify-content: space-between; padding: 2px 0; }
-  .loot-list span.chance { color: var(--accent); }
+  .b-boss      { background: rgba(229,84,74,0.14);  color: #ff7a70; border: 1px solid rgba(229,84,74,0.35); }
+  .b-worldboss { background: rgba(163,53,238,0.14); color: #c77df5; border: 1px solid rgba(163,53,238,0.4); }
+  .b-elite     { background: rgba(200,160,75,0.12); color: var(--gold-bright); border: 1px solid rgba(200,160,75,0.4); }
+  .b-rare      { background: rgba(47,139,255,0.12); color: #6fadff; border: 1px solid rgba(47,139,255,0.35); }
+  .b-retired   { background: rgba(255,255,255,0.05); color: var(--faint); border: 1px solid var(--line); }
+  .b-group     { background: rgba(88,196,106,0.1);  color: var(--friendly); border: 1px solid rgba(88,196,106,0.3); }
+
+  .q-poor      { color: var(--q-poor); }
+  .q-common    { color: var(--q-common); }
+  .q-uncommon  { color: var(--q-uncommon); }
+  .q-rare      { color: var(--q-rare); }
+  .q-epic      { color: var(--q-epic); }
+  .q-legendary { color: var(--q-legendary); }
+
+  .bl-poor      { border-left-color: #4a4a4a; }
+  .bl-common    { border-left-color: #3d4350; }
+  .bl-uncommon  { border-left-color: rgba(30,255,0,0.45); }
+  .bl-rare      { border-left-color: rgba(47,139,255,0.55); }
+  .bl-epic      { border-left-color: rgba(163,53,238,0.6); }
+  .bl-legendary { border-left-color: rgba(255,128,0,0.65); }
+  .bl-mob       { border-left-color: rgba(229,84,74,0.4); }
+  .bl-quest     { border-left-color: rgba(200,160,75,0.5); }
+  .bl-npc       { border-left-color: rgba(88,196,106,0.45); }
+  .bl-place     { border-left-color: rgba(79,209,255,0.4); }
+  .bl-set       { border-left-color: rgba(163,53,238,0.5); }
+
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+
+  .statline { font-size: 0.8rem; color: var(--dim); margin-top: 3px; }
+  .statline b { color: var(--text); font-weight: 600; }
+  .stat-green { color: var(--q-uncommon); font-size: 0.8rem; margin-top: 2px; }
+
+  .money { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; white-space: nowrap; }
+  .money .g { color: #ffd76e; }
+  .money .s { color: #c9ccd4; }
+  .money .c { color: #e8a05e; }
+
+  .swatch {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    margin-right: 7px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.25);
+  }
 
   .empty {
-    color: var(--text-dim);
+    color: var(--dim);
     text-align: center;
-    padding: 60px 0;
-    font-size: 0.9rem;
+    padding: 70px 0;
+    font-size: 0.92rem;
   }
+  .empty .big { font-size: 2rem; display: block; margin-bottom: 10px; opacity: .5; }
+
+  /* ---------- fiche détail (modale) ---------- */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(5,7,10,0.7);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6vh 16px 6vh;
+    z-index: 50;
+    overflow-y: auto;
+  }
+  .overlay.open { display: flex; }
+
+  .sheet {
+    background: var(--bg-modal);
+    border: 1px solid var(--line);
+    border-top: 2px solid var(--gold);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 620px;
+    padding: 24px 26px 26px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    animation: pop .16s ease-out;
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.985); } }
+  @media (prefers-reduced-motion: reduce) { .sheet { animation: none; } }
+
+  .sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+  .sheet h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .sheet .kicker {
+    font-size: 0.72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .close {
+    flex-shrink: 0;
+    background: none; border: 1px solid var(--line);
+    color: var(--dim); border-radius: 8px;
+    width: 32px; height: 32px; cursor: pointer;
+    font-size: 1rem; line-height: 1;
+    transition: color .15s, border-color .15s;
+  }
+  .close:hover { color: var(--text); border-color: var(--dim); }
+
+  .sheet-sub { color: var(--dim); font-size: 0.84rem; margin-top: 4px; }
+
+  .section {
+    margin-top: 18px;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 14px;
+  }
+  .section h3 {
+    margin: 0 0 9px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .kv { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 0.85rem; }
+  .kv div span:first-child { color: var(--dim); margin-right: 7px; }
+
+  .quote {
+    font-style: italic;
+    color: var(--dim);
+    font-size: 0.88rem;
+    border-left: 2px solid rgba(200,160,75,0.4);
+    padding-left: 12px;
+    margin: 0;
+  }
+
+  ul.linklist { list-style: none; margin: 0; padding: 0; }
+  ul.linklist li {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 5px 0;
+    font-size: 0.86rem;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  ul.linklist li:last-child { border-bottom: none; }
+  .xlink {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.18);
+    text-underline-offset: 3px;
+  }
+  .xlink:hover { text-decoration-color: currentColor; }
+  .chance { color: var(--gold-bright); font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; flex-shrink: 0; }
+  .qty { color: var(--dim); font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; }
+
+  .setbonus { font-size: 0.85rem; margin: 4px 0; color: var(--dim); }
+  .setbonus.on { color: var(--q-uncommon); }
+  .setbonus b { color: var(--text); }
 
   footer {
     text-align: center;
-    color: var(--text-dim);
+    color: var(--faint);
     font-size: 0.75rem;
-    padding: 20px;
-    border-top: 1px solid var(--stone-line);
+    padding: 26px 20px 34px;
+    border-top: 1px solid var(--line-soft);
+  }
+  footer a { color: var(--dim); }
+
+  @media (max-width: 640px) {
+    header { padding: 28px 16px 0; }
+    main { padding: 14px 16px 50px; }
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 460px) {
+    .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>WoCC Codex</h1>
-  <p class="subtitle" id="meta-line">Base de données du jeu — chargement…</p>
-  <div class="search-wrap">
-    <input id="search" type="text" placeholder="Rechercher un mob, un objet, une quête…" />
+  <div class="brand">
+    <h1>WoCC Codex</h1>
+    <span class="version" id="version">…</span>
   </div>
-  <div class="storm-line"></div>
+  <p class="subtitle">L'encyclopédie de <strong>World of ClaudeCraft</strong> — objets, monstres, quêtes, donjons. Générée automatiquement depuis le code du jeu, toujours à jour.</p>
+  <div class="gold-rule"></div>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+    <input id="search" type="text" placeholder="Rechercher un objet, un monstre, une quête, un PNJ…" autocomplete="off" />
+  </div>
+  <nav class="tabs" id="tabs"></nav>
 </header>
 
 <main>
-  <div class="tabs">
-    <div class="tab active" data-tab="items">Objets</div>
-    <div class="tab" data-tab="mobs">Mobs</div>
-    <div class="tab" data-tab="quests">Quêtes</div>
-  </div>
-
-  <div class="filters" id="filters"></div>
-  <div class="count" id="count"></div>
+  <div class="toolbar" id="toolbar"></div>
   <div class="grid" id="grid"></div>
 </main>
 
+<div class="overlay" id="overlay">
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+</div>
+
 <footer>
-  Généré automatiquement depuis le code source de World of ClaudeCraft. Zéro appel IA, zéro token — recherche 100% locale.
+  Généré automatiquement depuis le <a href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener">code source de World of ClaudeCraft</a>.
+  Recherche 100% locale — zéro requête serveur, zéro token.
 </footer>
 
 <script>
-const DATA_PATH = '../data/';
-let ITEMS = [], MOBS = [], QUESTS = [];
-let activeTab = 'items';
-let filters = { rarity: '', slot: '', family: '' };
+'use strict';
 
-async function loadData() {
-  const [items, mobs, quests, meta] = await Promise.all([
-    fetch(DATA_PATH + 'ITEMS.json').then(r => r.json()).catch(() => ({})),
-    fetch(DATA_PATH + 'MOBS.json').then(r => r.json()).catch(() => ({})),
-    fetch(DATA_PATH + 'QUESTS.json').then(r => r.json()).catch(() => ({})),
-    fetch(DATA_PATH + '_meta.json').then(r => r.json()).catch(() => null),
-  ]);
-  ITEMS = Object.values(items);
-  MOBS = Object.values(mobs);
-  QUESTS = Object.values(quests);
-  document.getElementById('meta-line').textContent = meta
-    ? `Base de données du jeu — tag ${meta.tag}, générée le ${new Date(meta.extractedAt).toLocaleString('fr-FR')}`
-    : 'Base de données du jeu (données non trouvées — lance scripts/extract.mjs puis sers ce dossier avec les données à côté)';
-  buildFilters();
-  render();
+/* ================= chargement des données ================= */
+
+const DATA = {};
+const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','_meta'];
+
+async function load() {
+  const res = await Promise.all(FILES.map(f =>
+    fetch('../data/' + f + '.json').then(r => r.ok ? r.json() : null).catch(() => null)
+  ));
+  FILES.forEach((f, i) => DATA[f] = res[i]);
+
+  ITEMS  = asList(DATA.ITEMS);
+  MOBS   = asList(DATA.MOBS);
+  QUESTS = asList(DATA.QUESTS);
+  NPCS   = asList(DATA.NPCS);
+  ZONES  = asList(DATA.ZONES);
+  DUNGEONS = asList(DATA.DUNGEONS);
+  DELVES = asList(DATA.DELVES);
+  SETS   = asList(DATA.ITEM_SETS);
+
+  byId.item = index(ITEMS); byId.mob = index(MOBS); byId.quest = index(QUESTS);
+  byId.npc = index(NPCS); byId.zone = index(ZONES); byId.dungeon = index(DUNGEONS);
+  byId.delve = index(DELVES); byId.set = index(SETS);
+
+  buildCrossRefs();
+
+  document.getElementById('version').textContent =
+    DATA._meta ? DATA._meta.tag : 'données locales';
+
+  buildTabs();
+  applyHash();
+  renderAll();
 }
 
-function buildFilters() {
-  const el = document.getElementById('filters');
-  el.innerHTML = '';
-  if (activeTab === 'items') {
-    const rarities = [...new Set(ITEMS.map(i => i.quality).filter(Boolean))];
-    const slots = [...new Set(ITEMS.map(i => i.slot).filter(Boolean))];
-    el.appendChild(makeSelect('rarity', 'Toutes raretés', rarities));
-    el.appendChild(makeSelect('slot', 'Tous les slots', slots));
-  } else if (activeTab === 'mobs') {
-    const families = [...new Set(MOBS.map(m => m.family).filter(Boolean))];
-    el.appendChild(makeSelect('family', 'Toutes familles', families));
+function asList(x) { return !x ? [] : Array.isArray(x) ? x : Object.values(x); }
+function index(list) { const m = {}; for (const e of list) m[e.id] = e; return m; }
+
+let ITEMS=[], MOBS=[], QUESTS=[], NPCS=[], ZONES=[], DUNGEONS=[], DELVES=[], SETS=[];
+const byId = {};
+const refs = { droppedBy:{}, soldBy:{}, rewardOf:{}, neededBy:{}, killedFor:{}, npcQuests:{}, mobDungeons:{}, questNext:{}, setPieces:{} };
+
+function buildCrossRefs() {
+  for (const m of MOBS)
+    for (const l of (m.loot || []))
+      if (l.itemId) (refs.droppedBy[l.itemId] ||= []).push({ mob: m, chance: l.chance });
+
+  for (const n of NPCS)
+    for (const it of (n.vendorItems || []))
+      (refs.soldBy[it] ||= []).push(n);
+
+  for (const q of QUESTS) {
+    for (const cls in (q.itemRewards || {})) {
+      const it = q.itemRewards[cls];
+      const arr = (refs.rewardOf[it] ||= []);
+      if (!arr.includes(q)) arr.push(q);
+    }
+    for (const o of (q.objectives || [])) {
+      if (o.type === 'collect' && o.itemId) (refs.neededBy[o.itemId] ||= []).push(q);
+      if (o.type === 'kill' && o.targetMobId) (refs.killedFor[o.targetMobId] ||= []).push(q);
+    }
+    (refs.npcQuests[q.giverNpcId] ||= []).push(q);
+    if (q.requiresQuest) (refs.questNext[q.requiresQuest] ||= []).push(q);
+  }
+
+  for (const d of DUNGEONS)
+    for (const s of (d.spawns || []))
+      { const a = (refs.mobDungeons[s.mobId] ||= []); if (!a.includes(d)) a.push(d); }
+
+  for (const it of ITEMS)
+    if (it.set) (refs.setPieces[it.set] ||= []).push(it);
+}
+
+/* ================= libellés français ================= */
+
+const QUALITY_ORDER = { poor:0, common:1, uncommon:2, rare:3, epic:4, legendary:5 };
+const QUALITY_FR = { poor:'Médiocre', common:'Commun', uncommon:'Inhabituel', rare:'Rare', epic:'Épique', legendary:'Légendaire' };
+const KIND_FR = { weapon:'Arme', armor:'Armure', bag:'Sac', food:'Nourriture', drink:'Boisson', tool:'Outil', junk:'Camelote', potion:'Potion', elixir:'Élixir', quest:'Objet de quête' };
+const SLOT_FR = { mainhand:'Main droite', chest:'Torse', feet:'Pieds', legs:'Jambes', helmet:'Tête', shoulder:'Épaules', waist:'Taille', gloves:'Mains' };
+const ARMORTYPE_FR = { cloth:'Tissu', leather:'Cuir', mail:'Mailles' };
+const CLASS_FR = { warrior:'Guerrier', mage:'Mage', rogue:'Voleur', priest:'Prêtre', warlock:'Démoniste', druid:'Druide', hunter:'Chasseur', paladin:'Paladin', shaman:'Chaman' };
+const STAT_FR = { str:'Force', sta:'Endurance', agi:'Agilité', int:'Intelligence', spi:'Esprit', armor:'Armure', ap:"Puissance d'attaque", crit:'Critique' };
+const FAMILY_FR = { demon:'Démon', beast:'Bête', spider:'Araignée', humanoid:'Humanoïde', mudfin:'Mudfin', burrower:'Fouisseur', undead:'Mort-vivant', troll:'Troll', ogre:'Ogre', elemental:'Élémentaire', dragonkin:'Draconien' };
+const BIOME_FR = { vale:'Vallée', marsh:'Marais', peaks:'Pics', mountain:'Montagne', forest:'Forêt' };
+const NODE_FR = { ore:'Minerai', herb:'Herbes', wood:'Bois' };
+
+const fr = (map, k) => (k == null ? '—' : (map[k] || k));
+const quality = it => it.quality || 'common';
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function money(copper) {
+  if (copper == null) return '';
+  const g = Math.floor(copper / 10000), s = Math.floor(copper / 100) % 100, c = copper % 100;
+  const parts = [];
+  if (g) parts.push(`<span class="g">${g} po</span>`);
+  if (s) parts.push(`<span class="s">${s} pa</span>`);
+  if (c || !parts.length) parts.push(`<span class="c">${c} pc</span>`);
+  return `<span class="money">${parts.join(' ')}</span>`;
+}
+
+function pct(x) { return x == null ? '' : (x >= 0.995 ? '100%' : (x * 100).toFixed(x < 0.01 ? 1 : 0) + '%'); }
+
+function mobColor(m) {
+  const c = (m.color ?? 0).toString(16).padStart(6, '0');
+  return `<span class="swatch" style="background:#${c}"></span>`;
+}
+
+function levelText(m) {
+  return m.minLevel === m.maxLevel ? `niv. ${m.minLevel}` : `niv. ${m.minLevel}–${m.maxLevel}`;
+}
+
+/* ================= onglets & filtres ================= */
+
+const TABS = [
+  { id:'items',    label:'Objets',   count: () => ITEMS.length },
+  { id:'mobs',     label:'Monstres', count: () => MOBS.length },
+  { id:'quests',   label:'Quêtes',   count: () => QUESTS.filter(q=>!q.retired).length },
+  { id:'npcs',     label:'PNJ',      count: () => NPCS.length },
+  { id:'dungeons', label:'Donjons',  count: () => DUNGEONS.length + DELVES.length },
+  { id:'sets',     label:'Panoplies',count: () => SETS.length },
+  { id:'zones',    label:'Zones',    count: () => ZONES.length },
+];
+
+let activeTab = 'items';
+let filters = {};
+
+function buildTabs() {
+  const nav = document.getElementById('tabs');
+  nav.innerHTML = '';
+  for (const t of TABS) {
+    const el = document.createElement('div');
+    el.className = 'tab' + (t.id === activeTab ? ' active' : '');
+    el.innerHTML = `${t.label} <span class="n">${t.count()}</span>`;
+    el.onclick = () => { activeTab = t.id; filters = {}; history.replaceState(null,'','#'+t.id); buildTabs(); renderAll(); };
+    nav.appendChild(el);
   }
 }
 
-function makeSelect(key, placeholder, options) {
-  const sel = document.createElement('select');
-  sel.innerHTML = `<option value="">${placeholder}</option>` +
-    options.sort().map(o => `<option value="${o}">${o}</option>`).join('');
-  sel.value = filters[key] || '';
-  sel.addEventListener('change', () => { filters[key] = sel.value; render(); });
-  return sel;
+function sel(key, placeholder, opts, labelFn) {
+  const s = document.createElement('select');
+  s.innerHTML = `<option value="">${placeholder}</option>` +
+    opts.map(o => `<option value="${esc(o)}" ${filters[key]===o?'selected':''}>${esc(labelFn ? labelFn(o) : o)}</option>`).join('');
+  s.onchange = () => { filters[key] = s.value; renderAll(); };
+  return s;
 }
 
-function matchesSearch(text, q) {
-  return !q || (text || '').toLowerCase().includes(q);
+function buildToolbar() {
+  const bar = document.getElementById('toolbar');
+  bar.innerHTML = '';
+  if (activeTab === 'items') {
+    bar.appendChild(sel('kind', 'Tous les types', Object.keys(KIND_FR).filter(k => ITEMS.some(i=>i.kind===k)), k => fr(KIND_FR,k)));
+    bar.appendChild(sel('quality', 'Toutes les raretés', Object.keys(QUALITY_ORDER).filter(q => ITEMS.some(i=>quality(i)===q)), q => fr(QUALITY_FR,q)));
+    bar.appendChild(sel('slot', 'Tous les emplacements', Object.keys(SLOT_FR).filter(s => ITEMS.some(i=>i.slot===s)), s => fr(SLOT_FR,s)));
+    bar.appendChild(sel('cls', 'Toutes les classes', Object.keys(CLASS_FR).filter(c => ITEMS.some(i=>(i.requiredClass||[]).includes(c))), c => fr(CLASS_FR,c)));
+  } else if (activeTab === 'mobs') {
+    bar.appendChild(sel('family', 'Toutes les familles', [...new Set(MOBS.map(m=>m.family))].sort(), f => fr(FAMILY_FR,f)));
+    bar.appendChild(sel('rank', 'Tous les rangs', ['boss','elite','rare','normal'], r => ({boss:'Boss', elite:'Élite', rare:'Rare', normal:'Normal'})[r]));
+  } else if (activeTab === 'quests') {
+    bar.appendChild(sel('giver', 'Tous les donneurs', [...new Set(QUESTS.map(q=>q.giverNpcId))].filter(id=>byId.npc[id]).sort((a,b)=>npcName(a).localeCompare(npcName(b))), id => npcName(id)));
+  }
+  const c = document.createElement('div');
+  c.className = 'count'; c.id = 'count';
+  bar.appendChild(c);
 }
+const npcName = id => byId.npc[id] ? byId.npc[id].name : id;
 
-function render() {
+/* ================= rendu des listes ================= */
+
+function renderAll() { buildToolbar(); renderGrid(); }
+
+function matches(text, q) { return !q || (text||'').toLowerCase().includes(q); }
+
+function renderGrid() {
   const q = document.getElementById('search').value.trim().toLowerCase();
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
-  let results = [];
+  let cards = [];
 
   if (activeTab === 'items') {
-    results = ITEMS.filter(i =>
-      matchesSearch(i.name, q) &&
-      (!filters.rarity || i.quality === filters.rarity) &&
-      (!filters.slot || i.slot === filters.slot)
-    );
+    let list = ITEMS.filter(i =>
+      matches(i.name, q) &&
+      (!filters.kind || i.kind === filters.kind) &&
+      (!filters.quality || quality(i) === filters.quality) &&
+      (!filters.slot || i.slot === filters.slot) &&
+      (!filters.cls || (i.requiredClass||[]).includes(filters.cls)));
+    list.sort((a,b) => (QUALITY_ORDER[quality(b)]-QUALITY_ORDER[quality(a)]) || a.name.localeCompare(b.name));
+    cards = list.map(itemCard);
   } else if (activeTab === 'mobs') {
-    results = MOBS.filter(m =>
-      matchesSearch(m.name, q) &&
-      (!filters.family || m.family === filters.family)
-    );
-  } else {
-    results = QUESTS.filter(qd => matchesSearch(qd.name || qd.id, q));
+    let list = MOBS.filter(m =>
+      matches(m.name, q) &&
+      (!filters.family || m.family === filters.family) &&
+      (!filters.rank ||
+        (filters.rank==='boss' && m.boss) ||
+        (filters.rank==='elite' && m.elite && !m.boss) ||
+        (filters.rank==='rare' && m.rare) ||
+        (filters.rank==='normal' && !m.boss && !m.elite && !m.rare)));
+    list.sort((a,b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name));
+    cards = list.map(mobCard);
+  } else if (activeTab === 'quests') {
+    let list = QUESTS.filter(x =>
+      matches(x.name, q) && !x.retired &&
+      (!filters.giver || x.giverNpcId === filters.giver));
+    list.sort((a,b) => (a.minLevel||0) - (b.minLevel||0) || a.name.localeCompare(b.name));
+    cards = list.map(questCard);
+  } else if (activeTab === 'npcs') {
+    let list = NPCS.filter(n => matches(n.name + ' ' + (n.title||''), q));
+    list.sort((a,b) => a.name.localeCompare(b.name));
+    cards = list.map(npcCard);
+  } else if (activeTab === 'dungeons') {
+    const all = [...DUNGEONS.map(d => ({...d, _kind:'dungeon'})), ...DELVES.map(d => ({...d, _kind:'delve'}))];
+    cards = all.filter(d => matches(d.name, q)).map(dungeonCard);
+  } else if (activeTab === 'sets') {
+    cards = SETS.filter(s => matches(s.name, q)).map(setCard);
+  } else if (activeTab === 'zones') {
+    cards = ZONES.filter(z => matches(z.name, q)).map(zoneCard);
   }
 
-  document.getElementById('count').textContent = `${results.length} résultat${results.length > 1 ? 's' : ''}`;
+  const count = document.getElementById('count');
+  if (count) count.textContent = `${cards.length} résultat${cards.length > 1 ? 's' : ''}`;
 
-  if (!results.length) {
-    grid.innerHTML = '<div class="empty">Aucun résultat. Essaie un autre terme ou change les filtres.</div>';
+  if (!cards.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🕯️</span>Aucun résultat dans ce grimoire.<br>Essaie un autre terme ou retire des filtres.</div>`;
     return;
   }
-
   const frag = document.createDocumentFragment();
-  results.slice(0, 150).forEach(r => frag.appendChild(
-    activeTab === 'items' ? renderItemCard(r) :
-    activeTab === 'mobs' ? renderMobCard(r) :
-    renderQuestCard(r)
-  ));
+  cards.forEach(c => frag.appendChild(c));
   grid.appendChild(frag);
 }
 
-function renderItemCard(item) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  const rarityClass = 'rarity-' + (item.quality || 'common');
-  const statLine = item.stats
-    ? Object.entries(item.stats).map(([k, v]) => `${k} +${v}`).join('  ')
-    : '';
-  const dmgLine = item.weapon
-    ? `dégâts ${item.weapon.min}-${item.weapon.max}` + (item.weapon.speed ? `  vitesse ${item.weapon.speed}` : '')
-    : '';
-  card.innerHTML = `
-    <p class="card-name">${item.name}</p>
-    <div>
-      <span class="chip ${rarityClass}">${item.quality || 'common'}</span>
-      <span class="chip" style="background:rgba(255,255,255,0.06);color:var(--text-dim)">${item.slot || '—'}</span>
+function card(borderClass, html, onOpen) {
+  const el = document.createElement('div');
+  el.className = 'card ' + borderClass;
+  el.innerHTML = html;
+  el.onclick = onOpen;
+  return el;
+}
+
+function itemCard(it) {
+  const ql = quality(it);
+  const sub = [fr(KIND_FR, it.kind), it.slot && fr(SLOT_FR, it.slot), it.armorType && fr(ARMORTYPE_FR, it.armorType)].filter(Boolean).join(' · ');
+  const w = it.weapon ? `<div class="statline"><b>${it.weapon.min} – ${it.weapon.max}</b> dégâts · vitesse ${it.weapon.speed ?? '—'}</div>` : '';
+  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v]) => `+${v} ${fr(STAT_FR,k)}`).join(' · ')}</div>` : '';
+  return card('bl-' + ql, `
+    <div class="card-top">
+      <div>
+        <p class="card-name q-${ql}">${esc(it.name)}</p>
+        <div class="card-sub">${esc(sub)}</div>
+      </div>
     </div>
-    ${dmgLine ? `<div class="stat-line">${dmgLine}</div>` : ''}
-    ${statLine ? `<div class="stat-line">${statLine}</div>` : ''}
-    ${item.requiredClass ? `<div class="card-meta" style="margin-top:8px">Classes : ${item.requiredClass.join(', ')}</div>` : ''}
-    <div class="card-meta" style="margin-top:6px">Vente : ${item.sellValue ?? 0} cuivre</div>
-  `;
-  return card;
+    <div class="card-body">${w}${stats}</div>
+  `, () => openSheet('item', it.id));
 }
 
-function renderMobCard(mob) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  const badges = [
-    mob.worldBoss ? 'world boss' : null,
-    mob.boss ? 'boss' : null,
-    mob.rare ? 'rare' : null,
-    mob.elite ? 'élite' : null,
-  ].filter(Boolean);
-  const loot = (mob.loot || []).slice(0, 6).map(l => `
-    <div><span>${l.itemId || 'copper'}</span><span class="chance">${l.chance != null ? Math.round(l.chance * 100) + '%' : ''}</span></div>
-  `).join('');
-  card.innerHTML = `
-    <p class="card-name">${mob.name}</p>
-    <div class="card-meta">niveau ${mob.minLevel}${mob.maxLevel !== mob.minLevel ? '-' + mob.maxLevel : ''} · ${mob.family || ''}</div>
-    ${badges.length ? badges.map(b => `<span class="chip" style="background:rgba(79,209,255,0.1);color:var(--accent)">${b}</span>`).join('') : ''}
-    <div class="stat-line">PV base ${mob.hpBase}${mob.hpPerLevel ? ` (+${mob.hpPerLevel}/niv)` : ''}</div>
-    ${loot ? `<div class="loot-list">${loot}</div>` : ''}
-  `;
-  return card;
+function mobCard(m) {
+  const badges =
+    (m.worldBoss ? '<span class="badge b-worldboss">World boss</span>' : m.boss ? '<span class="badge b-boss">Boss</span>' : '') +
+    (m.elite && !m.boss ? '<span class="badge b-elite">Élite</span>' : '') +
+    (m.rare ? '<span class="badge b-rare">Rare</span>' : '');
+  const lootN = (m.loot||[]).filter(l=>l.itemId).length;
+  return card('bl-mob', `
+    <div class="card-top">
+      <div>
+        <p class="card-name">${mobColor(m)}${esc(m.name)}</p>
+        <div class="card-sub">${fr(FAMILY_FR, m.family)}</div>
+      </div>
+      <span class="lvl">${levelText(m)}</span>
+    </div>
+    <div class="card-body">
+      ${badges}
+      <div class="statline">PV <b>${Math.round(m.hpBase + m.hpPerLevel * m.minLevel)}</b>${lootN ? ` · <b>${lootN}</b> butin${lootN>1?'s':''}` : ''}</div>
+    </div>
+  `, () => openSheet('mob', m.id));
 }
 
-function renderQuestCard(quest) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <p class="card-name">${quest.name || quest.id}</p>
-    <div class="card-meta">donneur : ${quest.giverNpcId || '—'}</div>
-    <div class="stat-line">${quest.xpReward ? `${quest.xpReward} XP` : ''}${quest.copperReward ? ` · ${quest.copperReward} cuivre` : ''}</div>
-  `;
-  return card;
+function questCard(x) {
+  const giver = byId.npc[x.giverNpcId];
+  return card('bl-quest', `
+    <div class="card-top">
+      <div>
+        <p class="card-name" style="color:var(--gold-bright)">${esc(x.name)}</p>
+        <div class="card-sub">${giver ? esc(giver.name) : esc(x.giverNpcId)}</div>
+      </div>
+      ${x.minLevel ? `<span class="lvl">niv. ${x.minLevel}+</span>` : ''}
+    </div>
+    <div class="card-body">
+      ${x.suggestedPlayers ? `<span class="badge b-group">Groupe ${x.suggestedPlayers}</span>` : ''}
+      <div class="statline"><b style="color:var(--xp)">${x.xpReward}</b> XP${x.copperReward ? ` · ${money(x.copperReward)}` : ''}</div>
+    </div>
+  `, () => openSheet('quest', x.id));
 }
 
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelector('.tab.active').classList.remove('active');
-    tab.classList.add('active');
-    activeTab = tab.dataset.tab;
-    filters = { rarity: '', slot: '', family: '' };
-    buildFilters();
-    render();
+function npcCard(n) {
+  const nq = (refs.npcQuests[n.id]||[]).filter(q=>!q.retired).length;
+  const traits = [
+    nq ? `${nq} quête${nq>1?'s':''}` : null,
+    n.vendorItems ? 'marchand' : null,
+    n.market ? 'marché' : null,
+  ].filter(Boolean).join(' · ');
+  return card('bl-npc', `
+    <div class="card-top">
+      <div>
+        <p class="card-name">${mobColor(n)}${esc(n.name)}</p>
+        <div class="card-sub">${esc(n.title || '')}</div>
+      </div>
+    </div>
+    ${traits ? `<div class="card-body statline">${esc(traits)}</div>` : ''}
+  `, () => openSheet('npc', n.id));
+}
+
+function dungeonCard(d) {
+  const isDelve = d._kind === 'delve';
+  const mobsN = isDelve ? (d.bosses||[]).length : new Set((d.spawns||[]).map(s=>s.mobId)).size;
+  return card('bl-place', `
+    <div class="card-top">
+      <div>
+        <p class="card-name" style="color:#7fd4ff">${esc(d.name)}</p>
+        <div class="card-sub">${isDelve ? 'Délve' : 'Donjon'}${d.suggestedPlayers ? ` · ${d.suggestedPlayers} joueur${d.suggestedPlayers>1?'s':''}` : ''}</div>
+      </div>
+      ${d.minLevel ? `<span class="lvl">niv. ${d.minLevel}+</span>` : ''}
+    </div>
+    <div class="card-body statline">${isDelve ? `${mobsN} boss` : `${mobsN} type${mobsN>1?'s':''} de monstres`}</div>
+  `, () => openSheet(isDelve ? 'delve' : 'dungeon', d.id));
+}
+
+function setCard(s) {
+  const pieces = refs.setPieces[s.id] || [];
+  return card('bl-set', `
+    <div class="card-top">
+      <div>
+        <p class="card-name q-epic">${esc(s.name)}</p>
+        <div class="card-sub">Panoplie · ${pieces.length} pièce${pieces.length>1?'s':''}</div>
+      </div>
+    </div>
+    <div class="card-body statline">${(s.bonuses||[]).map(b=>`<b>${b.pieces}p</b>`).join(' · ')} bonus</div>
+  `, () => openSheet('set', s.id));
+}
+
+function zoneCard(z) {
+  const [lo,hi] = z.levelRange || [];
+  const pois = (z.pois||[]).length;
+  return card('bl-place', `
+    <div class="card-top">
+      <div>
+        <p class="card-name" style="color:#7fd4ff">${esc(z.name)}</p>
+        <div class="card-sub">${fr(BIOME_FR, z.biome)}${z.hub ? ` · capitale : ${esc(z.hub.name)}` : ''}</div>
+      </div>
+      ${lo ? `<span class="lvl">niv. ${lo}–${hi}</span>` : ''}
+    </div>
+    <div class="card-body statline">${pois} lieux notables</div>
+  `, () => openSheet('zone', z.id));
+}
+
+/* ================= fiches détail ================= */
+
+const overlay = document.getElementById('overlay');
+const sheetEl = document.getElementById('sheet');
+
+function openSheet(type, id) {
+  const builders = { item:itemSheet, mob:mobSheet, quest:questSheet, npc:npcSheet, dungeon:dungeonSheet, delve:delveSheet, set:setSheet, zone:zoneSheet };
+  const entity = byId[type === 'dungeon' ? 'dungeon' : type === 'delve' ? 'delve' : type]?.[id];
+  if (!entity || !builders[type]) return;
+  sheetEl.innerHTML = builders[type](entity);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  history.replaceState(null, '', `#${type}/${id}`);
+  sheetEl.querySelectorAll('[data-open]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const [t, i] = el.dataset.open.split('|');
+      openSheet(t, i);
+    });
   });
-});
+  sheetEl.querySelector('.close').onclick = closeSheet;
+}
 
-document.getElementById('search').addEventListener('input', render);
+function closeSheet() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  history.replaceState(null, '', '#' + activeTab);
+}
+overlay.addEventListener('click', e => { if (e.target === overlay) closeSheet(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeSheet(); });
 
-loadData();
+function head(kicker, title, titleClass, sub) {
+  return `
+    <div class="sheet-head">
+      <div>
+        <div class="kicker">${kicker}</div>
+        <h2 class="${titleClass||''}">${title}</h2>
+        ${sub ? `<div class="sheet-sub">${sub}</div>` : ''}
+      </div>
+      <button class="close" aria-label="Fermer">✕</button>
+    </div>`;
+}
+
+function section(title, html) {
+  return html ? `<div class="section"><h3>${title}</h3>${html}</div>` : '';
+}
+
+const itemLink = (id, extra) => {
+  const it = byId.item[id];
+  if (!it) return `<li><span>${esc(id)}</span>${extra||''}</li>`;
+  return `<li><span class="xlink q-${quality(it)}" data-open="item|${it.id}">${esc(it.name)}</span>${extra||''}</li>`;
+};
+const mobLink = (m, extra) =>
+  `<li><span class="xlink" data-open="mob|${m.id}">${mobColor(m)}${esc(m.name)}</span>${extra || `<span class="qty">${levelText(m)}</span>`}</li>`;
+const questLink = q =>
+  `<li><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${q.id}">${esc(q.name)}</span>${q.retired?'<span class="badge b-retired">retirée</span>':''}</li>`;
+const npcLink = n =>
+  `<span class="xlink" data-open="npc|${n.id}">${esc(n.name)}</span>`;
+
+function itemSheet(it) {
+  const ql = quality(it);
+  const kv = [];
+  if (it.slot) kv.push(`<div><span>Emplacement</span>${fr(SLOT_FR, it.slot)}</div>`);
+  if (it.armorType) kv.push(`<div><span>Type</span>${fr(ARMORTYPE_FR, it.armorType)}</div>`);
+  if (it.weapon) kv.push(`<div><span>Dégâts</span><b class="mono">${it.weapon.min} – ${it.weapon.max}</b>&nbsp;(vitesse ${it.weapon.speed ?? '—'})</div>`);
+  if (it.bagSlots) kv.push(`<div><span>Contenance</span>${it.bagSlots} emplacements</div>`);
+  if (it.foodHp) kv.push(`<div><span>Restaure</span>${it.foodHp} PV</div>`);
+  if (it.drinkMana) kv.push(`<div><span>Restaure</span>${it.drinkMana} mana</div>`);
+  if (it.potionHp) kv.push(`<div><span>Potion</span>${it.potionHp} PV</div>`);
+  if (it.potionMana) kv.push(`<div><span>Potion</span>${it.potionMana} mana</div>`);
+  if (it.sellValue) kv.push(`<div><span>Vente</span>${money(it.sellValue)}</div>`);
+  if (it.buyValue) kv.push(`<div><span>Achat</span>${money(it.buyValue)}</div>`);
+
+  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v])=>`+${v} ${fr(STAT_FR,k)}`).join('<br>')}</div>` : '';
+  const classes = it.requiredClass ? `<div class="statline" style="margin-top:8px">Classes : <b>${it.requiredClass.map(c=>fr(CLASS_FR,c)).join(', ')}</b></div>` : '';
+
+  const setBlock = it.set && byId.set[it.set] ? section('Panoplie',
+    `<ul class="linklist"><li><span class="xlink q-epic" data-open="set|${it.set}">${esc(byId.set[it.set].name)}</span></li></ul>`) : '';
+
+  const drops = (refs.droppedBy[it.id]||[]).sort((a,b)=>(b.chance||0)-(a.chance||0));
+  const dropBlock = drops.length ? section('Obtenu sur',
+    `<ul class="linklist">${drops.map(d => mobLink(d.mob, `<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
+
+  const sold = refs.soldBy[it.id] || [];
+  const soldBlock = sold.length ? section('Vendu par',
+    `<ul class="linklist">${sold.map(n => `<li>${npcLink(n)}<span class="qty">${esc(n.title||'')}</span></li>`).join('')}</ul>`) : '';
+
+  const reward = refs.rewardOf[it.id] || [];
+  const rewardBlock = reward.length ? section('Récompense de quête',
+    `<ul class="linklist">${reward.map(questLink).join('')}</ul>`) : '';
+
+  const needed = refs.neededBy[it.id] || [];
+  const neededBlock = needed.length ? section('Requis pour',
+    `<ul class="linklist">${needed.map(questLink).join('')}</ul>`) : '';
+
+  return head(`${fr(QUALITY_FR, ql)} · ${fr(KIND_FR, it.kind)}`, esc(it.name), 'q-'+ql)
+    + section('Caractéristiques', `<div class="kv">${kv.join('')}</div>${stats}${classes}` || '')
+    + setBlock + dropBlock + soldBlock + rewardBlock + neededBlock;
+}
+
+function mobSheet(m) {
+  const rank = m.worldBoss ? '<span class="badge b-worldboss">World boss</span>'
+    : (m.boss ? '<span class="badge b-boss">Boss</span>' : '')
+      + (m.elite && !m.boss ? '<span class="badge b-elite">Élite</span>' : '')
+      + (m.rare ? '<span class="badge b-rare">Rare</span>' : '');
+
+  const lo = m.minLevel, hp = Math.round(m.hpBase + m.hpPerLevel * lo), dmg = (m.dmgBase + m.dmgPerLevel * lo).toFixed(0);
+  const kv = [
+    `<div><span>Niveau</span>${levelText(m)}</div>`,
+    `<div><span>PV</span><b class="mono">${hp}</b>${m.hpPerLevel ? `&nbsp;<span class="qty">(+${m.hpPerLevel}/niv)</span>` : ''}</div>`,
+    `<div><span>Dégâts</span><b class="mono">≈${dmg}</b> / ${m.attackSpeed}s</div>`,
+  ].join('');
+
+  const abilities = ['aoePulse','summonAdds','enrage','cleave','mortalStrike','knockback','stomp','manaBurn','packFrenzy','thorns','venom','ensnare','lifeleech','plague','silence','terrify','spellReflect','stoneskin','warcry','bleed','disarm','rampage','frostbite','hex']
+    .filter(k => m[k]);
+  const abilityBlock = abilities.length ? section('Capacités notables',
+    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0">${a}</span>`).join(' ')}</div>`) : '';
+
+  const loot = (m.loot||[]);
+  const copperLoot = loot.filter(l => l.copper);
+  // Un même objet peut apparaître dans plusieurs groupes de tirage indépendants :
+  // on agrège en une chance globale 1 - Π(1 - p).
+  const lootAgg = {};
+  for (const l of loot) {
+    if (!l.itemId) continue;
+    const cur = lootAgg[l.itemId] ?? 0;
+    lootAgg[l.itemId] = 1 - (1 - cur) * (1 - (l.chance ?? 0));
+  }
+  const itemLoot = Object.entries(lootAgg)
+    .map(([itemId, chance]) => ({ itemId, chance }))
+    .sort((a,b) => (b.chance||0) - (a.chance||0));
+  const lootBlock = (copperLoot.length || itemLoot.length) ? section('Butin',
+    `<ul class="linklist">
+      ${copperLoot.map(l => `<li><span>${money(l.copper)}</span><span class="chance">${pct(l.chance)}</span></li>`).join('')}
+      ${itemLoot.map(l => itemLink(l.itemId, `<span class="chance">${pct(l.chance)}</span>`)).join('')}
+    </ul>`) : '';
+
+  const quests = refs.killedFor[m.id] || [];
+  const questBlock = quests.length ? section('Cible de quête',
+    `<ul class="linklist">${quests.map(questLink).join('')}</ul>`) : '';
+
+  const dungeons = refs.mobDungeons[m.id] || [];
+  const dgBlock = dungeons.length ? section('Rencontré dans',
+    `<ul class="linklist">${dungeons.map(d => `<li><span class="xlink" style="color:#7fd4ff" data-open="dungeon|${d.id}">${esc(d.name)}</span></li>`).join('')}</ul>`) : '';
+
+  return head(fr(FAMILY_FR, m.family), mobColor(m) + esc(m.name), '', rank || null)
+    + section('Combat', `<div class="kv">${kv}</div>`)
+    + abilityBlock + lootBlock + questBlock + dgBlock;
+}
+
+function questSheet(x) {
+  const giver = byId.npc[x.giverNpcId];
+  const turnIn = byId.npc[x.turnInNpcId];
+  const objectives = (x.objectives||[]).map(o => {
+    if (o.type === 'kill') {
+      const m = byId.mob[o.targetMobId];
+      return `<li>${m ? `<span>Tuer <b class="mono">${o.count}</b> × <span class="xlink" data-open="mob|${m.id}">${esc(m.name)}</span></span>` : esc(o.label||o.targetMobId)}</li>`;
+    }
+    if (o.type === 'collect') {
+      const it = byId.item[o.itemId];
+      return `<li>${it ? `<span>Rapporter <b class="mono">${o.count}</b> × <span class="xlink q-${quality(it)}" data-open="item|${it.id}">${esc(it.name)}</span></span>` : esc(o.label||o.itemId)}</li>`;
+    }
+    return `<li><span>${esc(o.label || o.type)}</span></li>`;
+  }).join('');
+
+  const rewards = x.itemRewards || {};
+  const uniqueRewards = [...new Set(Object.values(rewards))];
+  let rewardHtml = '';
+  if (uniqueRewards.length === 1) {
+    rewardHtml = `<ul class="linklist">${itemLink(uniqueRewards[0])}</ul>`;
+  } else if (uniqueRewards.length > 1) {
+    rewardHtml = `<ul class="linklist">${Object.entries(rewards).map(([cls,itId]) =>
+      itemLink(itId, `<span class="qty">${fr(CLASS_FR, cls)}</span>`)).join('')}</ul>`;
+  }
+  const gains = `<div class="kv">
+      <div><span>XP</span><b style="color:var(--xp)" class="mono">${x.xpReward}</b></div>
+      ${x.copperReward ? `<div><span>Or</span>${money(x.copperReward)}</div>` : ''}
+    </div>` + rewardHtml;
+
+  const prev = x.requiresQuest && byId.quest[x.requiresQuest];
+  const next = refs.questNext[x.id] || [];
+  const chain = (prev || next.length) ? section('Chaîne de quêtes',
+    `<ul class="linklist">
+      ${prev ? `<li><span><span class="qty">Précédée de&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${prev.id}">${esc(prev.name)}</span></span></li>` : ''}
+      ${next.map(n => `<li><span><span class="qty">Suivie de&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${n.id}">${esc(n.name)}</span></span></li>`).join('')}
+    </ul>`) : '';
+
+  const badges =
+    (x.retired ? '<span class="badge b-retired">Retirée du jeu</span>' : '') +
+    (x.suggestedPlayers ? `<span class="badge b-group">Groupe conseillé : ${x.suggestedPlayers}</span>` : '') +
+    (x.minLevel ? `<span class="badge b-elite">Niveau ${x.minLevel}+</span>` : '');
+
+  return head('Quête', esc(x.name), '', badges || null)
+    + section('Journal', `<p class="quote">${esc(x.text)}</p>`)
+    + section('Objectifs', `<ul class="linklist">${objectives}</ul>`)
+    + section('Récompenses', gains)
+    + section('Donneur', `<ul class="linklist">
+        <li>${giver ? npcLink(giver) : esc(x.giverNpcId)}<span class="qty">donne la quête</span></li>
+        ${turnIn && turnIn !== giver ? `<li>${npcLink(turnIn)}<span class="qty">à qui la rendre</span></li>` : ''}
+      </ul>`)
+    + chain;
+}
+
+function npcSheet(n) {
+  const given = (refs.npcQuests[n.id] || []).filter(q => !q.retired);
+  const vendor = n.vendorItems || [];
+  return head(esc(n.title || 'Personnage'), mobColor(n) + esc(n.name), '')
+    + (n.greeting ? section('Accueil', `<p class="quote">« ${esc(n.greeting)} »</p>`) : '')
+    + (given.length ? section(`Quêtes proposées (${given.length})`,
+        `<ul class="linklist">${given.map(questLink).join('')}</ul>`) : '')
+    + (vendor.length ? section(`À la vente (${vendor.length})`,
+        `<ul class="linklist">${vendor.map(v => {
+          const it = byId.item[v];
+          return itemLink(v, it && it.buyValue ? `<span class="qty">${money(it.buyValue)}</span>` : '');
+        }).join('')}</ul>`) : '')
+    + (n.market ? section('Marché', `<p class="quote">Donne accès au marché mondial entre joueurs.</p>`) : '');
+}
+
+function dungeonSheet(d) {
+  const spawnCount = {};
+  for (const s of (d.spawns||[])) spawnCount[s.mobId] = (spawnCount[s.mobId]||0) + 1;
+  const entries = Object.entries(spawnCount)
+    .map(([id, n]) => ({ mob: byId.mob[id], id, n }))
+    .sort((a,b) => ((b.mob?.boss)?1:0) - ((a.mob?.boss)?1:0) || (b.mob?.elite?1:0) - (a.mob?.elite?1:0));
+  const bosses = entries.filter(e => e.mob?.boss);
+  const trash = entries.filter(e => !e.mob?.boss);
+
+  const list = arr => `<ul class="linklist">${arr.map(e =>
+    e.mob ? mobLink(e.mob, `<span class="qty">×${e.n}</span>`) : `<li>${esc(e.id)}</li>`).join('')}</ul>`;
+
+  return head('Donjon', esc(d.name), '', d.suggestedPlayers ? `Groupe conseillé : ${d.suggestedPlayers} joueurs` : null)
+    + (d.enterText ? section('Entrée', `<p class="quote">${esc(d.enterText)}</p>`) : '')
+    + (bosses.length ? section(`Boss (${bosses.length})`, list(bosses)) : '')
+    + (trash.length ? section('Habitants', list(trash)) : '');
+}
+
+function delveSheet(d) {
+  const bosses = (d.bosses||[]).map(id => byId.mob[id]).filter(Boolean);
+  const comp = d.autoCompanionId && byId.mob[d.autoCompanionId];
+  const tiers = (d.tiers||[]).map(t =>
+    `<li><span>${esc(t.label)}</span><span class="qty">${t.affixCount ? t.affixCount + ' affixe(s) · ' : ''}récompenses ×${t.rewardMult}</span></li>`).join('');
+  return head('Délve', esc(d.name), '',
+      `${d.minLevel ? `Niveau ${d.minLevel}+ · ` : ''}${d.maxPlayers} joueur(s) max`)
+    + (d.enterText ? section('Entrée', `<p class="quote">${esc(d.enterText)}</p>`) : '')
+    + (bosses.length ? section('Boss', `<ul class="linklist">${bosses.map(b => mobLink(b)).join('')}</ul>`) : '')
+    + (comp ? section('Compagnon', `<ul class="linklist">${mobLink(comp)}</ul>`) : '')
+    + (tiers ? section('Difficultés', `<ul class="linklist">${tiers}</ul>`) : '');
+}
+
+function setSheet(s) {
+  const pieces = (refs.setPieces[s.id] || []).sort((a,b)=>a.name.localeCompare(b.name));
+  return head('Panoplie', esc(s.name), 'q-epic')
+    + section(`Pièces (${pieces.length})`,
+        `<ul class="linklist">${pieces.map(p => itemLink(p.id, `<span class="qty">${fr(SLOT_FR, p.slot)}</span>`)).join('')}</ul>`)
+    + section('Bonus de panoplie',
+        (s.bonuses||[]).map(b => `<div class="setbonus"><b>(${b.pieces})</b> ${esc(b.text)}</div>`).join(''));
+}
+
+function zoneSheet(z) {
+  const [lo,hi] = z.levelRange || [];
+  const pois = (z.pois||[]).map(p => `<li><span>${esc(p.label)}</span></li>`).join('');
+  const nodes = (asList(DATA.GATHER_NODES)).filter(g => g.zoneId === z.id);
+  const nodeCount = {};
+  for (const g of nodes) nodeCount[g.type] = (nodeCount[g.type]||0)+1;
+  const fish = DATA.FISHING_TABLES && DATA.FISHING_TABLES[z.id];
+  const fishTotal = fish ? fish.reduce((a,f)=>a+f.weight,0) : 0;
+
+  return head('Zone', esc(z.name), '', `${fr(BIOME_FR, z.biome)}${lo ? ` · niveaux ${lo}–${hi}` : ''}`)
+    + (z.hub ? section('Capitale', `<ul class="linklist"><li><span>${esc(z.hub.name)}</span></li></ul>`) : '')
+    + (pois ? section('Lieux notables', `<ul class="linklist">${pois}</ul>`) : '')
+    + (nodes.length ? section('Ressources', `<div class="kv">${Object.entries(nodeCount).map(([t,n]) =>
+        `<div><span>${fr(NODE_FR,t)}</span><b>${n}</b> gisements</div>`).join('')}</div>`) : '')
+    + (fish ? section('Pêche', `<ul class="linklist">${fish.filter(f=>f.itemId).map(f =>
+        itemLink(f.itemId, `<span class="chance">${Math.round(f.weight/fishTotal*100)}%</span>`)).join('')}</ul>`) : '');
+}
+
+/* ================= routing par ancre ================= */
+
+function applyHash() {
+  const h = location.hash.slice(1);
+  if (!h) return;
+  const [a, b] = h.split('/');
+  if (TABS.some(t => t.id === a) && !b) { activeTab = a; return; }
+  const typeToTab = { item:'items', mob:'mobs', quest:'quests', npc:'npcs', dungeon:'dungeons', delve:'dungeons', set:'sets', zone:'zones' };
+  if (b && typeToTab[a]) { activeTab = typeToTab[a]; setTimeout(() => openSheet(a, b), 0); }
+}
+
+document.getElementById('search').addEventListener('input', renderGrid);
+
+load();
 </script>
 
 </body>
