@@ -65,6 +65,8 @@ jobs:
     needs: check
     if: needs.check.outputs.changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout ce repo (la knowledge base)
         uses: actions/checkout@v4
