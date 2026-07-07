@@ -5,10 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WoCC Codex — l'encyclopédie de World of ClaudeCraft</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* Polices auto-hébergées (subset latin, via Fontsource) — zéro requête externe. */
+  @font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/cinzel-600.woff2') format('woff2'); }
+  @font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/cinzel-700.woff2') format('woff2'); }
+  @font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/inter-400.woff2') format('woff2'); }
+  @font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/inter-500.woff2') format('woff2'); }
+  @font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/inter-600.woff2') format('woff2'); }
+  @font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/inter-700.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/jetbrains-mono-400.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/jetbrains-mono-600.woff2') format('woff2'); }
+
   :root {
     --bg: #0b0d12;
     --bg-panel: #12151d;
@@ -200,6 +207,32 @@
     gap: 13px;
   }
 
+  /* En-têtes de catégorie (mode recherche globale) */
+  .group-head {
+    grid-column: 1 / -1;
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 16px 0 -2px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .group-head:first-child { margin-top: 2px; }
+  .group-head .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0;
+    color: var(--faint);
+  }
+  .group-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(200,160,75,0.3), transparent);
+    align-self: center;
+  }
+
   /* ---------- cartes ---------- */
   .card {
     background: var(--bg-card);
@@ -217,6 +250,10 @@
     border-color: var(--line);
   }
   .card:hover .card-name { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .card:focus-visible {
+    outline: 2px solid rgba(200,160,75,0.65);
+    outline-offset: 2px;
+  }
 
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
   .card-name { font-weight: 600; font-size: 0.98rem; margin: 0; line-height: 1.3; }
@@ -440,7 +477,7 @@
 </main>
 
 <div class="overlay" id="overlay">
-  <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1"></div>
 </div>
 
 <footer>
@@ -470,10 +507,12 @@ async function load() {
   DUNGEONS = asList(DATA.DUNGEONS);
   DELVES = asList(DATA.DELVES);
   SETS   = asList(DATA.ITEM_SETS);
+  // Les entrées WORLD_BOSSES sont indexées par templateId (= id du mob correspondant).
+  WORLDBOSSES = asList(DATA.WORLD_BOSSES).map(w => ({ ...w, id: w.templateId }));
 
   byId.item = index(ITEMS); byId.mob = index(MOBS); byId.quest = index(QUESTS);
   byId.npc = index(NPCS); byId.zone = index(ZONES); byId.dungeon = index(DUNGEONS);
-  byId.delve = index(DELVES); byId.set = index(SETS);
+  byId.delve = index(DELVES); byId.set = index(SETS); byId.worldboss = index(WORLDBOSSES);
 
   buildCrossRefs();
 
@@ -488,7 +527,7 @@ async function load() {
 function asList(x) { return !x ? [] : Array.isArray(x) ? x : Object.values(x); }
 function index(list) { const m = {}; for (const e of list) m[e.id] = e; return m; }
 
-let ITEMS=[], MOBS=[], QUESTS=[], NPCS=[], ZONES=[], DUNGEONS=[], DELVES=[], SETS=[];
+let ITEMS=[], MOBS=[], QUESTS=[], NPCS=[], ZONES=[], DUNGEONS=[], DELVES=[], SETS=[], WORLDBOSSES=[];
 const byId = {};
 const refs = { droppedBy:{}, soldBy:{}, rewardOf:{}, neededBy:{}, killedFor:{}, npcQuests:{}, mobDungeons:{}, questNext:{}, setPieces:{} };
 
@@ -564,6 +603,32 @@ function levelText(m) {
   return m.minLevel === m.maxLevel ? `niv. ${m.minLevel}` : `niv. ${m.minLevel}–${m.maxLevel}`;
 }
 
+function duration(sec) {
+  if (sec == null) return '—';
+  const h = Math.floor(sec / 3600), m = Math.round((sec % 3600) / 60);
+  return [h ? `${h} h` : null, m ? `${m} min` : null].filter(Boolean).join(' ') || `${sec} s`;
+}
+
+/* ================= index de recherche =================
+   Chaque entité expose une chaîne de recherche (nom + champs texte + libellés
+   français), calculée une fois puis mise en cache sur l'objet. */
+
+const SEARCH_FIELDS = {
+  item:  it => [it.name, it.kind, fr(KIND_FR, it.kind), it.slot && fr(SLOT_FR, it.slot),
+                it.armorType && fr(ARMORTYPE_FR, it.armorType), fr(QUALITY_FR, quality(it))],
+  mob:   m  => [m.name, m.family, fr(FAMILY_FR, m.family)],
+  quest: x  => [x.name, x.text],
+  npc:   n  => [n.name, n.title, n.greeting],
+  place: d  => [d.name, d.enterText],
+  set:   s  => [s.name, ...(s.bonuses || []).map(b => b.text)],
+  zone:  z  => [z.name, z.biome, fr(BIOME_FR, z.biome), z.hub && z.hub.name,
+                ...(z.pois || []).map(p => p.label)],
+};
+
+function searchText(e, type) {
+  return e._search ??= SEARCH_FIELDS[type](e).filter(Boolean).join(' ').toLowerCase();
+}
+
 /* ================= onglets & filtres ================= */
 
 const TABS = [
@@ -572,6 +637,7 @@ const TABS = [
   { id:'quests',   label:'Quêtes',   count: () => QUESTS.filter(q=>!q.retired).length },
   { id:'npcs',     label:'PNJ',      count: () => NPCS.length },
   { id:'dungeons', label:'Donjons',  count: () => DUNGEONS.length + DELVES.length },
+  { id:'worldbosses', label:'World bosses', count: () => WORLDBOSSES.length },
   { id:'sets',     label:'Panoplies',count: () => SETS.length },
   { id:'zones',    label:'Zones',    count: () => ZONES.length },
 ];
@@ -599,10 +665,14 @@ function sel(key, placeholder, opts, labelFn) {
   return s;
 }
 
+const currentQuery = () => document.getElementById('search').value.trim().toLowerCase();
+
 function buildToolbar() {
   const bar = document.getElementById('toolbar');
   bar.innerHTML = '';
-  if (activeTab === 'items') {
+  if (currentQuery()) {
+    // Recherche globale : les filtres par onglet ne s'appliquent pas.
+  } else if (activeTab === 'items') {
     bar.appendChild(sel('kind', 'Tous les types', Object.keys(KIND_FR).filter(k => ITEMS.some(i=>i.kind===k)), k => fr(KIND_FR,k)));
     bar.appendChild(sel('quality', 'Toutes les raretés', Object.keys(QUALITY_ORDER).filter(q => ITEMS.some(i=>quality(i)===q)), q => fr(QUALITY_FR,q)));
     bar.appendChild(sel('slot', 'Tous les emplacements', Object.keys(SLOT_FR).filter(s => ITEMS.some(i=>i.slot===s)), s => fr(SLOT_FR,s)));
@@ -623,51 +693,85 @@ const npcName = id => byId.npc[id] ? byId.npc[id].name : id;
 
 function renderAll() { buildToolbar(); renderGrid(); }
 
-function matches(text, q) { return !q || (text||'').toLowerCase().includes(q); }
+const sortItems  = (a,b) => (QUALITY_ORDER[quality(b)]-QUALITY_ORDER[quality(a)]) || a.name.localeCompare(b.name);
+const sortMobs   = (a,b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name);
+const sortQuests = (a,b) => (a.minLevel||0) - (b.minLevel||0) || a.name.localeCompare(b.name);
+const sortName   = (a,b) => a.name.localeCompare(b.name);
+
+const allPlaces = () => [...DUNGEONS.map(d => ({...d, _kind:'dungeon'})), ...DELVES.map(d => ({...d, _kind:'delve'}))];
 
 function renderGrid() {
-  const q = document.getElementById('search').value.trim().toLowerCase();
+  const q = currentQuery();
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
   let cards = [];
 
+  if (q) {
+    // ----- recherche globale : toutes les catégories, groupées -----
+    const groups = [
+      { label:'Objets',    list: ITEMS.filter(i => searchText(i,'item').includes(q)).sort(sortItems),   card: itemCard },
+      { label:'Monstres',  list: MOBS.filter(m => searchText(m,'mob').includes(q)).sort(sortMobs),      card: mobCard },
+      { label:'Quêtes',    list: QUESTS.filter(x => !x.retired && searchText(x,'quest').includes(q)).sort(sortQuests), card: questCard },
+      { label:'PNJ',       list: NPCS.filter(n => searchText(n,'npc').includes(q)).sort(sortName),      card: npcCard },
+      { label:'Donjons & délves', list: allPlaces().filter(d => searchText(d,'place').includes(q)),     card: dungeonCard },
+      { label:'Panoplies', list: SETS.filter(s => searchText(s,'set').includes(q)).sort(sortName),      card: setCard },
+      { label:'Zones',     list: ZONES.filter(z => searchText(z,'zone').includes(q)).sort(sortName),    card: zoneCard },
+    ];
+    let total = 0;
+    const frag = document.createDocumentFragment();
+    for (const g of groups) {
+      if (!g.list.length) continue;
+      total += g.list.length;
+      const h = document.createElement('div');
+      h.className = 'group-head';
+      h.innerHTML = `${g.label} <span class="n">${g.list.length}</span>`;
+      frag.appendChild(h);
+      g.list.forEach(e => frag.appendChild(g.card(e)));
+    }
+    const count = document.getElementById('count');
+    if (count) count.textContent = `${total} résultat${total > 1 ? 's' : ''}`;
+    if (!total) {
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🕯️</span>Aucun résultat dans ce grimoire.<br>Essaie un autre terme.</div>`;
+      return;
+    }
+    grid.appendChild(frag);
+    return;
+  }
+
+  // ----- navigation par onglet (champ de recherche vide) -----
   if (activeTab === 'items') {
     let list = ITEMS.filter(i =>
-      matches(i.name, q) &&
       (!filters.kind || i.kind === filters.kind) &&
       (!filters.quality || quality(i) === filters.quality) &&
       (!filters.slot || i.slot === filters.slot) &&
       (!filters.cls || (i.requiredClass||[]).includes(filters.cls)));
-    list.sort((a,b) => (QUALITY_ORDER[quality(b)]-QUALITY_ORDER[quality(a)]) || a.name.localeCompare(b.name));
+    list.sort(sortItems);
     cards = list.map(itemCard);
   } else if (activeTab === 'mobs') {
     let list = MOBS.filter(m =>
-      matches(m.name, q) &&
       (!filters.family || m.family === filters.family) &&
       (!filters.rank ||
         (filters.rank==='boss' && m.boss) ||
         (filters.rank==='elite' && m.elite && !m.boss) ||
         (filters.rank==='rare' && m.rare) ||
         (filters.rank==='normal' && !m.boss && !m.elite && !m.rare)));
-    list.sort((a,b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name));
+    list.sort(sortMobs);
     cards = list.map(mobCard);
   } else if (activeTab === 'quests') {
-    let list = QUESTS.filter(x =>
-      matches(x.name, q) && !x.retired &&
+    let list = QUESTS.filter(x => !x.retired &&
       (!filters.giver || x.giverNpcId === filters.giver));
-    list.sort((a,b) => (a.minLevel||0) - (b.minLevel||0) || a.name.localeCompare(b.name));
+    list.sort(sortQuests);
     cards = list.map(questCard);
   } else if (activeTab === 'npcs') {
-    let list = NPCS.filter(n => matches(n.name + ' ' + (n.title||''), q));
-    list.sort((a,b) => a.name.localeCompare(b.name));
-    cards = list.map(npcCard);
+    cards = NPCS.slice().sort(sortName).map(npcCard);
   } else if (activeTab === 'dungeons') {
-    const all = [...DUNGEONS.map(d => ({...d, _kind:'dungeon'})), ...DELVES.map(d => ({...d, _kind:'delve'}))];
-    cards = all.filter(d => matches(d.name, q)).map(dungeonCard);
+    cards = allPlaces().map(dungeonCard);
+  } else if (activeTab === 'worldbosses') {
+    cards = WORLDBOSSES.map(worldBossCard);
   } else if (activeTab === 'sets') {
-    cards = SETS.filter(s => matches(s.name, q)).map(setCard);
+    cards = SETS.map(setCard);
   } else if (activeTab === 'zones') {
-    cards = ZONES.filter(z => matches(z.name, q)).map(zoneCard);
+    cards = ZONES.map(zoneCard);
   }
 
   const count = document.getElementById('count');
@@ -685,8 +789,13 @@ function renderGrid() {
 function card(borderClass, html, onOpen) {
   const el = document.createElement('div');
   el.className = 'card ' + borderClass;
+  el.tabIndex = 0;
+  el.setAttribute('role', 'button');
   el.innerHTML = html;
   el.onclick = onOpen;
+  el.onkeydown = e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); }
+  };
   return el;
 }
 
@@ -777,6 +886,24 @@ function dungeonCard(d) {
   `, () => openSheet(isDelve ? 'delve' : 'dungeon', d.id));
 }
 
+function worldBossCard(w) {
+  const m = byId.mob[w.templateId];
+  return card('bl-mob', `
+    <div class="card-top">
+      <div>
+        <p class="card-name">${m ? mobColor(m) + esc(m.name) : esc(w.templateId)}</p>
+        <div class="card-sub">${m ? fr(FAMILY_FR, m.family) : ''}</div>
+      </div>
+      ${m ? `<span class="lvl">${levelText(m)}</span>` : ''}
+    </div>
+    <div class="card-body">
+      <span class="badge b-worldboss">World boss</span>
+      <div class="statline">Réapparaît toutes les <b>${duration(w.intervalSeconds)}</b></div>
+      ${w.hpScale ? `<div class="statline">PV <b>${w.hpScale.base}</b> <span class="qty">+${w.hpScale.perPlayer}/joueur</span></div>` : ''}
+    </div>
+  `, () => openSheet('worldboss', w.id));
+}
+
 function setCard(s) {
   const pieces = refs.setPieces[s.id] || [];
   return card('bl-set', `
@@ -810,14 +937,22 @@ function zoneCard(z) {
 const overlay = document.getElementById('overlay');
 const sheetEl = document.getElementById('sheet');
 
-function openSheet(type, id) {
-  const builders = { item:itemSheet, mob:mobSheet, quest:questSheet, npc:npcSheet, dungeon:dungeonSheet, delve:delveSheet, set:setSheet, zone:zoneSheet };
-  const entity = byId[type === 'dungeon' ? 'dungeon' : type === 'delve' ? 'delve' : type]?.[id];
-  if (!entity || !builders[type]) return;
-  sheetEl.innerHTML = builders[type](entity);
+const SHEET_BUILDERS = { item:itemSheet, mob:mobSheet, quest:questSheet, npc:npcSheet, dungeon:dungeonSheet, delve:delveSheet, set:setSheet, zone:zoneSheet, worldboss:worldBossSheet };
+
+function openSheet(type, id, fromHistory) {
+  const entity = byId[type]?.[id];
+  if (!entity || !SHEET_BUILDERS[type]) return;
+  const wasOpen = overlay.classList.contains('open');
+  sheetEl.innerHTML = SHEET_BUILDERS[type](entity);
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-  history.replaceState(null, '', `#${type}/${id}`);
+  // Une seule entrée d'historique pour la modale, quelle que soit la navigation
+  // entre fiches : le bouton « retour » du navigateur la ferme d'un coup.
+  if (!fromHistory) {
+    if (wasOpen) history.replaceState(null, '', `#${type}/${id}`);
+    else history.pushState(null, '', `#${type}/${id}`);
+  }
+  sheetEl.focus();
   sheetEl.querySelectorAll('[data-open]').forEach(el => {
     el.addEventListener('click', e => {
       e.stopPropagation();
@@ -825,23 +960,48 @@ function openSheet(type, id) {
       openSheet(t, i);
     });
   });
-  sheetEl.querySelector('.close').onclick = closeSheet;
+  sheetEl.querySelector('.close').onclick = () => closeSheet();
 }
 
-function closeSheet() {
+function closeSheet(fromHistory) {
   overlay.classList.remove('open');
   document.body.style.overflow = '';
-  history.replaceState(null, '', '#' + activeTab);
+  // Retire l'entrée d'historique de la modale (déclenche popstate, sans effet :
+  // la modale est déjà fermée).
+  if (!fromHistory) history.back();
 }
+
+window.addEventListener('popstate', () => {
+  if (overlay.classList.contains('open')) { closeSheet(true); return; }
+  // Bouton « suivant » vers une fiche fermée : on la rouvre.
+  const [a, b] = location.hash.slice(1).split('/');
+  if (b && byId[a]?.[b]) openSheet(a, b, true);
+});
+
 overlay.addEventListener('click', e => { if (e.target === overlay) closeSheet(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeSheet(); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const search = document.getElementById('search');
+    if (overlay.classList.contains('open')) closeSheet();
+    else if (search.value) { search.value = ''; renderAll(); }
+    return;
+  }
+  // « / » focus la recherche (hors saisie et hors modale)
+  if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    const t = e.target;
+    if (/^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName) || overlay.classList.contains('open')) return;
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+});
 
 function head(kicker, title, titleClass, sub) {
   return `
     <div class="sheet-head">
       <div>
         <div class="kicker">${kicker}</div>
-        <h2 class="${titleClass||''}">${title}</h2>
+        <h2 class="${titleClass||''}" id="sheet-title">${title}</h2>
         ${sub ? `<div class="sheet-sub">${sub}</div>` : ''}
       </div>
       <button class="close" aria-label="Fermer">✕</button>
@@ -950,9 +1110,33 @@ function mobSheet(m) {
   const dgBlock = dungeons.length ? section('Rencontré dans',
     `<ul class="linklist">${dungeons.map(d => `<li><span class="xlink" style="color:#7fd4ff" data-open="dungeon|${d.id}">${esc(d.name)}</span></li>`).join('')}</ul>`) : '';
 
+  const wb = byId.worldboss && byId.worldboss[m.id];
+  const wbBlock = wb ? section('World boss',
+    `<ul class="linklist"><li><span class="xlink" style="color:#c77df5" data-open="worldboss|${wb.id}">Apparitions et points de vie</span><span class="qty">toutes les ${duration(wb.intervalSeconds)}</span></li></ul>`) : '';
+
   return head(fr(FAMILY_FR, m.family), mobColor(m) + esc(m.name), '', rank || null)
     + section('Combat', `<div class="kv">${kv}</div>`)
-    + abilityBlock + lootBlock + questBlock + dgBlock;
+    + abilityBlock + lootBlock + questBlock + dgBlock + wbBlock;
+}
+
+function worldBossSheet(w) {
+  const m = byId.mob[w.templateId];
+  const hs = w.hpScale || {};
+  const spawn = [
+    w.pos ? `<div><span>Position</span><b class="mono">${w.pos.x}, ${w.pos.z}</b></div>` : '',
+    `<div><span>Réapparition</span>toutes les <b>${duration(w.intervalSeconds)}</b></div>`,
+  ].join('');
+  const hp = [
+    hs.base != null ? `<div><span>PV de base</span><b class="mono">${hs.base}</b></div>` : '',
+    hs.perPlayer != null ? `<div><span>Par joueur</span><b class="mono">+${hs.perPlayer}</b></div>` : '',
+    hs.max != null ? `<div><span>Plafond</span><b class="mono">${hs.max}</b></div>` : '',
+  ].join('');
+
+  return head('World boss', m ? mobColor(m) + esc(m.name) : esc(w.templateId), '',
+      m ? `${fr(FAMILY_FR, m.family)} · ${levelText(m)}` : null)
+    + section('Apparition', `<div class="kv">${spawn}</div>`)
+    + (hp ? section('Points de vie (selon le nombre de joueurs)', `<div class="kv">${hp}</div>`) : '')
+    + (m ? section('Monstre', `<ul class="linklist">${mobLink(m)}</ul>`) : '');
 }
 
 function questSheet(x) {
@@ -1088,11 +1272,17 @@ function applyHash() {
   if (!h) return;
   const [a, b] = h.split('/');
   if (TABS.some(t => t.id === a) && !b) { activeTab = a; return; }
-  const typeToTab = { item:'items', mob:'mobs', quest:'quests', npc:'npcs', dungeon:'dungeons', delve:'dungeons', set:'sets', zone:'zones' };
-  if (b && typeToTab[a]) { activeTab = typeToTab[a]; setTimeout(() => openSheet(a, b), 0); }
+  const typeToTab = { item:'items', mob:'mobs', quest:'quests', npc:'npcs', dungeon:'dungeons', delve:'dungeons', worldboss:'worldbosses', set:'sets', zone:'zones' };
+  if (b && typeToTab[a]) {
+    activeTab = typeToTab[a];
+    // L'onglet devient l'entrée d'historique « sous » la modale : le bouton
+    // retour fermera la fiche au lieu de quitter la page.
+    history.replaceState(null, '', '#' + activeTab);
+    setTimeout(() => openSheet(a, b), 0);
+  }
 }
 
-document.getElementById('search').addEventListener('input', renderGrid);
+document.getElementById('search').addEventListener('input', renderAll);
 
 load();
 </script>
