@@ -69,6 +69,21 @@
 
   .brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
 
+  .export-btn {
+    margin-left: auto;
+    align-self: center;
+    background: rgba(200,160,75,0.08);
+    border: 1px solid rgba(200,160,75,0.35);
+    color: var(--gold-bright);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font: 500 0.8rem 'Inter', sans-serif;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .export-btn:hover { background: rgba(200,160,75,0.16); }
+
   h1 {
     font-family: 'Cinzel', serif;
     font-weight: 700;
@@ -376,7 +391,7 @@
     margin-bottom: 5px;
     font-weight: 600;
   }
-  .close {
+  .close, .back {
     flex-shrink: 0;
     background: none; border: 1px solid var(--line);
     color: var(--dim); border-radius: 8px;
@@ -384,7 +399,8 @@
     font-size: 1rem; line-height: 1;
     transition: color .15s, border-color .15s;
   }
-  .close:hover { color: var(--text); border-color: var(--dim); }
+  .close:hover, .back:hover { color: var(--text); border-color: var(--dim); }
+  .sheet-head > div { flex: 1; }
 
   .sheet-sub { color: var(--dim); font-size: 0.84rem; margin-top: 4px; }
 
@@ -461,6 +477,7 @@
   <div class="brand">
     <h1>WoCC Codex</h1>
     <span class="version" id="version">…</span>
+    <button class="export-btn" id="export-md" title="Télécharge toute l'encyclopédie en un seul fichier Markdown — à glisser dans une conversation Claude pour poser des questions sur les données.">📄 Export Markdown</button>
   </div>
   <p class="subtitle">L'encyclopédie de <strong>World of ClaudeCraft</strong> — objets, monstres, quêtes, donjons. Générée automatiquement depuis le code du jeu, toujours à jour.</p>
   <div class="gold-rule"></div>
@@ -518,6 +535,8 @@ async function load() {
 
   document.getElementById('version').textContent =
     DATA._meta ? DATA._meta.tag : 'données locales';
+
+  document.getElementById('export-md').onclick = downloadMarkdown;
 
   buildTabs();
   applyHash();
@@ -578,6 +597,33 @@ const NODE_FR = { ore:'Minerai', herb:'Herbes', wood:'Bois' };
 const fr = (map, k) => (k == null ? '—' : (map[k] || k));
 const quality = it => it.quality || 'common';
 
+/* Capacités spéciales des monstres (drapeaux booléens dans les données).
+   La liste sert aussi de filtre : seules les clés présentes ici sont
+   considérées comme des capacités (les autres champs du mob sont des stats). */
+const ABILITY_FR = {
+  aoePulse:'Vague de zone', summonAdds:'Invoque des renforts', enrage:'Enrage',
+  cleave:'Enchaînement', mortalStrike:'Frappe mortelle', knockback:'Projection',
+  stomp:'Piétinement', manaBurn:'Brûlure de mana', packFrenzy:'Frénésie de meute',
+  thorns:'Épines', venom:'Venin', ensnare:'Enchevêtrement', lifeleech:'Drain de vie',
+  plague:'Peste', silence:'Silence', terrify:'Terreur', spellReflect:'Renvoi de sorts',
+  stoneskin:'Peau de pierre', warcry:'Cri de guerre', bleed:'Saignement',
+  disarm:'Désarmement', rampage:'Sauvagerie', frostbite:'Gelure', hex:'Maléfice',
+  frenzyOnHit:'Frénésie au contact', wardAllies:'Protège ses alliés',
+  stunOnHit:'Frappe étourdissante', polymorphHex:'Métamorphose', blind:'Aveuglement',
+  demoralize:'Démoralisation', soulrot:"Pourriture d'âme", slowStrike:'Frappe ralentissante',
+  corrode:'Corrosion', sapVigor:'Sape la vigueur', desperateHeal:'Soin désespéré',
+  critVuln:'Expose aux critiques', stackPoison:'Poison cumulable', wither:'Flétrissement',
+  purgeOnHit:'Dissipation au contact', vulnerability:'Vulnérabilité', healAbsorb:'Absorbe les soins',
+  mendAlly:'Soigne ses alliés', costTax:'Sorts plus coûteux', siphonSpirit:"Siphon d'esprit",
+  tongues:'Malédiction des langages', arcaneRot:'Pourriture arcanique', deathThroes:'Explose à la mort',
+  staggerHit:'Frappe titubante', rally:'Ralliement', smolder:'Combustion', cinder:'Cendres brûlantes',
+  concuss:'Commotion', chillOnHit:'Frappe glaçante', spellVuln:'Expose aux sorts',
+  enfeeble:'Affaiblissement', lockout:'Verrouillage de sorts', enervate:'Énervation',
+  expose:"Expose l'armure", aoeSlow:'Ralentissement de zone', bigCast:'Incantation dévastatrice',
+  ccImmune:'Insensible au contrôle', slowImmune:'Insensible aux ralentissements',
+};
+const mobAbilities = m => Object.keys(ABILITY_FR).filter(k => m[k]);
+
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
@@ -616,7 +662,7 @@ function duration(sec) {
 const SEARCH_FIELDS = {
   item:  it => [it.name, it.kind, fr(KIND_FR, it.kind), it.slot && fr(SLOT_FR, it.slot),
                 it.armorType && fr(ARMORTYPE_FR, it.armorType), fr(QUALITY_FR, quality(it))],
-  mob:   m  => [m.name, m.family, fr(FAMILY_FR, m.family)],
+  mob:   m  => [m.name, m.family, fr(FAMILY_FR, m.family), ...mobAbilities(m).map(k => ABILITY_FR[k])],
   quest: x  => [x.name, x.text],
   npc:   n  => [n.name, n.title, n.greeting],
   place: d  => [d.name, d.enterText],
@@ -625,8 +671,19 @@ const SEARCH_FIELDS = {
                 ...(z.pois || []).map(p => p.label)],
 };
 
+/* Insensible aux accents : « epee » trouve « Épée », « medaillon » trouve « Médaillon ». */
+const fold = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
 function searchText(e, type) {
-  return e._search ??= SEARCH_FIELDS[type](e).filter(Boolean).join(' ').toLowerCase();
+  return e._search ??= fold(SEARCH_FIELDS[type](e).filter(Boolean).join(' '));
+}
+
+/* Classement des résultats : les entrées dont le NOM contient le terme passent
+   avant celles qui ne le contiennent que dans leur description. */
+const nameFold = e => e._nf ??= fold(e.name);
+function searchSort(list, q, cmp) {
+  const nm = e => nameFold(e).includes(q) ? 1 : 0;
+  return list.sort((a, b) => nm(b) - nm(a) || cmp(a, b));
 }
 
 /* ================= onglets & filtres ================= */
@@ -665,7 +722,7 @@ function sel(key, placeholder, opts, labelFn) {
   return s;
 }
 
-const currentQuery = () => document.getElementById('search').value.trim().toLowerCase();
+const currentQuery = () => fold(document.getElementById('search').value.trim());
 
 function buildToolbar() {
   const bar = document.getElementById('toolbar');
@@ -709,13 +766,13 @@ function renderGrid() {
   if (q) {
     // ----- recherche globale : toutes les catégories, groupées -----
     const groups = [
-      { label:'Objets',    list: ITEMS.filter(i => searchText(i,'item').includes(q)).sort(sortItems),   card: itemCard },
-      { label:'Monstres',  list: MOBS.filter(m => searchText(m,'mob').includes(q)).sort(sortMobs),      card: mobCard },
-      { label:'Quêtes',    list: QUESTS.filter(x => !x.retired && searchText(x,'quest').includes(q)).sort(sortQuests), card: questCard },
-      { label:'PNJ',       list: NPCS.filter(n => searchText(n,'npc').includes(q)).sort(sortName),      card: npcCard },
-      { label:'Donjons & délves', list: allPlaces().filter(d => searchText(d,'place').includes(q)),     card: dungeonCard },
-      { label:'Panoplies', list: SETS.filter(s => searchText(s,'set').includes(q)).sort(sortName),      card: setCard },
-      { label:'Zones',     list: ZONES.filter(z => searchText(z,'zone').includes(q)).sort(sortName),    card: zoneCard },
+      { label:'Objets',    list: searchSort(ITEMS.filter(i => searchText(i,'item').includes(q)), q, sortItems),   card: itemCard },
+      { label:'Monstres',  list: searchSort(MOBS.filter(m => searchText(m,'mob').includes(q)), q, sortMobs),      card: mobCard },
+      { label:'Quêtes',    list: searchSort(QUESTS.filter(x => !x.retired && searchText(x,'quest').includes(q)), q, sortQuests), card: questCard },
+      { label:'PNJ',       list: searchSort(NPCS.filter(n => searchText(n,'npc').includes(q)), q, sortName),      card: npcCard },
+      { label:'Donjons & délves', list: searchSort(allPlaces().filter(d => searchText(d,'place').includes(q)), q, sortName), card: dungeonCard },
+      { label:'Panoplies', list: searchSort(SETS.filter(s => searchText(s,'set').includes(q)), q, sortName),      card: setCard },
+      { label:'Zones',     list: searchSort(ZONES.filter(z => searchText(z,'zone').includes(q)), q, sortName),    card: zoneCard },
     ];
     let total = 0;
     const frag = document.createDocumentFragment();
@@ -744,7 +801,8 @@ function renderGrid() {
       (!filters.kind || i.kind === filters.kind) &&
       (!filters.quality || quality(i) === filters.quality) &&
       (!filters.slot || i.slot === filters.slot) &&
-      (!filters.cls || (i.requiredClass||[]).includes(filters.cls)));
+      // Sans restriction de classe = utilisable par toutes les classes.
+      (!filters.cls || !i.requiredClass || i.requiredClass.includes(filters.cls)));
     list.sort(sortItems);
     cards = list.map(itemCard);
   } else if (activeTab === 'mobs') {
@@ -939,10 +997,17 @@ const sheetEl = document.getElementById('sheet');
 
 const SHEET_BUILDERS = { item:itemSheet, mob:mobSheet, quest:questSheet, npc:npcSheet, dungeon:dungeonSheet, delve:delveSheet, set:setSheet, zone:zoneSheet, worldboss:worldBossSheet };
 
-function openSheet(type, id, fromHistory) {
+// Pile de navigation interne à la modale : sauter d'une fiche à l'autre
+// (objet → monstre → donjon…) empile, la flèche « ← » dépile.
+let sheetStack = [];
+let currentSheet = null;
+
+function openSheet(type, id, fromHistory, fromBack) {
   const entity = byId[type]?.[id];
   if (!entity || !SHEET_BUILDERS[type]) return;
   const wasOpen = overlay.classList.contains('open');
+  if (wasOpen && !fromBack && currentSheet) sheetStack.push(currentSheet);
+  currentSheet = { type, id };
   sheetEl.innerHTML = SHEET_BUILDERS[type](entity);
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -960,12 +1025,19 @@ function openSheet(type, id, fromHistory) {
       openSheet(t, i);
     });
   });
+  const back = sheetEl.querySelector('.back');
+  if (back) back.onclick = () => {
+    const prev = sheetStack.pop();
+    openSheet(prev.type, prev.id, false, true);
+  };
   sheetEl.querySelector('.close').onclick = () => closeSheet();
 }
 
 function closeSheet(fromHistory) {
   overlay.classList.remove('open');
   document.body.style.overflow = '';
+  sheetStack = [];
+  currentSheet = null;
   // Retire l'entrée d'historique de la modale (déclenche popstate, sans effet :
   // la modale est déjà fermée).
   if (!fromHistory) history.back();
@@ -999,6 +1071,7 @@ document.addEventListener('keydown', e => {
 function head(kicker, title, titleClass, sub) {
   return `
     <div class="sheet-head">
+      ${sheetStack.length ? '<button class="back" aria-label="Fiche précédente" title="Fiche précédente">←</button>' : ''}
       <div>
         <div class="kicker">${kicker}</div>
         <h2 class="${titleClass||''}" id="sheet-title">${title}</h2>
@@ -1078,10 +1151,9 @@ function mobSheet(m) {
     `<div><span>Dégâts</span><b class="mono">≈${dmg}</b> / ${m.attackSpeed}s</div>`,
   ].join('');
 
-  const abilities = ['aoePulse','summonAdds','enrage','cleave','mortalStrike','knockback','stomp','manaBurn','packFrenzy','thorns','venom','ensnare','lifeleech','plague','silence','terrify','spellReflect','stoneskin','warcry','bleed','disarm','rampage','frostbite','hex']
-    .filter(k => m[k]);
+  const abilities = mobAbilities(m);
   const abilityBlock = abilities.length ? section('Capacités notables',
-    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0">${a}</span>`).join(' ')}</div>`) : '';
+    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0" title="${a}">${ABILITY_FR[a]}</span>`).join(' ')}</div>`) : '';
 
   const loot = (m.loot||[]);
   const copperLoot = loot.filter(l => l.copper);
@@ -1263,6 +1335,198 @@ function zoneSheet(z) {
         `<div><span>${fr(NODE_FR,t)}</span><b>${n}</b> gisements</div>`).join('')}</div>`) : '')
     + (fish ? section('Pêche', `<ul class="linklist">${fish.filter(f=>f.itemId).map(f =>
         itemLink(f.itemId, `<span class="chance">${Math.round(f.weight/fishTotal*100)}%</span>`)).join('')}</ul>`) : '');
+}
+
+/* ================= export Markdown (pour Claude) =================
+   Génère toute l'encyclopédie en un seul fichier Markdown, côté client,
+   avec les références résolues (noms au lieu d'identifiants) — à glisser
+   dans une conversation Claude pour poser des questions sur les données. */
+
+function moneyTxt(copper) {
+  if (!copper) return '0 pc';
+  const g = Math.floor(copper / 10000), s = Math.floor(copper / 100) % 100, c = copper % 100;
+  return [g && `${g} po`, s && `${s} pa`, c && `${c} pc`].filter(Boolean).join(' ');
+}
+const nameOf = (map, id) => (map[id] && map[id].name) || id;
+
+function buildMarkdown() {
+  const L = [];
+  const tag = DATA._meta ? DATA._meta.tag : 'inconnue';
+  L.push(`# World of ClaudeCraft — encyclopédie (version ${tag})`);
+  L.push('');
+  L.push('Données extraites automatiquement du code source du jeu.');
+  L.push('Monnaie : po = pièces d\'or, pa = argent, pc = cuivre. niv. = niveau. PV = points de vie.');
+
+  L.push('', `## Objets (${ITEMS.length})`, '');
+  for (const it of [...ITEMS].sort(sortItems)) {
+    const p = [];
+    p.push(`${fr(QUALITY_FR, quality(it))}, ${fr(KIND_FR, it.kind).toLowerCase()}`);
+    if (it.slot) p.push(`emplacement : ${fr(SLOT_FR, it.slot)}`);
+    if (it.armorType) p.push(fr(ARMORTYPE_FR, it.armorType).toLowerCase());
+    if (it.weapon) p.push(`dégâts ${it.weapon.min}–${it.weapon.max} (vitesse ${it.weapon.speed ?? '?'})`);
+    if (it.stats) p.push(Object.entries(it.stats).map(([k, v]) => `+${v} ${fr(STAT_FR, k)}`).join(', '));
+    if (it.bagSlots) p.push(`sac de ${it.bagSlots} emplacements`);
+    if (it.foodHp) p.push(`restaure ${it.foodHp} PV`);
+    if (it.drinkMana) p.push(`restaure ${it.drinkMana} mana`);
+    if (it.potionHp) p.push(`potion : ${it.potionHp} PV`);
+    if (it.potionMana) p.push(`potion : ${it.potionMana} mana`);
+    if (it.requiredClass) p.push(`classes : ${it.requiredClass.map(c => fr(CLASS_FR, c)).join(', ')}`);
+    if (it.set) p.push(`panoplie « ${nameOf(byId.set, it.set)} »`);
+    if (it.sellValue) p.push(`vente ${moneyTxt(it.sellValue)}`);
+    if (it.buyValue) p.push(`achat ${moneyTxt(it.buyValue)}`);
+    if (it.questId) p.push(`objet de la quête « ${nameOf(byId.quest, it.questId)} »`);
+    const drops = (refs.droppedBy[it.id] || []).map(d => `${d.mob.name} (${pct(d.chance)})`);
+    if (drops.length) p.push(`obtenu sur : ${drops.join(', ')}`);
+    const sold = (refs.soldBy[it.id] || []).map(n => n.name);
+    if (sold.length) p.push(`vendu par : ${sold.join(', ')}`);
+    const rew = (refs.rewardOf[it.id] || []).map(q => `« ${q.name} »`);
+    if (rew.length) p.push(`récompense de : ${rew.join(', ')}`);
+    const need = (refs.neededBy[it.id] || []).map(q => `« ${q.name} »`);
+    if (need.length) p.push(`requis pour : ${need.join(', ')}`);
+    L.push(`- **${it.name}** — ${p.join(' · ')}`);
+  }
+
+  L.push('', `## Monstres (${MOBS.length})`, '');
+  for (const m of [...MOBS].sort(sortMobs)) {
+    const p = [];
+    const rank = m.worldBoss ? 'WORLD BOSS' : m.boss ? 'BOSS' : m.elite ? 'élite' : m.rare ? 'rare' : null;
+    p.push(`${fr(FAMILY_FR, m.family)}${rank ? ', ' + rank : ''}, ${levelText(m)}`);
+    p.push(`PV ~${Math.round(m.hpBase + m.hpPerLevel * m.minLevel)}, dégâts ~${(m.dmgBase + m.dmgPerLevel * m.minLevel).toFixed(0)} / ${m.attackSpeed}s`);
+    const ab = mobAbilities(m).map(k => ABILITY_FR[k]);
+    if (ab.length) p.push(`capacités : ${ab.join(', ')}`);
+    const loot = [];
+    for (const l of (m.loot || [])) {
+      if (l.copper) loot.push(`${moneyTxt(l.copper)} (${pct(l.chance)})`);
+      else if (l.itemId) loot.push(`${nameOf(byId.item, l.itemId)} (${pct(l.chance)})`);
+    }
+    if (loot.length) p.push(`butin : ${loot.join(', ')}`);
+    const kf = (refs.killedFor[m.id] || []).map(q => `« ${q.name} »`);
+    if (kf.length) p.push(`cible des quêtes : ${kf.join(', ')}`);
+    const dg = (refs.mobDungeons[m.id] || []).map(d => d.name);
+    if (dg.length) p.push(`rencontré dans : ${dg.join(', ')}`);
+    L.push(`- **${m.name}** — ${p.join(' · ')}`);
+  }
+
+  L.push('', `## Quêtes (${QUESTS.length})`, '');
+  for (const x of [...QUESTS].sort(sortQuests)) {
+    L.push(`### ${x.name}${x.retired ? ' (retirée du jeu)' : ''}`, '');
+    L.push(`- Donneur : ${nameOf(byId.npc, x.giverNpcId)}${x.turnInNpcId && x.turnInNpcId !== x.giverNpcId ? ` · à rendre à : ${nameOf(byId.npc, x.turnInNpcId)}` : ''}`);
+    if (x.minLevel || x.suggestedPlayers)
+      L.push(`- ${[x.minLevel && `Niveau requis : ${x.minLevel}`, x.suggestedPlayers && `groupe conseillé : ${x.suggestedPlayers} joueurs`].filter(Boolean).join(' · ')}`);
+    const obj = (x.objectives || []).map(o => {
+      if (o.type === 'kill') return `tuer ${o.count} × ${nameOf(byId.mob, o.targetMobId)}`;
+      if (o.type === 'collect') return `rapporter ${o.count} × ${nameOf(byId.item, o.itemId)}`;
+      return o.label || o.type;
+    });
+    if (obj.length) L.push(`- Objectifs : ${obj.join(' ; ')}`);
+    const rewards = x.itemRewards || {};
+    const uniq = [...new Set(Object.values(rewards))];
+    let rtxt = '';
+    if (uniq.length === 1) rtxt = ` · objet : ${nameOf(byId.item, uniq[0])}`;
+    else if (uniq.length > 1) rtxt = ` · objet selon la classe : ${Object.entries(rewards).map(([c, i]) => `${fr(CLASS_FR, c)} → ${nameOf(byId.item, i)}`).join(', ')}`;
+    L.push(`- Récompenses : ${x.xpReward} XP${x.copperReward ? `, ${moneyTxt(x.copperReward)}` : ''}${rtxt}`);
+    if (x.requiresQuest) L.push(`- Nécessite d'avoir fini : « ${nameOf(byId.quest, x.requiresQuest)} »`);
+    const next = (refs.questNext[x.id] || []).map(n => `« ${n.name} »`);
+    if (next.length) L.push(`- Suivie de : ${next.join(', ')}`);
+    if (x.text) L.push(`- Journal : « ${x.text} »`);
+    L.push('');
+  }
+
+  L.push(`## PNJ (${NPCS.length})`, '');
+  for (const n of [...NPCS].sort(sortName)) {
+    const p = [];
+    if (n.title) p.push(n.title);
+    const qs = (refs.npcQuests[n.id] || []).map(q => `« ${q.name} »`);
+    if (qs.length) p.push(`donne les quêtes : ${qs.join(', ')}`);
+    const v = (n.vendorItems || []).map(id => {
+      const it = byId.item[id];
+      return it ? `${it.name}${it.buyValue ? ` (${moneyTxt(it.buyValue)})` : ''}` : id;
+    });
+    if (v.length) p.push(`vend : ${v.join(', ')}`);
+    if (n.market) p.push('donne accès au marché entre joueurs');
+    if (n.greeting) p.push(`accueil : « ${n.greeting} »`);
+    L.push(`- **${n.name}** — ${p.join(' · ')}`);
+  }
+
+  L.push('', `## Donjons (${DUNGEONS.length})`, '');
+  for (const d of DUNGEONS) {
+    const cnt = {};
+    for (const s of (d.spawns || [])) cnt[s.mobId] = (cnt[s.mobId] || 0) + 1;
+    const bosses = [], trash = [];
+    for (const [id, n] of Object.entries(cnt)) {
+      const m = byId.mob[id];
+      (m && m.boss ? bosses : trash).push(`${m ? m.name : id}${n > 1 ? ` (×${n})` : ''}`);
+    }
+    const p = [];
+    if (d.suggestedPlayers) p.push(`groupe conseillé : ${d.suggestedPlayers} joueurs`);
+    if (bosses.length) p.push(`boss : ${bosses.join(', ')}`);
+    if (trash.length) p.push(`habitants : ${trash.join(', ')}`);
+    L.push(`- **${d.name}** — ${p.join(' · ')}`);
+  }
+
+  L.push('', `## Délves (${DELVES.length})`, '');
+  for (const d of DELVES) {
+    const p = [];
+    if (d.minLevel) p.push(`niveau ${d.minLevel}+`);
+    p.push(`${d.maxPlayers} joueur(s) max`);
+    const b = (d.bosses || []).map(id => nameOf(byId.mob, id));
+    if (b.length) p.push(`boss : ${b.join(', ')}`);
+    if (d.autoCompanionId) p.push(`compagnon : ${nameOf(byId.mob, d.autoCompanionId)}`);
+    const tiers = (d.tiers || []).map(t => `${t.label} (récompenses ×${t.rewardMult}${t.affixCount ? `, ${t.affixCount} affixe(s)` : ''})`);
+    if (tiers.length) p.push(`difficultés : ${tiers.join(', ')}`);
+    L.push(`- **${d.name}** — ${p.join(' · ')}`);
+  }
+
+  if (WORLDBOSSES.length) {
+    L.push('', `## World bosses (${WORLDBOSSES.length})`, '');
+    for (const w of WORLDBOSSES) {
+      const m = byId.mob[w.templateId];
+      const p = [`réapparaît toutes les ${duration(w.intervalSeconds)}`];
+      if (w.hpScale) p.push(`PV ${w.hpScale.base} +${w.hpScale.perPlayer}/joueur${w.hpScale.max ? ` (max ${w.hpScale.max})` : ''}`);
+      if (w.pos) p.push(`position ${w.pos.x}, ${w.pos.z}`);
+      L.push(`- **${m ? m.name : w.templateId}** — ${p.join(' · ')}`);
+    }
+  }
+
+  L.push('', `## Panoplies (${SETS.length})`, '');
+  for (const s of [...SETS].sort(sortName)) {
+    const pieces = (refs.setPieces[s.id] || []).map(p => `${p.name} (${fr(SLOT_FR, p.slot)})`);
+    const bonuses = (s.bonuses || []).map(b => `${b.pieces} pièces : ${b.text}`);
+    L.push(`- **${s.name}** — pièces : ${pieces.join(', ')}. Bonus — ${bonuses.join(' ; ')}`);
+  }
+
+  L.push('', `## Zones (${ZONES.length})`, '');
+  for (const z of ZONES) {
+    const [lo, hi] = z.levelRange || [];
+    const p = [`${fr(BIOME_FR, z.biome)}${lo ? `, niveaux ${lo}–${hi}` : ''}`];
+    if (z.hub) p.push(`capitale : ${z.hub.name}`);
+    const pois = (z.pois || []).map(x => x.label);
+    if (pois.length) p.push(`lieux notables : ${pois.join(', ')}`);
+    const nodes = asList(DATA.GATHER_NODES).filter(g => g.zoneId === z.id);
+    const nc = {};
+    for (const g of nodes) nc[g.type] = (nc[g.type] || 0) + 1;
+    if (nodes.length) p.push(`ressources : ${Object.entries(nc).map(([t, n]) => `${n} gisement(s) de ${fr(NODE_FR, t).toLowerCase()}`).join(', ')}`);
+    const fish = DATA.FISHING_TABLES && DATA.FISHING_TABLES[z.id];
+    if (fish) {
+      const tot = fish.reduce((a, f) => a + f.weight, 0);
+      p.push(`pêche : ${fish.filter(f => f.itemId).map(f => `${nameOf(byId.item, f.itemId)} (${Math.round(f.weight / tot * 100)}%)`).join(', ')}`);
+    }
+    if (z.welcome) p.push(`accueil : « ${z.welcome} »`);
+    L.push(`- **${z.name}** — ${p.join(' · ')}`);
+  }
+
+  return L.join('\n') + '\n';
+}
+
+function downloadMarkdown() {
+  const blob = new Blob([buildMarkdown()], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `wocc-codex-${DATA._meta ? DATA._meta.tag : 'donnees'}.md`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
 }
 
 /* ================= routing par ancre ================= */

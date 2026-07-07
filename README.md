@@ -50,18 +50,17 @@ python3 -m http.server 8080
 - **Ne remplace pas** : l'upload dans un Project Claude.ai. Il n'existe pas d'API
   officielle pour ça (voir la conversation) — si tu veux continuer à utiliser un
   Project Claude pour poser des questions en langage naturel, il faudra toujours
-  glisser le fichier Markdown à la main. Le site de recherche (`site/index.html`),
-  lui, ne demande aucune action manuelle et ne coûte aucun token : c'est de la
-  recherche/filtre pur JavaScript sur les données JSON.
+  glisser le fichier Markdown à la main. Le bouton **« 📄 Export Markdown »** en
+  haut du site le génère en un clic (toute l'encyclopédie, références résolues,
+  toujours à la version courante des données). Le site de recherche
+  (`site/index.html`), lui, ne demande aucune action manuelle et ne coûte aucun
+  token : c'est de la recherche/filtre pur JavaScript sur les données JSON.
 
 ## Limites connues
 
 - Le script bundle uniquement `src/sim/data.ts` et `src/sim/world_boss.ts`. Si le
   jeu ajoute un nouveau module de contenu qui n'est pas ré-exporté par ces deux
   fichiers, il faudra ajouter son chemin dans `dumpRegistries()`.
-- Le site ne génère pas de Markdown — si tu veux garder aussi la version texte
-  pour un Project Claude, il faut un script supplémentaire qui transforme le
-  JSON en Markdown (comme celui utilisé lors de notre première extraction).
 - Le déclenchement est basé sur un `cron` (vérification périodique), pas un
   vrai webhook instantané — voir la note dans le fichier `.yml` pour l'option
   plus réactive si besoin.
