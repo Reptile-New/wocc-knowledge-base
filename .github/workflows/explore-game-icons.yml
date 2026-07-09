@@ -46,35 +46,24 @@ jobs:
           echo "=== Chemins évoquant des icônes/assets ==="
           grep -iE 'icon|sprite|atlas|asset|image|\.png|\.svg|\.webp' .claude-scratch/game-tree.txt | head -200 || true
 
-      - name: Copier le code lié aux icônes d'objets
+      - name: Copier le code de résolution des icônes d'objets
         run: |
           cd /tmp/game
-          # Tous les fichiers de code qui parlent d'icônes (bornés en nombre et en taille)
-          grep -rliE 'icon' . \
-            --include='*.ts' --include='*.tsx' --include='*.js' --include='*.mjs' --include='*.jsx' --include='*.css' --include='*.html' \
-            --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist --exclude-dir=build \
-            | head -60 > /tmp/iconfiles.txt || true
-          echo "=== Fichiers de code mentionnant 'icon' ===" && cat /tmp/iconfiles.txt
           DEST="$GITHUB_WORKSPACE/.claude-scratch/game-src"
-          while IFS= read -r f; do
-            [ "$(stat -c %s "$f")" -gt 500000 ] && { echo "skip (taille) $f"; continue; }
+          for f in \
+            src/ui/icons.ts \
+            src/ui/ui_icons.ts \
+            src/ui/icon_prewarm.ts \
+            src/ui/bags_view.ts \
+            src/ui/char_window.ts \
+            src/ui/char_view.ts \
+            src/ui/item_armor_type.ts \
+            docs/design/icon-system.md \
+          ; do
+            [ -f "$f" ] || { echo "absent: $f"; continue; }
             mkdir -p "$DEST/$(dirname "$f")"
             cp "$f" "$DEST/$f"
-          done < /tmp/iconfiles.txt
-
-      - name: Copier les éventuels assets d'icônes nommés par id d'item
-        run: |
-          cd /tmp/game
-          DEST="$GITHUB_WORKSPACE/.claude-scratch/game-assets"
-          # Images dont le chemin évoque items/icônes (bornées : 400 fichiers, 300 Ko chacun)
-          find . -path ./node_modules -prune -o -type f \( -iname '*.png' -o -iname '*.svg' -o -iname '*.webp' -o -iname '*.gif' \) -print \
-            | grep -iE 'item|icon|equip|inventory|loot' | head -400 > /tmp/assetfiles.txt || true
-          echo "=== Assets candidats ===" && wc -l /tmp/assetfiles.txt && head -50 /tmp/assetfiles.txt
-          while IFS= read -r f; do
-            [ "$(stat -c %s "$f")" -gt 300000 ] && { echo "skip (taille) $f"; continue; }
-            mkdir -p "$DEST/$(dirname "$f")"
-            cp "$f" "$DEST/$f"
-          done < /tmp/assetfiles.txt
+          done
 
       - name: Commiter le résultat sur la branche
         run: |
