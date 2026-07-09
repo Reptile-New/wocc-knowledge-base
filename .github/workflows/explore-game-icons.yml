@@ -74,7 +74,7 @@ jobs:
           TS
           npx esbuild icon_dump_entry.ts --bundle --format=iife --outfile=/tmp/icon_bundle.js
           # Pilote : même approche que scripts/render_weapon_icons.mjs du jeu
-          cat > /tmp/icon_dump.mjs <<'MJS'
+          cat > icon_dump.mjs <<'MJS'
           import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
           import puppeteer from 'puppeteer-core';
           let BROWSER_PATH = '/usr/bin/google-chrome';
@@ -97,7 +97,7 @@ jobs:
           await browser.close();
           console.log('OK');
           MJS
-          node /tmp/icon_dump.mjs
+          node icon_dump.mjs
           ls "$GITHUB_WORKSPACE/.claude-scratch/game-rendered" | wc -l
 
       - name: Commiter le résultat sur la branche
