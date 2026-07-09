@@ -1,0 +1,73 @@
+# Workflow TEMPORAIRE (branche claude/item-images-mismatch-xn0qrq uniquement).
+# Récupère les fichiers de règles des métiers du jeu pour que la session Claude
+# (sans accès réseau au repo du jeu) puisse écrire un guide d'artisanat clair
+# pour le site de La Clauderie. À SUPPRIMER une fois le dump commité.
+
+name: Explore game professions (temp)
+
+on:
+  push:
+    branches: [claude/item-images-mismatch-xn0qrq]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: explore-professions
+  cancel-in-progress: true
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout la knowledge base
+        uses: actions/checkout@v4
+
+      - name: Télécharger le code du jeu au tag courant
+        run: |
+          TAG=$(node -p "require('./data/_meta.json').tag")
+          echo "Tag: $TAG"
+          curl -sL -o /tmp/game.tar.gz "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/$TAG"
+          mkdir -p /tmp/game
+          tar xzf /tmp/game.tar.gz -C /tmp/game --strip-components=1
+
+      - name: Copier les fichiers de règles des métiers
+        run: |
+          cd /tmp/game
+          DEST="$GITHUB_WORKSPACE/.claude-scratch/professions"
+          for f in \
+            src/sim/professions/CLAUDE.md \
+            src/sim/professions/types.ts \
+            src/sim/professions/wheel.ts \
+            src/sim/professions/archetype.ts \
+            src/sim/professions/crafting.ts \
+            src/sim/professions/crafting_hub.ts \
+            src/sim/professions/gathering.ts \
+            src/sim/professions/focus.ts \
+            src/sim/professions/tools.ts \
+            src/sim/professions/salvage.ts \
+            src/sim/professions/battlefield_xp.ts \
+            src/sim/content/professions.ts \
+            src/sim/content/recipes.ts \
+            src/sim/content/gather_nodes.ts \
+            docs/design/professions-system/sections/01-glance.html \
+            docs/design/professions-system/sections/02-wheel.html \
+            docs/design/professions-system/sections/03-ladder.html \
+            docs/design/professions-system/sections/05-archetypes.html \
+            docs/design/professions-system/sections/07-combos.html \
+            docs/design/professions-system/sections/13-gathering.html \
+            docs/design/professions-system/sections/15-tools.html \
+          ; do
+            [ -f "$f" ] || { echo "absent: $f"; continue; }
+            mkdir -p "$DEST/$(dirname "$f")"
+            cp "$f" "$DEST/$f"
+          done
+
+      - name: Commiter le résultat sur la branche
+        run: |
+          git config user.name "wocc-knowledge-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -f .claude-scratch
+          git commit -m "chore(temp): dump des règles des métiers du jeu pour analyse" || echo "rien à commiter"
+          git push
