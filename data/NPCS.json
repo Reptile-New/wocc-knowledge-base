@@ -164,6 +164,34 @@
     ],
     "greeting": "Whole dig's crawling with those dirt-caked vermin!"
   },
+  "bursar_fernando": {
+    "id": "bursar_fernando",
+    "name": "Bursar Fernando",
+    "title": "The Gilded Strongbox",
+    "pos": {
+      "x": 13,
+      "z": 8
+    },
+    "facing": -1.5707963267948966,
+    "color": 13214247,
+    "questIds": [],
+    "banker": true,
+    "greeting": "Welcome to the Gilded Strongbox. Your goods rest safe behind our locks."
+  },
+  "groundskeeper_bram": {
+    "id": "groundskeeper_bram",
+    "name": "Groundskeeper Bram",
+    "title": "Keeper of the Sowfield",
+    "pos": {
+      "x": -6,
+      "z": -82
+    },
+    "facing": 3.141592653589793,
+    "color": 4160820,
+    "questIds": [],
+    "dynamic": true,
+    "greeting": "The truce holds at the Sowfield, $C: boots and shoulders only. Care to play for the Copper Pail?"
+  },
   "warden_fenwick": {
     "id": "warden_fenwick",
     "name": "Warden Fenwick",
@@ -237,7 +265,8 @@
       "marshcloth_robe",
       "reedwoven_jerkin",
       "fenwalker_boots",
-      "reedwoven_trousers"
+      "reedwoven_trousers",
+      "simple_fishing_pole"
     ],
     "greeting": "Dry boots, dry bread, dry powder — at Fenbridge you get two of the three on a good day."
   },
@@ -273,6 +302,20 @@
       "q_olen"
     ],
     "greeting": "Quiet feet and a short blade keep you breathing out here. Speak quick — I am due back in the reeds."
+  },
+  "bursar_petra_vell": {
+    "id": "bursar_petra_vell",
+    "name": "Bursar Petra Vell",
+    "title": "The Gilded Strongbox",
+    "pos": {
+      "x": 9,
+      "z": 303
+    },
+    "facing": -1.5707963267948966,
+    "color": 13214247,
+    "questIds": [],
+    "banker": true,
+    "greeting": "The Gilded Strongbox keeps clean ledgers and cleaner vaults. What shall we stow for you?"
   },
   "captain_thessaly": {
     "id": "captain_thessaly",
@@ -384,7 +427,8 @@
       "peakwool_robe",
       "stalkerhide_jerkin",
       "cragwalker_boots",
-      "windguard_leggings"
+      "windguard_leggings",
+      "simple_fishing_pole"
     ],
     "greeting": "Wool, hardtack, and steel-shod boots — Highwatch runs on all three, and I am short of everything."
   },
@@ -405,6 +449,20 @@
       "icevein_dirk"
     ],
     "greeting": "Forge is hot and the grindstone is turning. If it cuts, I sell it."
+  },
+  "heroic_quartermaster": {
+    "id": "heroic_quartermaster",
+    "name": "Quartermaster Vex",
+    "title": "Heroic Quartermaster",
+    "pos": {
+      "x": -8,
+      "z": 665
+    },
+    "facing": 1.2,
+    "color": 9323693,
+    "questIds": [],
+    "heroicVendor": true,
+    "greeting": "Proof of the heroic depths buys the finest rings and pendants in Highwatch. Show me your marks."
   },
   "loremaster_caddis": {
     "id": "loremaster_caddis",
@@ -437,6 +495,20 @@
     "questIds": [],
     "market": true,
     "greeting": "The World Market is open here too, $C. Buy from every adventurer in the realm, or set out your own wares."
+  },
+  "bursar_aldous_crane": {
+    "id": "bursar_aldous_crane",
+    "name": "Bursar Aldous Crane",
+    "title": "The Gilded Strongbox",
+    "pos": {
+      "x": -12,
+      "z": 663
+    },
+    "facing": 1.5707963267948966,
+    "color": 13214247,
+    "questIds": [],
+    "banker": true,
+    "greeting": "Every crate, coffer, and trinket is safe with the Gilded Strongbox."
   },
   "tidewatcher_ondrel": {
     "id": "tidewatcher_ondrel",

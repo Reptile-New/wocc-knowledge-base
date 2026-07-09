@@ -76,6 +76,11 @@
         "x": 40,
         "z": 140,
         "label": "Brightwood Glade"
+      },
+      {
+        "x": -11,
+        "z": -112,
+        "label": "The Sowfield"
       }
     ],
     "welcome": "Find Marshal Redbrook in town — he has work for you.",
