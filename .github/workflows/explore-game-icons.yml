@@ -1,0 +1,85 @@
+# Workflow TEMPORAIRE (branche claude/item-images-mismatch-xn0qrq uniquement).
+#
+# Objectif : la session Claude Code qui travaille sur la page BiS de La Clauderie
+# n'a pas accès réseau au repo du jeu. Ce workflow télécharge le code du jeu au
+# tag courant de la knowledge base (comme le fait déjà update-knowledge-base.yml),
+# inventorie tout ce qui touche au rendu des icônes d'objets, et committe le
+# résultat dans .claude-scratch/ sur cette branche pour que la session puisse
+# l'analyser. À SUPPRIMER avant tout merge.
+
+name: Explore game item icons (temp)
+
+on:
+  push:
+    branches: [claude/item-images-mismatch-xn0qrq]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: explore-icons
+  cancel-in-progress: true
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout la knowledge base
+        uses: actions/checkout@v4
+
+      - name: Télécharger le code du jeu au tag courant
+        run: |
+          TAG=$(node -p "require('./data/_meta.json').tag")
+          echo "Tag: $TAG"
+          curl -sL -o /tmp/game.tar.gz "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/$TAG"
+          mkdir -p /tmp/game
+          tar xzf /tmp/game.tar.gz -C /tmp/game --strip-components=1
+          du -sh /tmp/game
+
+      - name: Inventaire du repo du jeu
+        run: |
+          mkdir -p .claude-scratch
+          ( cd /tmp/game && find . -path ./node_modules -prune -o -path ./.git -prune -o -type f -printf '%10s %p\n' | sort -k2 ) > .claude-scratch/game-tree.txt
+          echo "=== Fichiers au total ===" && wc -l .claude-scratch/game-tree.txt
+          echo "=== Top niveau ===" && ls -la /tmp/game
+          echo "=== Chemins évoquant des icônes/assets ==="
+          grep -iE 'icon|sprite|atlas|asset|image|\.png|\.svg|\.webp' .claude-scratch/game-tree.txt | head -200 || true
+
+      - name: Copier le code lié aux icônes d'objets
+        run: |
+          cd /tmp/game
+          # Tous les fichiers de code qui parlent d'icônes (bornés en nombre et en taille)
+          grep -rliE 'icon' . \
+            --include='*.ts' --include='*.tsx' --include='*.js' --include='*.mjs' --include='*.jsx' --include='*.css' --include='*.html' \
+            --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist --exclude-dir=build \
+            | head -60 > /tmp/iconfiles.txt || true
+          echo "=== Fichiers de code mentionnant 'icon' ===" && cat /tmp/iconfiles.txt
+          DEST="$GITHUB_WORKSPACE/.claude-scratch/game-src"
+          while IFS= read -r f; do
+            [ "$(stat -c %s "$f")" -gt 500000 ] && { echo "skip (taille) $f"; continue; }
+            mkdir -p "$DEST/$(dirname "$f")"
+            cp "$f" "$DEST/$f"
+          done < /tmp/iconfiles.txt
+
+      - name: Copier les éventuels assets d'icônes nommés par id d'item
+        run: |
+          cd /tmp/game
+          DEST="$GITHUB_WORKSPACE/.claude-scratch/game-assets"
+          # Images dont le chemin évoque items/icônes (bornées : 400 fichiers, 300 Ko chacun)
+          find . -path ./node_modules -prune -o -type f \( -iname '*.png' -o -iname '*.svg' -o -iname '*.webp' -o -iname '*.gif' \) -print \
+            | grep -iE 'item|icon|equip|inventory|loot' | head -400 > /tmp/assetfiles.txt || true
+          echo "=== Assets candidats ===" && wc -l /tmp/assetfiles.txt && head -50 /tmp/assetfiles.txt
+          while IFS= read -r f; do
+            [ "$(stat -c %s "$f")" -gt 300000 ] && { echo "skip (taille) $f"; continue; }
+            mkdir -p "$DEST/$(dirname "$f")"
+            cp "$f" "$DEST/$f"
+          done < /tmp/assetfiles.txt
+
+      - name: Commiter le résultat sur la branche
+        run: |
+          git config user.name "wocc-knowledge-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -f .claude-scratch
+          git commit -m "chore(temp): dump du code/assets d'icônes du jeu pour analyse" || echo "rien à commiter"
+          git push
