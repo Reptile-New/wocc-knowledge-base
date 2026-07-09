@@ -46,24 +46,59 @@ jobs:
           echo "=== Chemins évoquant des icônes/assets ==="
           grep -iE 'icon|sprite|atlas|asset|image|\.png|\.svg|\.webp' .claude-scratch/game-tree.txt | head -200 || true
 
-      - name: Copier le code de résolution des icônes d'objets
+      - name: Copier la table des variantes d'armes et leurs miniatures
         run: |
           cd /tmp/game
-          DEST="$GITHUB_WORKSPACE/.claude-scratch/game-src"
-          for f in \
-            src/ui/icons.ts \
-            src/ui/ui_icons.ts \
-            src/ui/icon_prewarm.ts \
-            src/ui/bags_view.ts \
-            src/ui/char_window.ts \
-            src/ui/char_view.ts \
-            src/ui/item_armor_type.ts \
-            docs/design/icon-system.md \
-          ; do
-            [ -f "$f" ] || { echo "absent: $f"; continue; }
-            mkdir -p "$DEST/$(dirname "$f")"
-            cp "$f" "$DEST/$f"
-          done
+          DEST_SRC="$GITHUB_WORKSPACE/.claude-scratch/game-src"
+          mkdir -p "$DEST_SRC/src/ui"
+          cp src/ui/weapon_variants.ts "$DEST_SRC/src/ui/"
+          DEST_AST="$GITHUB_WORKSPACE/.claude-scratch/game-assets/public/ui"
+          mkdir -p "$DEST_AST"
+          cp -r public/ui/weapons "$DEST_AST/weapons"
+
+      - name: Rendre les icônes procédurales avec le moteur du jeu
+        run: |
+          cd /tmp/game
+          npm install --no-save esbuild puppeteer-core
+          # Point d'entrée : expose le moteur d'icônes du jeu à la page
+          cat > icon_dump_entry.ts <<'TS'
+          import { ITEMS } from './src/sim/data';
+          import { iconCanvas, itemImageUrl } from './src/ui/icons';
+          import { ITEM_WEAPON_VARIANTS } from './src/ui/weapon_variants';
+          (window as any).api = {
+            missing: () =>
+              Object.keys(ITEMS).filter((id) => !itemImageUrl(id) && !ITEM_WEAPON_VARIANTS[id]),
+            render: (id: string, size: number) => iconCanvas('item', id, size).toDataURL('image/png'),
+          };
+          (window as any).__ready = true;
+          TS
+          npx esbuild icon_dump_entry.ts --bundle --format=iife --outfile=/tmp/icon_bundle.js
+          # Pilote : même approche que scripts/render_weapon_icons.mjs du jeu
+          cat > /tmp/icon_dump.mjs <<'MJS'
+          import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+          import puppeteer from 'puppeteer-core';
+          let BROWSER_PATH = '/usr/bin/google-chrome';
+          try { ({ BROWSER_PATH } = await import('/tmp/game/scripts/browser_path.mjs')); } catch {}
+          const OUT = process.env.GITHUB_WORKSPACE + '/.claude-scratch/game-rendered';
+          mkdirSync(OUT, { recursive: true });
+          const bundle = readFileSync('/tmp/icon_bundle.js', 'utf8');
+          const html = `<!doctype html><html><body><script>${bundle}</script></body></html>`;
+          const browser = await puppeteer.launch({ executablePath: BROWSER_PATH, headless: 'new', args: ['--no-sandbox'] });
+          const page = await browser.newPage();
+          page.on('pageerror', (e) => { console.error('PAGEERR', e.message); process.exitCode = 1; });
+          await page.setContent(html, { waitUntil: 'load' });
+          await page.waitForFunction('window.__ready === true', { timeout: 20000 });
+          const ids = await page.evaluate('window.api.missing()');
+          console.log(`${ids.length} items sans image statique — rendu procédural…`);
+          for (const id of ids) {
+            const dataUrl = await page.evaluate((i) => window.api.render(i, 128), id);
+            writeFileSync(`${OUT}/${id}.png`, Buffer.from(dataUrl.split(',')[1], 'base64'));
+          }
+          await browser.close();
+          console.log('OK');
+          MJS
+          node /tmp/icon_dump.mjs
+          ls "$GITHUB_WORKSPACE/.claude-scratch/game-rendered" | wc -l
 
       - name: Commiter le résultat sur la branche
         run: |
