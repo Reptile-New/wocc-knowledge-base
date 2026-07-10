@@ -312,6 +312,7 @@
   .b-elite     { background: rgba(200,160,75,0.12); color: var(--gold-bright); border: 1px solid rgba(200,160,75,0.4); }
   .b-rare      { background: rgba(47,139,255,0.12); color: #6fadff; border: 1px solid rgba(47,139,255,0.35); }
   .b-retired   { background: rgba(255,255,255,0.05); color: var(--faint); border: 1px solid var(--line); }
+  .b-heroic    { background: rgba(163,53,238,0.14); color: #c77df5; border: 1px solid rgba(163,53,238,0.4); }
   .b-group     { background: rgba(88,196,106,0.1);  color: var(--friendly); border: 1px solid rgba(88,196,106,0.3); }
 
   .q-poor      { color: var(--q-poor); }
@@ -519,7 +520,7 @@
 /* ================= chargement des données ================= */
 
 const DATA = {};
-const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','_meta'];
+const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','HEROIC_BOSS_LOOT','_meta'];
 
 async function load() {
   const res = await Promise.all(FILES.map(f =>
@@ -565,6 +566,14 @@ function buildCrossRefs() {
   for (const m of MOBS)
     for (const l of (m.loot || []))
       if (l.itemId) (refs.droppedBy[l.itemId] ||= []).push({ mob: m, chance: l.chance });
+
+  // Butins spécifiques à la difficulté Héroïque (par boss final).
+  for (const [mobId, entries] of Object.entries(DATA.HEROIC_BOSS_LOOT || {})) {
+    const m = byId.mob[mobId];
+    if (!m) continue;
+    for (const l of (entries || []))
+      if (l.itemId) (refs.droppedBy[l.itemId] ||= []).push({ mob: m, chance: l.chance, heroic: true });
+  }
 
   for (const n of NPCS)
     for (const it of (n.vendorItems || []))
@@ -1130,7 +1139,8 @@ function itemSheet(it) {
 
   const drops = (refs.droppedBy[it.id]||[]).sort((a,b)=>(b.chance||0)-(a.chance||0));
   const dropBlock = drops.length ? section('Obtenu sur',
-    `<ul class="linklist">${drops.map(d => mobLink(d.mob, `<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
+    `<ul class="linklist">${drops.map(d => mobLink(d.mob,
+      `${d.heroic ? '<span class="badge b-heroic" style="margin:0 8px 0 0">Héroïque</span>' : ''}<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
 
   const sold = refs.soldBy[it.id] || [];
   const soldBlock = sold.length ? section('Vendu par',
@@ -1144,9 +1154,13 @@ function itemSheet(it) {
   const neededBlock = needed.length ? section('Requis pour',
     `<ul class="linklist">${needed.map(questLink).join('')}</ul>`) : '';
 
+  // Fiche honnête : si aucune source n'est connue, on le dit au lieu de ne rien afficher.
+  const originBlock = (!drops.length && !sold.length && !reward.length) ? section('Origine',
+    `<div class="statline" style="color:var(--faint)">Aucune source répertoriée dans les données extraites du jeu — vient probablement de la fabrication (métiers), du dépeçage/récolte, d'un delve ou d'un événement, pas encore couverts par le pipeline.</div>`) : '';
+
   return head(`${fr(QUALITY_FR, ql)} · ${fr(KIND_FR, it.kind)}`, esc(it.name), 'q-'+ql)
     + section('Caractéristiques', `<div class="kv">${kv.join('')}</div>${stats}${classes}` || '')
-    + setBlock + dropBlock + soldBlock + rewardBlock + neededBlock;
+    + setBlock + dropBlock + soldBlock + rewardBlock + neededBlock + originBlock;
 }
 
 function mobSheet(m) {
@@ -1185,6 +1199,14 @@ function mobSheet(m) {
       ${itemLoot.map(l => itemLink(l.itemId, `<span class="chance">${pct(l.chance)}</span>`)).join('')}
     </ul>`) : '';
 
+  // Butin spécifique à la difficulté Héroïque (boss finaux uniquement).
+  const hloot = ((DATA.HEROIC_BOSS_LOOT || {})[m.id] || [])
+    .filter(l => l.itemId)
+    .sort((a,b) => (b.chance||0) - (a.chance||0));
+  const hlootBlock = hloot.length ? section('Butin héroïque',
+    `<div class="statline" style="margin:0 0 8px;color:var(--faint)">En difficulté Héroïque uniquement — deux objets par kill.</div>
+     <ul class="linklist">${hloot.map(l => itemLink(l.itemId, `<span class="chance">${pct(l.chance)}</span>`)).join('')}</ul>`) : '';
+
   const quests = refs.killedFor[m.id] || [];
   const questBlock = quests.length ? section('Cible de quête',
     `<ul class="linklist">${quests.map(questLink).join('')}</ul>`) : '';
@@ -1199,7 +1221,7 @@ function mobSheet(m) {
 
   return head(fr(FAMILY_FR, m.family), mobColor(m) + esc(m.name), '', rank || null)
     + section('Combat', `<div class="kv">${kv}</div>`)
-    + abilityBlock + lootBlock + questBlock + dgBlock + wbBlock;
+    + abilityBlock + lootBlock + hlootBlock + questBlock + dgBlock + wbBlock;
 }
 
 function worldBossSheet(w) {
@@ -1386,7 +1408,7 @@ function buildMarkdown() {
     if (it.sellValue) p.push(`vente ${moneyTxt(it.sellValue)}`);
     if (it.buyValue) p.push(`achat ${moneyTxt(it.buyValue)}`);
     if (it.questId) p.push(`objet de la quête « ${nameOf(byId.quest, it.questId)} »`);
-    const drops = (refs.droppedBy[it.id] || []).map(d => `${d.mob.name} (${pct(d.chance)})`);
+    const drops = (refs.droppedBy[it.id] || []).map(d => `${d.mob.name} (${pct(d.chance)}${d.heroic ? ', héroïque' : ''})`);
     if (drops.length) p.push(`obtenu sur : ${drops.join(', ')}`);
     const sold = (refs.soldBy[it.id] || []).map(n => n.name);
     if (sold.length) p.push(`vendu par : ${sold.join(', ')}`);

@@ -1,4 +1,5 @@
-# Sonde temporaire (passe 2) : structure des modules de butin manquants.
+# Sonde temporaire (passe 3) : exécute l'extraction modifiée de bout en bout
+# et commite les données régénérées sur cette branche pour vérification.
 name: Probe loot sources
 on:
   push:
@@ -6,35 +7,34 @@ on:
 jobs:
   probe:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Télécharger la source du jeu (v0.23.0)
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Installer esbuild
+        run: npm install esbuild --no-save
+      - name: Extraction complète v0.23.0
+        run: node scripts/extract.mjs v0.23.0 ./data
+      - name: Vérifier le butin héroïque
         run: |
-          curl -sL "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/v0.23.0" -o wocc.tar.gz
-          mkdir game && tar xzf wocc.tar.gz -C game --strip-components=1
-      - name: Structure des modules de butin
+          echo "=== HEROIC_BOSS_LOOT.json ==="
+          node -e "
+            const d = require('./data/HEROIC_BOSS_LOOT.json');
+            for (const [boss, entries] of Object.entries(d))
+              console.log(boss, '→', entries.length, 'entrées');
+            const hit = Object.values(d).flat().find(e => e.itemId === 'lunar_choir_leggings');
+            if (!hit) { console.error('lunar_choir_leggings introuvable !'); process.exit(1); }
+            console.log('lunar_choir_leggings OK :', JSON.stringify(hit));
+          "
+      - name: Commiter les données régénérées
         run: |
-          cd game
-          echo "=== EXPORTS heroic_loot.ts ==="
-          grep -n "^export\|^const\|rollGroup:" src/sim/content/heroic_loot.ts | head -40
-          echo ""
-          echo "=== heroic_loot.ts lignes 380-470 ==="
-          sed -n '380,470p' src/sim/content/heroic_loot.ts
-          echo ""
-          echo "=== ysolei : qui est-ce ? ==="
-          grep -rn "ysolei" src/sim/data.ts src/sim/content/*.ts 2>/dev/null | grep -v heroic_loot | head -10
-          echo ""
-          echo "=== EXPORTS drowned_litany_loot.ts + tête ==="
-          grep -n "^export" src/sim/content/delves/drowned_litany_loot.ts
-          head -50 src/sim/content/delves/drowned_litany_loot.ts
-          echo ""
-          echo "=== EXPORTS gathering.ts + extraits loot ==="
-          grep -n "^export" src/sim/professions/gathering.ts | head -20
-          grep -n "itemId" src/sim/professions/gathering.ts | head -15
-          echo ""
-          echo "=== EXPORTS zone3.ts (contient du loot ?) ==="
-          grep -n "^export" src/sim/content/zone3.ts | head
-          grep -n "data.ts importe zone3 ?" || grep -n "zone3\|heroic_loot\|drowned_litany" src/sim/data.ts | head
-          echo ""
-          echo "=== recettes de craft : où ? ==="
-          find src/sim/professions -name "*.ts" | head -20
-          grep -rn "^export" src/sim/professions/recipes.ts 2>/dev/null | head -10
+          git config user.name "wocc-knowledge-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "chore: régénération des données v0.23.0 avec HEROIC_BOSS_LOOT"
+          git push

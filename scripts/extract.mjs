@@ -140,6 +140,17 @@ async function main() {
     ], outDir);
     dumpRegistries(worldBossBundlePath, ['WORLD_BOSSES'], outDir);
 
+    // Butins des boss finaux en difficulté Héroïque : ils vivent dans un module
+    // dédié (non ré-exporté par data.ts), introduit avec la v0.23.0 — toléré
+    // absent pour les tags plus anciens.
+    try {
+      const heroicBundlePath = path.join(workDir, 'heroic.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/heroic_loot.ts', heroicBundlePath);
+      dumpRegistries(heroicBundlePath, ['HEROIC_BOSS_LOOT'], outDir);
+    } catch (err) {
+      console.warn(`  ⚠ Butin héroïque non extrait (tag antérieur à v0.23.0 ?) : ${err.message}`);
+    }
+
     // Un petit fichier de métadonnées pour tracer d'où vient l'extraction.
     fs.writeFileSync(
       path.join(outDir, '_meta.json'),
