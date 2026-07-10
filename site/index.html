@@ -71,6 +71,24 @@
 
   a { color: inherit; }
 
+  /* ---------- barre de la guilde (navigation commune) ---------- */
+  .guild-bar {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 clamp(16px, 3vw, 28px); height: 52px;
+    background: color-mix(in srgb, var(--bg, #0b0d12) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,160,75,0.22);
+  }
+  .gb-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .gb-sigil { width: 24px; height: 28px; flex: none; background: linear-gradient(160deg, #e6c37a, #c8a04b 55%, #8a6d2e); clip-path: polygon(50% 0,100% 18%,100% 62%,50% 100%,0 62%,0 18%); display: grid; place-items: center; color: #1a130a; font-weight: 700; font-size: 0.8rem; }
+  .gb-brand b { font-family: Cinzel, Georgia, serif; font-weight: 600; font-size: 0.98rem; letter-spacing: 0.02em; }
+  .gb-nav { margin-left: auto; display: flex; align-items: center; gap: 4px 16px; flex-wrap: wrap; font-size: 0.86rem; }
+  .gb-nav a { color: #8b93a3; text-decoration: none; }
+  .gb-nav a:hover { color: #e6c37a; }
+  .gb-cur { color: #e6c37a; font-weight: 600; }
+  @media (max-width: 620px) { .gb-brand b { display: none; } .gb-nav { gap: 4px 11px; font-size: 0.8rem; } }
+
   /* ---------- entête ---------- */
   header {
     max-width: 1240px;
@@ -484,6 +502,17 @@
 </style>
 </head>
 <body>
+
+<!-- Barre de navigation commune avec le site de la guilde La Clauderie -->
+<div class="guild-bar">
+  <a href="https://reptile-new.github.io/La-Clauderie/" class="gb-brand"><span class="gb-sigil">C</span><b>La Clauderie</b></a>
+  <nav class="gb-nav" aria-label="Navigation du site de la guilde">
+    <a href="https://reptile-new.github.io/La-Clauderie/">Accueil</a>
+    <a href="https://reptile-new.github.io/La-Clauderie/bis.html">⚔️ BiS</a>
+    <a href="https://reptile-new.github.io/La-Clauderie/patch-notes.html">📜 Nouveautés</a>
+    <span class="gb-cur">📚 Codex</span>
+  </nav>
+</div>
 
 <header>
   <div class="brand">
