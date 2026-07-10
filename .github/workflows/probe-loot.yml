@@ -1,0 +1,35 @@
+# Sonde temporaire : localise, dans la source du jeu, les modules qui
+# définissent les butins manquants (épiques héroïques, récolte, recettes)
+# pour étendre scripts/extract.mjs. À supprimer une fois l'info trouvée.
+name: Probe loot sources
+on:
+  push:
+    branches: [probe-loot-sources]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Télécharger la source du jeu (v0.23.0)
+        run: |
+          curl -sL "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/v0.23.0" -o wocc.tar.gz
+          mkdir game && tar xzf wocc.tar.gz -C game --strip-components=1
+      - name: Localiser les tables de butin
+        run: |
+          cd game
+          echo "=== ARBO src (ts, 3 niveaux) ==="
+          find src -maxdepth 3 -name "*.ts" | sort
+          echo ""
+          echo "=== REFS lunar_choir_leggings ==="
+          grep -rn "lunar_choir_leggings" src/ | cut -c1-200
+          echo ""
+          echo "=== FICHIERS parlant de loot/drop ==="
+          grep -rli "lootTable\|dropTable\|heroicLoot\|bossLoot\|epicLoot\|LOOT_" src/ | head -30
+          echo ""
+          echo "=== FICHIERS parlant du vendeur héroïque / marks ==="
+          grep -rli "heroic_mark\|heroicMark\|heroicVendor" src/ | head -15
+          echo ""
+          echo "=== FICHIERS parlant de recettes / craft ==="
+          grep -rli "recipe" src/ | head -15
+          echo ""
+          echo "=== FICHIERS parlant de gather / récolte ==="
+          grep -rli "gather\|harvest" src/ | head -15
