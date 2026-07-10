@@ -1,0 +1,167 @@
+{
+  "morthen": [
+    {
+      "itemId": "morthens_cryptforged_hauberk",
+      "chance": 0.34,
+      "rollGroup": "morthen_heroic"
+    },
+    {
+      "itemId": "shadowpulse_handwraps",
+      "chance": 0.33,
+      "rollGroup": "morthen_heroic"
+    },
+    {
+      "itemId": "bonechill_striders",
+      "chance": 0.33,
+      "rollGroup": "morthen_heroic"
+    },
+    {
+      "itemId": "cryptplate_helm",
+      "chance": 0.34,
+      "rollGroup": "morthen_heroic2"
+    },
+    {
+      "itemId": "shadowpulse_slippers",
+      "chance": 0.33,
+      "rollGroup": "morthen_heroic2"
+    },
+    {
+      "itemId": "bonechill_cord",
+      "chance": 0.33,
+      "rollGroup": "morthen_heroic2"
+    }
+  ],
+  "vael_the_mistcaller": [
+    {
+      "itemId": "mistcallers_fang",
+      "chance": 0.34,
+      "rollGroup": "vael_heroic"
+    },
+    {
+      "itemId": "tidebound_spaulders",
+      "chance": 0.33,
+      "rollGroup": "vael_heroic"
+    },
+    {
+      "itemId": "sash_of_the_sunken_court",
+      "chance": 0.33,
+      "rollGroup": "vael_heroic"
+    },
+    {
+      "itemId": "mistforged_pauldrons",
+      "chance": 0.34,
+      "rollGroup": "vael_heroic2"
+    },
+    {
+      "itemId": "tideguard_faceguard",
+      "chance": 0.33,
+      "rollGroup": "vael_heroic2"
+    },
+    {
+      "itemId": "sunken_court_mantle",
+      "chance": 0.33,
+      "rollGroup": "vael_heroic2"
+    }
+  ],
+  "ysolei": [
+    {
+      "itemId": "lunar_tide_greatstaff",
+      "chance": 0.34,
+      "rollGroup": "ysolei_heroic"
+    },
+    {
+      "itemId": "tidewoven_trousers",
+      "chance": 0.33,
+      "rollGroup": "ysolei_heroic"
+    },
+    {
+      "itemId": "choirmothers_casque",
+      "chance": 0.33,
+      "rollGroup": "ysolei_heroic"
+    },
+    {
+      "itemId": "lunar_choir_leggings",
+      "chance": 0.34,
+      "rollGroup": "ysolei_heroic2"
+    },
+    {
+      "itemId": "choir_blessed_spaulders",
+      "chance": 0.33,
+      "rollGroup": "ysolei_heroic2"
+    },
+    {
+      "itemId": "tideworn_warboots",
+      "chance": 0.33,
+      "rollGroup": "ysolei_heroic2"
+    }
+  ],
+  "korzul_the_gravewyrm": [
+    {
+      "itemId": "gravewyrm_cleaver",
+      "chance": 0.34,
+      "rollGroup": "korzul_heroic"
+    },
+    {
+      "itemId": "shroud_of_the_gravewyrm",
+      "chance": 0.33,
+      "rollGroup": "korzul_heroic"
+    },
+    {
+      "itemId": "sanctum_prowlers_grips",
+      "chance": 0.33,
+      "rollGroup": "korzul_heroic"
+    },
+    {
+      "itemId": "gravewyrm_claws",
+      "chance": 0.34,
+      "rollGroup": "korzul_heroic2"
+    },
+    {
+      "itemId": "gravescale_girdle",
+      "chance": 0.33,
+      "rollGroup": "korzul_heroic2"
+    },
+    {
+      "itemId": "wyrmchoir_handwraps",
+      "chance": 0.33,
+      "rollGroup": "korzul_heroic2"
+    }
+  ],
+  "nythraxis_scourge_of_thornpeak": [
+    {
+      "itemId": "scepter_of_the_deathless_court",
+      "chance": 0.25,
+      "rollGroup": "nythraxis_heroic"
+    },
+    {
+      "itemId": "deathless_warguard_legmail",
+      "chance": 0.25,
+      "rollGroup": "nythraxis_heroic"
+    },
+    {
+      "itemId": "soulrend_diadem",
+      "chance": 0.25,
+      "rollGroup": "nythraxis_heroic"
+    },
+    {
+      "itemId": "scourgehide_carapace",
+      "chance": 0.25,
+      "rollGroup": "nythraxis_heroic"
+    },
+    {
+      "itemId": "deathless_greatblade",
+      "chance": 0.34,
+      "rollGroup": "nythraxis_heroic2"
+    },
+    {
+      "itemId": "soulforged_warplate",
+      "chance": 0.33,
+      "rollGroup": "nythraxis_heroic2"
+    },
+    {
+      "itemId": "stormcallers_focus",
+      "chance": 0.33,
+      "rollGroup": "nythraxis_heroic2"
+    }
+  ]
+}
