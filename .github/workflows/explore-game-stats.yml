@@ -36,13 +36,10 @@ jobs:
           cd /tmp/game
           DEST="$GITHUB_WORKSPACE/.claude-scratch/stats-src"
           for f in \
-            src/sim/items.ts \
-            src/sim/item_level.ts \
-            src/sim/combat/damage.ts \
-            src/sim/combat/set_procs.ts \
-            src/sim/combat/equip_procs.ts \
-            src/sim/combat/heal.ts \
-            src/sim/content/classes.ts \
+            src/sim/equipment_rules.ts \
+            src/sim/entity.ts \
+            src/sim/types.ts \
+            src/sim/combat/auto_attack.ts \
           ; do
             [ -f "$f" ] || { echo "absent: $f"; continue; }
             mkdir -p "$DEST/$(dirname "$f")"
