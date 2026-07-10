@@ -67,6 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write   # pour relancer le déploiement Pages (étape finale)
     steps:
       - name: Checkout ce repo (la knowledge base)
         uses: actions/checkout@v4
@@ -89,6 +90,17 @@ jobs:
           git add data/
           git commit -m "chore: update knowledge base to ${{ needs.check.outputs.latest_tag }}"
           git push
+
+      # Un push fait avec le GITHUB_TOKEN ne déclenche PAS les workflows
+      # "on: push" (protection anti-récursion de GitHub) — le déploiement
+      # Pages ne suivait donc jamais les mises à jour automatiques et le
+      # site restait figé sur les anciennes données. On le déclenche
+      # explicitement : workflow_dispatch fait partie des exceptions
+      # autorisées avec le GITHUB_TOKEN.
+      - name: Publier le site avec les nouvelles données
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-pages.yml --ref main
 
 # -----------------------------------------------------------------------------
 # Note sur l'option 1 (déclenchement immédiat à la release, au lieu d'attendre
