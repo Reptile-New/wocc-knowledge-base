@@ -1,6 +1,4 @@
-# Sonde temporaire : localise, dans la source du jeu, les modules qui
-# définissent les butins manquants (épiques héroïques, récolte, recettes)
-# pour étendre scripts/extract.mjs. À supprimer une fois l'info trouvée.
+# Sonde temporaire (passe 2) : structure des modules de butin manquants.
 name: Probe loot sources
 on:
   push:
@@ -13,23 +11,30 @@ jobs:
         run: |
           curl -sL "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/v0.23.0" -o wocc.tar.gz
           mkdir game && tar xzf wocc.tar.gz -C game --strip-components=1
-      - name: Localiser les tables de butin
+      - name: Structure des modules de butin
         run: |
           cd game
-          echo "=== ARBO src (ts, 3 niveaux) ==="
-          find src -maxdepth 3 -name "*.ts" | sort
+          echo "=== EXPORTS heroic_loot.ts ==="
+          grep -n "^export\|^const\|rollGroup:" src/sim/content/heroic_loot.ts | head -40
           echo ""
-          echo "=== REFS lunar_choir_leggings ==="
-          grep -rn "lunar_choir_leggings" src/ | cut -c1-200
+          echo "=== heroic_loot.ts lignes 380-470 ==="
+          sed -n '380,470p' src/sim/content/heroic_loot.ts
           echo ""
-          echo "=== FICHIERS parlant de loot/drop ==="
-          grep -rli "lootTable\|dropTable\|heroicLoot\|bossLoot\|epicLoot\|LOOT_" src/ | head -30
+          echo "=== ysolei : qui est-ce ? ==="
+          grep -rn "ysolei" src/sim/data.ts src/sim/content/*.ts 2>/dev/null | grep -v heroic_loot | head -10
           echo ""
-          echo "=== FICHIERS parlant du vendeur héroïque / marks ==="
-          grep -rli "heroic_mark\|heroicMark\|heroicVendor" src/ | head -15
+          echo "=== EXPORTS drowned_litany_loot.ts + tête ==="
+          grep -n "^export" src/sim/content/delves/drowned_litany_loot.ts
+          head -50 src/sim/content/delves/drowned_litany_loot.ts
           echo ""
-          echo "=== FICHIERS parlant de recettes / craft ==="
-          grep -rli "recipe" src/ | head -15
+          echo "=== EXPORTS gathering.ts + extraits loot ==="
+          grep -n "^export" src/sim/professions/gathering.ts | head -20
+          grep -n "itemId" src/sim/professions/gathering.ts | head -15
           echo ""
-          echo "=== FICHIERS parlant de gather / récolte ==="
-          grep -rli "gather\|harvest" src/ | head -15
+          echo "=== EXPORTS zone3.ts (contient du loot ?) ==="
+          grep -n "^export" src/sim/content/zone3.ts | head
+          grep -n "data.ts importe zone3 ?" || grep -n "zone3\|heroic_loot\|drowned_litany" src/sim/data.ts | head
+          echo ""
+          echo "=== recettes de craft : où ? ==="
+          find src/sim/professions -name "*.ts" | head -20
+          grep -rn "^export" src/sim/professions/recipes.ts 2>/dev/null | head -10
