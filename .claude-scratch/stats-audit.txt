@@ -1,0 +1,94 @@
+=== conversions de ratings / stats ===
+src/sim/content/item_sets.ts:27:export const SET_HASTE_3PC_RATING = 150; // -> 15% haste at 10 rating = 1%
+src/sim/content/item_sets.ts:28:export const SET_CRIT_3PC_RATING = 20; // -> +2% crit at 10 rating = 1%
+src/sim/content/item_sets.ts:75:    effect: { agi: 15, critRating: SET_CRIT_3PC_RATING },
+src/sim/content/item_sets.ts:128:    effect: { str: 15, sta: 15, hasteRating: SET_HASTE_3PC_RATING },
+src/sim/content/item_sets.ts:159:    effect: { agi: 15, critRating: SET_CRIT_3PC_RATING, hasteRating: SET_HASTE_3PC_RATING },
+src/sim/content/item_sets.ts:193:    effect: { int: 15, spi: 15, hasteRating: SET_HASTE_3PC_RATING },
+src/sim/content/item_sets.ts:218:    effect: { hasteRating: SET_HASTE_3PC_RATING },
+src/sim/content/item_sets.ts:279:  critRating: number;
+src/sim/content/item_sets.ts:281:  hasteRating: number;
+src/sim/content/item_sets.ts:297:    critRating: 0,
+src/sim/content/item_sets.ts:299:    hasteRating: 0,
+src/sim/content/item_sets.ts:326:      out.critRating += e.critRating ?? 0;
+src/sim/content/item_sets.ts:328:      out.hasteRating += e.hasteRating ?? 0;
+src/sim/types.ts:40:export const HASTE_RATING_PER_PCT = 10; // 10 haste rating = 1% faster
+src/sim/types.ts:41:export const CRIT_RATING_PER_PCT = 10; // 10 crit rating = +1% crit chance
+src/sim/types.ts:43:  return rating / (HASTE_RATING_PER_PCT * 100);
+src/sim/types.ts:46:  return rating / (CRIT_RATING_PER_PCT * 100);
+src/sim/types.ts:383:  critRating?: number;
+src/sim/types.ts:384:  hasteRating?: number;
+src/sim/types.ts:458:  critRating?: number; // crit rating (converted to % in recalcPlayerStats)
+src/sim/types.ts:463:  hasteRating?: number; // haste rating (converted to % in recalcPlayerStats)
+src/sim/types.ts:1738:  critRating: number; // accumulated crit rating from gear + set bonuses
+src/sim/types.ts:1739:  hasteRating: number; // accumulated haste rating from gear + set bonuses
+src/sim/entity.ts:48:    critRating: 0,
+src/sim/entity.ts:49:    hasteRating: 0,
+src/sim/entity.ts:215:    bonusCritRating += item.critRating ?? 0;
+src/sim/entity.ts:216:    bonusHasteRating += item.hasteRating ?? 0;
+src/sim/entity.ts:384:  e.critRating = bonusCritRating + setEff.critRating;
+src/sim/entity.ts:385:  e.hasteRating = bonusHasteRating + setEff.hasteRating;
+src/sim/entity.ts:386:  const hasteFrac = setEff.haste + hasteFractionFromRating(e.hasteRating);
+src/sim/entity.ts:400:    critFractionFromRating(e.critRating);
+src/sim/social/arena.ts:44:export const ARENA_BASE_RATING = 1500; // every character starts here, unranked
+src/sim/social/arena.ts:45:const ARENA_MIN_RATING = 100; // a rating floor so a losing streak can't go absurd
+src/sim/social/arena.ts:404:  return meta ? arenaStanding(meta, format).rating : ARENA_BASE_RATING;
+src/sim/social/arena.ts:414:  const after = Math.max(ARENA_MIN_RATING, before + delta);
+src/sim/social/arena.ts:428:  if (pids.length === 0) return ARENA_BASE_RATING;
+src/sim/sim.ts:478:// Coliseum 1v1 arena tuning (ARENA_COUNTDOWN/RETURN_DELAY/MAX_DURATION/BASE_RATING/
+src/sim/sim.ts:479:// MIN_RATING/K_FACTOR) + eloDelta moved to social/arena.ts (ARENA_BASE_RATING is
+src/sim/sim.ts:1656:      rating: savedState?.arena1v1Rating ?? savedState?.arenaRating ?? arenaMod.ARENA_BASE_RATING,
+src/sim/sim.ts:1661:      rating: savedState?.arena2v2Rating ?? arenaMod.ARENA_BASE_RATING,
+
+=== restrictions d'armure / équipement ===
+src/sim/content/zone3.ts:2122:    armorType: 'cloth',
+src/sim/content/zone3.ts:2145:    armorType: 'leather',
+src/sim/content/zone3.ts:2157:    armorType: 'leather',
+src/sim/content/zone3.ts:2174:    armorType: 'mail',
+src/sim/content/zone3.ts:2185:    armorType: 'cloth',
+src/sim/content/zone3.ts:2196:    armorType: 'leather',
+src/sim/content/zone3.ts:2240:    armorType: 'mail',
+src/sim/content/zone3.ts:2273:    armorType: 'mail',
+src/sim/content/zone3.ts:2285:    armorType: 'mail',
+src/sim/content/zone3.ts:2303:    armorType: 'mail',
+src/sim/content/zone3.ts:2393:    armorType: 'cloth',
+src/sim/content/zone3.ts:2403:    armorType: 'cloth',
+src/sim/content/zone3.ts:2413:    armorType: 'mail',
+src/sim/content/zone3.ts:2435:    armorType: 'leather',
+src/sim/content/zone3.ts:2446:    armorType: 'mail',
+src/sim/content/zone3.ts:2457:    armorType: 'cloth',
+src/sim/content/zone3.ts:2468:    armorType: 'leather',
+src/sim/content/zone3.ts:2479:    armorType: 'leather',
+src/sim/content/zone3.ts:2490:    armorType: 'mail',
+src/sim/content/zone3.ts:2501:    armorType: 'cloth',
+src/sim/content/zone3.ts:2513:    armorType: 'mail',
+src/sim/content/zone3.ts:2525:    armorType: 'cloth',
+src/sim/content/zone3.ts:2537:    armorType: 'leather',
+src/sim/content/zone3.ts:2549:    armorType: 'mail',
+src/sim/content/zone3.ts:2561:    armorType: 'mail',
+src/sim/content/zone3.ts:2573:    armorType: 'cloth',
+src/sim/content/zone3.ts:2585:    armorType: 'cloth',
+src/sim/content/zone3.ts:2597:    armorType: 'leather',
+src/sim/content/zone3.ts:2609:    armorType: 'leather',
+src/sim/content/zone3.ts:2659:    armorType: 'mail',
+src/sim/content/zone3.ts:2671:    armorType: 'cloth',
+src/sim/content/zone3.ts:2683:    armorType: 'leather',
+src/sim/content/zone3.ts:2698:    armorType: 'mail',
+src/sim/content/zone3.ts:2710:    armorType: 'leather',
+src/sim/content/zone3.ts:2722:    armorType: 'cloth',
+src/sim/content/zone3.ts:2734:    armorType: 'mail',
+src/sim/content/zone3.ts:2748:    armorType: 'mail',
+src/sim/content/zone3.ts:2760:    armorType: 'leather',
+src/sim/content/zone3.ts:2772:    armorType: 'cloth',
+src/sim/content/zone3.ts:2784:    armorType: 'mail',
+
+=== emplacements d'équipement ===
+src/sim/types.ts:308:  | 'neck'
+src/sim/types.ts:320:export const EQUIP_SLOTS: readonly EquipSlot[] = [
+src/sim/types.ts:323:  'neck',
+src/sim/types.ts:334:// What an ITEM declares as its slot. Rings declare the slot KIND ('ring'); the
+src/sim/types.ts:338:export type ItemSlot = EquipSlot | 'ring';
+src/sim/types.ts:483:  slot: Exclude<EquipSlot, 'mainhand' | 'neck' | 'ring1' | 'ring2'>;
+src/sim/types.ts:491:// when set). Rings declare slot 'ring'; see resolveEquipSlot.
+src/sim/types.ts:494:  slot: 'neck' | 'ring';
+src/sim/items.ts:80:  // Rings declare slot 'ring'; the resolver picks ring1/ring2 (empty-first).
