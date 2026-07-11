@@ -2624,6 +2624,7 @@
     "elite": true,
     "canSwim": false,
     "phasesThroughObstacles": true,
+    "quietMechanics": true,
     "ccImmune": true,
     "slowImmune": true,
     "hpBase": 4000,
@@ -2697,7 +2698,7 @@
       "enrage": "The peak breaks, and the sky falls with it!"
     },
     "battleYells": {
-      "every": 60,
+      "every": 45,
       "range": 350,
       "lines": [
         "THUNDER ANSWERS! The peak has teeth again!",

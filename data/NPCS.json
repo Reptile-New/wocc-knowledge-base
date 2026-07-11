@@ -160,6 +160,7 @@
     "facing": -2.14,
     "color": 10502144,
     "questIds": [
+      "q_prof_intro",
       "q_mine"
     ],
     "greeting": "Whole dig's crawling with those dirt-caked vermin!"

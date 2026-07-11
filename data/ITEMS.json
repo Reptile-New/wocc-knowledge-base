@@ -897,7 +897,8 @@
     "kind": "tool",
     "quality": "rare",
     "stackSize": 20,
-    "sellValue": 0
+    "sellValue": 0,
+    "soulbound": true
   },
   "raw_mirror_trout": {
     "id": "raw_mirror_trout",
@@ -1561,6 +1562,13 @@
     "sellValue": 0,
     "questId": "q_greyjaw"
   },
+  "chunk_of_ore": {
+    "id": "chunk_of_ore",
+    "name": "Chunk of Ore",
+    "kind": "quest",
+    "sellValue": 0,
+    "questId": "q_prof_intro"
+  },
   "weathered_ledger_page": {
     "id": "weathered_ledger_page",
     "name": "Weathered Ledger Page",
@@ -1695,6 +1703,27 @@
     "kind": "junk",
     "quality": "poor",
     "sellValue": 3
+  },
+  "arcane_dust": {
+    "id": "arcane_dust",
+    "name": "Arcane Dust",
+    "kind": "junk",
+    "quality": "common",
+    "sellValue": 6
+  },
+  "arcane_essence": {
+    "id": "arcane_essence",
+    "name": "Arcane Essence",
+    "kind": "junk",
+    "quality": "uncommon",
+    "sellValue": 18
+  },
+  "arcane_shard": {
+    "id": "arcane_shard",
+    "name": "Arcane Shard",
+    "kind": "junk",
+    "quality": "rare",
+    "sellValue": 55
   },
   "roadwardens_helm": {
     "id": "roadwardens_helm",
@@ -6098,8 +6127,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 24,
-      "max": 40,
+      "min": 22,
+      "max": 36,
       "speed": 1.8
     },
     "stats": {
@@ -6221,8 +6250,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 30,
-      "max": 50,
+      "min": 36,
+      "max": 60,
       "speed": 3
     },
     "stats": {
@@ -6343,8 +6372,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 26,
-      "max": 44,
+      "min": 31,
+      "max": 52,
       "speed": 2.6
     },
     "stats": {
@@ -6466,8 +6495,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 22,
-      "max": 38,
+      "min": 28,
+      "max": 49,
       "speed": 2.4
     },
     "stats": {
@@ -6551,8 +6580,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 40,
-      "max": 62,
+      "min": 43,
+      "max": 66,
       "speed": 3.4
     },
     "stats": {
@@ -6593,8 +6622,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 20,
-      "max": 36,
+      "min": 29,
+      "max": 51,
       "speed": 2.5
     },
     "stats": {
@@ -6606,5 +6635,1638 @@
       "paladin",
       "shaman"
     ]
+  },
+  "heroic_moggers_shiv": {
+    "id": "heroic_moggers_shiv",
+    "name": "Mogger's Shiv",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 17,
+      "max": 31,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 850,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "moggers_shiv"
+  },
+  "heroic_cryptstalker_jerkin": {
+    "id": "heroic_cryptstalker_jerkin",
+    "name": "Gravestalker Jerkin",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 65,
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 700,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "cryptstalker_jerkin"
+  },
+  "heroic_moggers_copper_cudgel": {
+    "id": "heroic_moggers_copper_cudgel",
+    "name": "Mogger's Copper Cudgel",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 28,
+      "max": 46,
+      "speed": 2.6
+    },
+    "stats": {
+      "str": 8,
+      "sta": 6
+    },
+    "sellValue": 850,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "moggers_copper_cudgel"
+  },
+  "heroic_hollowbone_hauberk": {
+    "id": "heroic_hollowbone_hauberk",
+    "name": "Hollowbone Hauberk",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 105,
+      "str": 7,
+      "sta": 7
+    },
+    "sellValue": 700,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "hollowbone_hauberk"
+  },
+  "heroic_verlans_oathblade": {
+    "id": "heroic_verlans_oathblade",
+    "name": "Verlan's Oathblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 27,
+      "max": 44,
+      "speed": 2.5
+    },
+    "stats": {
+      "str": 9,
+      "sta": 5
+    },
+    "sellValue": 880,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "verlans_oathblade"
+  },
+  "heroic_hollow_vigil_staff": {
+    "id": "heroic_hollow_vigil_staff",
+    "name": "Staff of the Hollow Vigil",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 32,
+      "max": 53,
+      "speed": 3
+    },
+    "stats": {
+      "int": 10,
+      "spi": 4
+    },
+    "sellValue": 880,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "hollow_vigil_staff"
+  },
+  "heroic_gravewardens_shiv": {
+    "id": "heroic_gravewardens_shiv",
+    "name": "Gravewarden's Shiv",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 19,
+      "max": 30,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 880,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "gravewardens_shiv"
+  },
+  "heroic_maldrecs_soulbinder": {
+    "id": "heroic_maldrecs_soulbinder",
+    "name": "Maldrec's Soulbinder",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 32,
+      "max": 53,
+      "speed": 3
+    },
+    "stats": {
+      "int": 8,
+      "spi": 6
+    },
+    "sellValue": 850,
+    "heroicOf": "maldrecs_soulbinder"
+  },
+  "heroic_gravewoven_raiment": {
+    "id": "heroic_gravewoven_raiment",
+    "name": "Gravewoven Raiment",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 38,
+      "int": 7,
+      "spi": 7
+    },
+    "sellValue": 700,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "gravewoven_raiment"
+  },
+  "heroic_fen_reaver_glaive": {
+    "id": "heroic_fen_reaver_glaive",
+    "name": "Fen Reaver Glaive",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 26,
+      "max": 42,
+      "speed": 2.4
+    },
+    "stats": {
+      "str": 9,
+      "sta": 5
+    },
+    "sellValue": 1400,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "fen_reaver_glaive"
+  },
+  "heroic_mirejaw_oracle_staff": {
+    "id": "heroic_mirejaw_oracle_staff",
+    "name": "Mirejaw Oracle Staff",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 32,
+      "max": 53,
+      "speed": 3
+    },
+    "stats": {
+      "int": 9,
+      "spi": 5
+    },
+    "sellValue": 1400,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "mirejaw_oracle_staff"
+  },
+  "heroic_tidereaver_gaff": {
+    "id": "heroic_tidereaver_gaff",
+    "name": "Tidereaver Gaff",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 27,
+      "max": 44,
+      "speed": 2.5
+    },
+    "stats": {
+      "str": 8,
+      "sta": 6
+    },
+    "sellValue": 1400,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "tidereaver_gaff"
+  },
+  "heroic_sloomtooth_tidefang": {
+    "id": "heroic_sloomtooth_tidefang",
+    "name": "Sloomtooth's Tidefang",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 18,
+      "max": 30,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 1400,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "sloomtooth_tidefang"
+  },
+  "heroic_drowned_tide_scepter": {
+    "id": "heroic_drowned_tide_scepter",
+    "name": "Drowned Tide Scepter",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 31,
+      "max": 54,
+      "speed": 3
+    },
+    "stats": {
+      "int": 9,
+      "spi": 5
+    },
+    "sellValue": 1400,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "drowned_tide_scepter"
+  },
+  "heroic_nhalias_dirgeblade": {
+    "id": "heroic_nhalias_dirgeblade",
+    "name": "Nhalia's Dirgeblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 19,
+      "max": 30,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 1400,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "nhalias_dirgeblade"
+  },
+  "heroic_cragmaw_huntcord": {
+    "id": "heroic_cragmaw_huntcord",
+    "name": "Cragmaw's Huntcord",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "waist",
+    "quality": "rare",
+    "stats": {
+      "armor": 44,
+      "agi": 6,
+      "sta": 4
+    },
+    "sellValue": 340,
+    "heroicOf": "cragmaw_huntcord"
+  },
+  "heroic_cragmaw_prowlboots": {
+    "id": "heroic_cragmaw_prowlboots",
+    "name": "Cragmaw Prowlboots",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 58,
+      "agi": 6,
+      "sta": 3
+    },
+    "sellValue": 750,
+    "heroicOf": "cragmaw_prowlboots"
+  },
+  "heroic_deathlord_sabatons": {
+    "id": "heroic_deathlord_sabatons",
+    "set": "deathlord",
+    "name": "Barrowlord Sabatons",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "feet",
+    "quality": "epic",
+    "stats": {
+      "armor": 205,
+      "str": 7,
+      "sta": 8
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "deathlord_sabatons"
+  },
+  "heroic_gutripper_shiv": {
+    "id": "heroic_gutripper_shiv",
+    "name": "Gutripper Shiv",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 19,
+      "max": 30,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 10,
+      "sta": 4
+    },
+    "sellValue": 2000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "gutripper_shiv"
+  },
+  "heroic_drogmars_skullcleaver": {
+    "id": "heroic_drogmars_skullcleaver",
+    "name": "Drogmar's Skullcleaver",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 28,
+      "max": 45,
+      "speed": 2.6
+    },
+    "stats": {
+      "str": 9,
+      "sta": 5
+    },
+    "sellValue": 2000,
+    "requiredClass": [
+      "warrior",
+      "rogue",
+      "hunter",
+      "shaman",
+      "paladin"
+    ],
+    "heroicOf": "drogmars_skullcleaver"
+  },
+  "heroic_brutoks_maul": {
+    "id": "heroic_brutoks_maul",
+    "name": "Brutok's Maul",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 30,
+      "max": 47,
+      "speed": 2.7
+    },
+    "stats": {
+      "str": 10,
+      "sta": 4
+    },
+    "sellValue": 2000,
+    "requiredClass": [
+      "warrior",
+      "rogue",
+      "hunter",
+      "shaman",
+      "paladin"
+    ],
+    "heroicOf": "brutoks_maul"
+  },
+  "heroic_crag_warden_cudgel": {
+    "id": "heroic_crag_warden_cudgel",
+    "name": "Crag Warden Cudgel",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 33,
+      "max": 52,
+      "speed": 3
+    },
+    "stats": {
+      "int": 9,
+      "spi": 5
+    },
+    "sellValue": 2000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
+    ],
+    "heroicOf": "crag_warden_cudgel"
+  },
+  "heroic_skullsplitter_dirk": {
+    "id": "heroic_skullsplitter_dirk",
+    "name": "Skullsplitter Dirk",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 19,
+      "max": 29,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 10,
+      "sta": 4
+    },
+    "sellValue": 2000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "skullsplitter_dirk"
+  },
+  "heroic_necromancers_legwraps": {
+    "id": "heroic_necromancers_legwraps",
+    "set": "necromancers",
+    "name": "Mournweave Legwraps",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "legs",
+    "quality": "epic",
+    "stats": {
+      "armor": 86,
+      "int": 13,
+      "spi": 7
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "necromancers_legwraps"
+  },
+  "heroic_emberwing_legguards": {
+    "id": "heroic_emberwing_legguards",
+    "name": "Emberwing Legguards",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "rare",
+    "stats": {
+      "armor": 120,
+      "str": 5,
+      "sta": 8
+    },
+    "sellValue": 2200,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "emberwing_legguards"
+  },
+  "heroic_emberfang_warblade": {
+    "id": "heroic_emberfang_warblade",
+    "name": "Emberfang Warblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 28,
+      "max": 43,
+      "speed": 2.5
+    },
+    "stats": {
+      "str": 10,
+      "sta": 4
+    },
+    "sellValue": 2400,
+    "requiredClass": [
+      "warrior",
+      "rogue",
+      "hunter",
+      "shaman",
+      "paladin"
+    ],
+    "heroicOf": "emberfang_warblade"
+  },
+  "heroic_crownforged_gauntlets": {
+    "id": "heroic_crownforged_gauntlets",
+    "name": "Bonewrought Gauntlets",
+    "kind": "armor",
+    "slot": "gloves",
+    "armorType": "mail",
+    "quality": "epic",
+    "stats": {
+      "armor": 180,
+      "str": 6,
+      "sta": 8
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "warrior",
+      "paladin"
+    ],
+    "set": "crownforged",
+    "heroicOf": "crownforged_gauntlets"
+  },
+  "heroic_nighttalon_grips": {
+    "id": "heroic_nighttalon_grips",
+    "name": "Direfang Grips",
+    "kind": "armor",
+    "slot": "gloves",
+    "armorType": "leather",
+    "quality": "epic",
+    "stats": {
+      "armor": 110,
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "rogue",
+      "hunter",
+      "druid"
+    ],
+    "set": "nighttalon",
+    "heroicOf": "nighttalon_grips"
+  },
+  "heroic_soulflame_gloves": {
+    "id": "heroic_soulflame_gloves",
+    "name": "Wraithfire Gloves",
+    "kind": "armor",
+    "slot": "gloves",
+    "armorType": "cloth",
+    "quality": "epic",
+    "stats": {
+      "armor": 60,
+      "sta": 5,
+      "int": 9
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "set": "soulflame",
+    "heroicOf": "soulflame_gloves"
+  },
+  "heroic_stormcallers_handguards": {
+    "id": "heroic_stormcallers_handguards",
+    "name": "Galecall Handguards",
+    "kind": "armor",
+    "slot": "gloves",
+    "armorType": "mail",
+    "quality": "epic",
+    "stats": {
+      "armor": 130,
+      "sta": 5,
+      "int": 9
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "shaman"
+    ],
+    "set": "stormcallers",
+    "heroicOf": "stormcallers_handguards"
+  },
+  "heroic_crownforged_girdle": {
+    "id": "heroic_crownforged_girdle",
+    "name": "Bonewrought Girdle",
+    "kind": "armor",
+    "slot": "waist",
+    "armorType": "mail",
+    "quality": "epic",
+    "stats": {
+      "armor": 150,
+      "str": 8,
+      "sta": 6
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "warrior",
+      "paladin"
+    ],
+    "set": "crownforged",
+    "heroicOf": "crownforged_girdle"
+  },
+  "heroic_nighttalon_waistband": {
+    "id": "heroic_nighttalon_waistband",
+    "name": "Direfang Waistband",
+    "kind": "armor",
+    "slot": "waist",
+    "armorType": "leather",
+    "quality": "epic",
+    "stats": {
+      "armor": 95,
+      "agi": 9,
+      "sta": 5
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "rogue",
+      "hunter",
+      "druid"
+    ],
+    "set": "nighttalon",
+    "heroicOf": "nighttalon_waistband"
+  },
+  "heroic_soulflame_cord": {
+    "id": "heroic_soulflame_cord",
+    "name": "Wraithfire Cord",
+    "kind": "armor",
+    "slot": "waist",
+    "armorType": "cloth",
+    "quality": "epic",
+    "stats": {
+      "armor": 50,
+      "int": 9,
+      "spi": 5
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "set": "soulflame",
+    "heroicOf": "soulflame_cord"
+  },
+  "heroic_stormcallers_waistguard": {
+    "id": "heroic_stormcallers_waistguard",
+    "name": "Galecall Waistguard",
+    "kind": "armor",
+    "slot": "waist",
+    "armorType": "mail",
+    "quality": "epic",
+    "stats": {
+      "armor": 110,
+      "sta": 5,
+      "int": 9
+    },
+    "sellValue": 3600,
+    "requiredClass": [
+      "shaman"
+    ],
+    "set": "stormcallers",
+    "heroicOf": "stormcallers_waistguard"
+  },
+  "heroic_tideguard_greaves": {
+    "id": "heroic_tideguard_greaves",
+    "name": "Tideguard Greaves",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "rare",
+    "stats": {
+      "armor": 125,
+      "str": 5,
+      "sta": 8
+    },
+    "sellValue": 1100,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "tideguard_greaves"
+  },
+  "heroic_tideguard_sabatons": {
+    "id": "heroic_tideguard_sabatons",
+    "name": "Tideguard Sabatons",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 105,
+      "str": 3,
+      "sta": 6
+    },
+    "sellValue": 1100,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "tideguard_sabatons"
+  },
+  "heroic_eelscale_leggings": {
+    "id": "heroic_eelscale_leggings",
+    "name": "Eelscale Leggings",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "legs",
+    "quality": "rare",
+    "stats": {
+      "armor": 86,
+      "agi": 9,
+      "sta": 4
+    },
+    "sellValue": 1100,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "eelscale_leggings"
+  },
+  "heroic_tidescale_vest": {
+    "id": "heroic_tidescale_vest",
+    "name": "Tidescale Vest",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 90,
+      "agi": 6,
+      "sta": 8
+    },
+    "sellValue": 1100,
+    "heroicOf": "tidescale_vest"
+  },
+  "heroic_drowned_prayer_leggings": {
+    "id": "heroic_drowned_prayer_leggings",
+    "name": "Drowned Prayer Leggings",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "legs",
+    "quality": "rare",
+    "stats": {
+      "armor": 48,
+      "int": 8,
+      "spi": 5
+    },
+    "sellValue": 1100,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "drowned_prayer_leggings"
+  },
+  "heroic_drowned_prayer_sandals": {
+    "id": "heroic_drowned_prayer_sandals",
+    "name": "Drowned Prayer Sandals",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 42,
+      "int": 6,
+      "spi": 3
+    },
+    "sellValue": 1100,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "drowned_prayer_sandals"
+  },
+  "heroic_eelscale_treads": {
+    "id": "heroic_eelscale_treads",
+    "name": "Eelscale Treads",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 72,
+      "agi": 6,
+      "sta": 3
+    },
+    "sellValue": 1100,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "eelscale_treads"
+  },
+  "heroic_boundstone_helm": {
+    "id": "heroic_boundstone_helm",
+    "set": "boundstone_vanguard",
+    "name": "Boundstone Helm",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "helmet",
+    "quality": "rare",
+    "stats": {
+      "armor": 105,
+      "str": 5,
+      "sta": 7
+    },
+    "sellValue": 460,
+    "heroicOf": "boundstone_helm"
+  },
+  "heroic_boundstone_girdle": {
+    "id": "heroic_boundstone_girdle",
+    "set": "boundstone_vanguard",
+    "name": "Boundstone Girdle",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "waist",
+    "quality": "rare",
+    "stats": {
+      "armor": 60,
+      "str": 3,
+      "sta": 7
+    },
+    "sellValue": 340,
+    "heroicOf": "boundstone_girdle"
+  },
+  "heroic_gravewyrm_mantle": {
+    "id": "heroic_gravewyrm_mantle",
+    "name": "Gravewyrm Mantle",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "shoulder",
+    "quality": "rare",
+    "stats": {
+      "armor": 82,
+      "agi": 8,
+      "sta": 3
+    },
+    "sellValue": 410,
+    "heroicOf": "gravewyrm_mantle"
+  },
+  "heroic_gravewyrm_gauntlets": {
+    "id": "heroic_gravewyrm_gauntlets",
+    "set": "boundstone_vanguard",
+    "name": "Gravewyrm Gauntlets",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "gloves",
+    "quality": "rare",
+    "stats": {
+      "armor": 72,
+      "str": 6,
+      "sta": 4
+    },
+    "sellValue": 390,
+    "heroicOf": "gravewyrm_gauntlets"
+  },
+  "heroic_korgaths_chainwraps": {
+    "id": "heroic_korgaths_chainwraps",
+    "name": "Korgath's Chainwraps",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "legs",
+    "quality": "rare",
+    "stats": {
+      "armor": 125,
+      "sta": 13
+    },
+    "sellValue": 2200,
+    "heroicOf": "korgaths_chainwraps"
+  },
+  "heroic_staff_of_velkhar": {
+    "id": "heroic_staff_of_velkhar",
+    "name": "Staff of Velkhar",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "rare",
+    "weapon": {
+      "min": 33,
+      "max": 52,
+      "speed": 3
+    },
+    "stats": {
+      "int": 10,
+      "spi": 4
+    },
+    "sellValue": 2500,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
+    ],
+    "heroicOf": "staff_of_velkhar"
+  },
+  "heroic_shadowmeld_tunic": {
+    "id": "heroic_shadowmeld_tunic",
+    "name": "Nightveil Tunic",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 130,
+      "agi": 10,
+      "sta": 4
+    },
+    "sellValue": 2500,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "shadowmeld_tunic"
+  },
+  "heroic_wyrmcult_grand_robe": {
+    "id": "heroic_wyrmcult_grand_robe",
+    "name": "Wyrmcult Grand Robe",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 75,
+      "int": 10,
+      "spi": 4
+    },
+    "sellValue": 3000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "wyrmcult_grand_robe"
+  },
+  "heroic_gravewyrm_sabatons": {
+    "id": "heroic_gravewyrm_sabatons",
+    "name": "Gravewyrm Sabatons",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 145,
+      "str": 5,
+      "sta": 4
+    },
+    "sellValue": 3200,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "gravewyrm_sabatons"
+  },
+  "heroic_wyrmcult_soulsteps": {
+    "id": "heroic_wyrmcult_soulsteps",
+    "name": "Wyrmcult Soulsteps",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 68,
+      "int": 6,
+      "spi": 3
+    },
+    "sellValue": 3200,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "wyrmcult_soulsteps"
+  },
+  "heroic_wyrmshadow_treads": {
+    "id": "heroic_wyrmshadow_treads",
+    "set": "wyrmshadow",
+    "name": "Nightfang Treads",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "feet",
+    "quality": "epic",
+    "stats": {
+      "armor": 145,
+      "agi": 8,
+      "sta": 5
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "wyrmshadow_treads"
+  },
+  "heroic_boneguard_breastplate": {
+    "id": "heroic_boneguard_breastplate",
+    "name": "Boneguard Breastplate",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 210,
+      "str": 5,
+      "sta": 9
+    },
+    "sellValue": 2500,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "boneguard_breastplate"
+  },
+  "heroic_gravewyrm_stalkers_treads": {
+    "id": "heroic_gravewyrm_stalkers_treads",
+    "name": "Gravewyrm Stalker's Treads",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 105,
+      "agi": 6,
+      "sta": 3
+    },
+    "sellValue": 3200,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "gravewyrm_stalkers_treads"
+  },
+  "heroic_deathlord_legguards": {
+    "id": "heroic_deathlord_legguards",
+    "set": "deathlord",
+    "name": "Barrowlord Legguards",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "epic",
+    "stats": {
+      "armor": 240,
+      "str": 9,
+      "sta": 9
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "deathlord_legguards"
+  },
+  "heroic_necromancers_soulsteps": {
+    "id": "heroic_necromancers_soulsteps",
+    "set": "necromancers",
+    "name": "Mournweave Soulsteps",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "feet",
+    "quality": "epic",
+    "stats": {
+      "armor": 80,
+      "int": 9,
+      "spi": 4
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "necromancers_soulsteps"
+  },
+  "heroic_wyrmshadow_legguards": {
+    "id": "heroic_wyrmshadow_legguards",
+    "set": "wyrmshadow",
+    "name": "Nightfang Legguards",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "legs",
+    "quality": "epic",
+    "stats": {
+      "armor": 155,
+      "agi": 11,
+      "sta": 7
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "wyrmshadow_legguards"
+  },
+  "heroic_wyrmfang_greatblade": {
+    "id": "heroic_wyrmfang_greatblade",
+    "name": "Wyrmfang Greatblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "epic",
+    "weapon": {
+      "min": 30,
+      "max": 48,
+      "speed": 2.6
+    },
+    "stats": {
+      "str": 12,
+      "sta": 8
+    },
+    "sellValue": 8000,
+    "requiredClass": [
+      "warrior",
+      "rogue",
+      "hunter",
+      "shaman",
+      "paladin"
+    ],
+    "heroicOf": "wyrmfang_greatblade"
+  },
+  "heroic_staff_of_the_gravewyrm": {
+    "id": "heroic_staff_of_the_gravewyrm",
+    "name": "Staff of the Gravewyrm",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "epic",
+    "weapon": {
+      "min": 35,
+      "max": 56,
+      "speed": 3
+    },
+    "stats": {
+      "int": 13,
+      "spi": 7
+    },
+    "sellValue": 8000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
+    ],
+    "heroicOf": "staff_of_the_gravewyrm"
+  },
+  "heroic_fang_of_korzul": {
+    "id": "heroic_fang_of_korzul",
+    "name": "Fang of Korzul",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "epic",
+    "weapon": {
+      "min": 20,
+      "max": 31,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 13,
+      "sta": 7
+    },
+    "sellValue": 8000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "fang_of_korzul"
+  },
+  "heroic_deathlord_warplate": {
+    "id": "heroic_deathlord_warplate",
+    "set": "deathlord",
+    "name": "Barrowlord Warplate",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "epic",
+    "stats": {
+      "armor": 270,
+      "str": 9,
+      "sta": 11
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "deathlord_warplate"
+  },
+  "heroic_necromancers_starshroud": {
+    "id": "heroic_necromancers_starshroud",
+    "set": "necromancers",
+    "name": "Mournweave Starshroud",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "chest",
+    "quality": "epic",
+    "stats": {
+      "armor": 92,
+      "int": 12,
+      "spi": 8
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "necromancers_starshroud"
+  },
+  "heroic_wyrmshadow_harness": {
+    "id": "heroic_wyrmshadow_harness",
+    "set": "wyrmshadow",
+    "name": "Nightfang Harness",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "epic",
+    "stats": {
+      "armor": 170,
+      "agi": 13,
+      "sta": 7
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "wyrmshadow_harness"
+  },
+  "heroic_deathlords_dread_visage": {
+    "id": "heroic_deathlords_dread_visage",
+    "set": "deathlord",
+    "name": "Barrowlord Dread Visage",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "helmet",
+    "quality": "epic",
+    "stats": {
+      "armor": 245,
+      "str": 8,
+      "sta": 9
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "deathlords_dread_visage"
+  },
+  "heroic_necromancers_soulspire_mantle": {
+    "id": "heroic_necromancers_soulspire_mantle",
+    "set": "necromancers",
+    "name": "Mournweave Soulspire Mantle",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "shoulder",
+    "quality": "epic",
+    "stats": {
+      "armor": 70,
+      "int": 10,
+      "spi": 5
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "necromancers_soulspire_mantle"
+  },
+  "heroic_wyrmshadow_talongrips": {
+    "id": "heroic_wyrmshadow_talongrips",
+    "set": "wyrmshadow",
+    "name": "Nightfang Talongrips",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "gloves",
+    "quality": "epic",
+    "stats": {
+      "armor": 110,
+      "agi": 10,
+      "sta": 4
+    },
+    "sellValue": 9000,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "wyrmshadow_talongrips"
+  },
+  "heroic_crownforged_dreadhelm": {
+    "id": "heroic_crownforged_dreadhelm",
+    "set": "crownforged",
+    "name": "Bonewrought Dreadhelm",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "helmet",
+    "quality": "epic",
+    "stats": {
+      "armor": 310,
+      "str": 8,
+      "sta": 9
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "warrior",
+      "paladin"
+    ],
+    "heroicOf": "crownforged_dreadhelm"
+  },
+  "heroic_nighttalon_crown": {
+    "id": "heroic_nighttalon_crown",
+    "set": "nighttalon",
+    "name": "Direfang Crown",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "helmet",
+    "quality": "epic",
+    "stats": {
+      "armor": 190,
+      "agi": 10,
+      "sta": 7
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "rogue",
+      "hunter",
+      "druid"
+    ],
+    "heroicOf": "nighttalon_crown"
+  },
+  "heroic_soulflame_cowl": {
+    "id": "heroic_soulflame_cowl",
+    "set": "soulflame",
+    "name": "Wraithfire Cowl",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "helmet",
+    "quality": "epic",
+    "stats": {
+      "armor": 105,
+      "sta": 6,
+      "int": 11
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "soulflame_cowl"
+  },
+  "heroic_stormcallers_crown": {
+    "id": "heroic_stormcallers_crown",
+    "set": "stormcallers",
+    "name": "Galecall Crown",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "helmet",
+    "quality": "epic",
+    "stats": {
+      "armor": 225,
+      "sta": 7,
+      "int": 10
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "shaman"
+    ],
+    "heroicOf": "stormcallers_crown"
+  },
+  "heroic_nighttalon_shoulderguards": {
+    "id": "heroic_nighttalon_shoulderguards",
+    "set": "nighttalon",
+    "name": "Direfang Shoulderguards",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "shoulder",
+    "quality": "epic",
+    "stats": {
+      "armor": 165,
+      "agi": 9,
+      "sta": 6
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "rogue",
+      "hunter",
+      "druid"
+    ],
+    "heroicOf": "nighttalon_shoulderguards"
+  },
+  "heroic_soulflame_mantle": {
+    "id": "heroic_soulflame_mantle",
+    "set": "soulflame",
+    "name": "Wraithfire Mantle",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "shoulder",
+    "quality": "epic",
+    "stats": {
+      "armor": 92,
+      "sta": 6,
+      "int": 9
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "soulflame_mantle"
+  },
+  "heroic_crownforged_warspaulders": {
+    "id": "heroic_crownforged_warspaulders",
+    "set": "crownforged",
+    "name": "Bonewrought Warspaulders",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "shoulder",
+    "quality": "epic",
+    "stats": {
+      "armor": 260,
+      "str": 7,
+      "sta": 8
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "warrior",
+      "paladin"
+    ],
+    "heroicOf": "crownforged_warspaulders"
+  },
+  "heroic_stormcallers_spaulders": {
+    "id": "heroic_stormcallers_spaulders",
+    "set": "stormcallers",
+    "name": "Galecall Spaulders",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "shoulder",
+    "quality": "epic",
+    "stats": {
+      "armor": 190,
+      "sta": 7,
+      "int": 8
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "shaman"
+    ],
+    "heroicOf": "stormcallers_spaulders"
+  },
+  "heroic_selthes_seastriders": {
+    "id": "heroic_selthes_seastriders",
+    "name": "Selthe's Sea-Striders",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "feet",
+    "quality": "rare",
+    "stats": {
+      "armor": 75,
+      "agi": 5,
+      "sta": 4
+    },
+    "sellValue": 1200,
+    "heroicOf": "selthes_seastriders"
+  },
+  "heroic_ysols_pearl_greaves": {
+    "id": "heroic_ysols_pearl_greaves",
+    "name": "Ysolei's Pearl Greaves",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "rare",
+    "stats": {
+      "armor": 130,
+      "sta": 9,
+      "spi": 4
+    },
+    "sellValue": 2000,
+    "heroicOf": "ysols_pearl_greaves"
+  },
+  "heroic_moonshroud_breastplate": {
+    "id": "heroic_moonshroud_breastplate",
+    "name": "Moonwrack Breastplate",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 200,
+      "str": 5,
+      "sta": 9
+    },
+    "sellValue": 2400,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "moonshroud_breastplate"
+  },
+  "heroic_moonshroud_robe": {
+    "id": "heroic_moonshroud_robe",
+    "name": "Moonwrack Robe",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 70,
+      "int": 10,
+      "spi": 5
+    },
+    "sellValue": 2400,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ],
+    "heroicOf": "moonshroud_robe"
+  },
+  "heroic_moonshroud_tunic": {
+    "id": "heroic_moonshroud_tunic",
+    "name": "Moonwrack Tunic",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "rare",
+    "stats": {
+      "armor": 125,
+      "agi": 10,
+      "sta": 4
+    },
+    "sellValue": 2400,
+    "requiredClass": [
+      "rogue",
+      "hunter"
+    ],
+    "heroicOf": "moonshroud_tunic"
   }
 }
