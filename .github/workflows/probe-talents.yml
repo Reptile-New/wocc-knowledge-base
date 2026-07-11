@@ -1,0 +1,32 @@
+# Sonde temporaire : registres des talents et des sorts dans la source du jeu.
+name: Probe talents
+on:
+  push:
+    branches: [probe-talents]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Télécharger la source du jeu (v0.24.0)
+        run: |
+          curl -sL "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/v0.24.0" -o wocc.tar.gz
+          mkdir game && tar xzf wocc.tar.gz -C game --strip-components=1
+      - name: Registres talents et sorts
+        run: |
+          cd game
+          echo "=== fichiers talents/spells dans sim ==="
+          ls src/sim/ | grep -i "talent\|spell\|abilit\|class" || true
+          echo ""
+          echo "=== exports talents ==="
+          grep -rn "^export const" src/sim/talents.ts 2>/dev/null | head -10 || true
+          grep -rln "TALENT" src/sim --include="*.ts" | head -10
+          grep -rn "^export const [A-Z_]*TALENT" src/sim --include="*.ts" | head -10
+          echo ""
+          echo "=== structure d'un talent ==="
+          for f in $(grep -rln "^export const [A-Z_]*TALENT" src/sim --include="*.ts" | head -2); do
+            echo "--- $f (80 premières lignes)"; head -80 "$f"
+          done
+          echo ""
+          echo "=== exports sorts/abilities ==="
+          grep -rn "^export const [A-Z_]*\(SPELL\|ABILIT\|SKILL\)" src/sim --include="*.ts" | head -10
+          grep -rn "^export const" src/sim/data.ts | head -40
