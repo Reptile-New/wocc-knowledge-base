@@ -151,6 +151,43 @@ async function main() {
       console.warn(`  ⚠ Butin héroïque non extrait (tag antérieur à v0.23.0 ?) : ${err.message}`);
     }
 
+    // Recettes de fabrication (ré-exportées par data.ts, donc déjà bundlées).
+    dumpRegistries(dataBundlePath, ['ALL_RECIPES'], outDir);
+
+    // Sorts de classes : registre ABILITIES de classes.ts.
+    try {
+      const classesBundlePath = path.join(workDir, 'classes.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/classes.ts', classesBundlePath);
+      dumpRegistries(classesBundlePath, ['ABILITIES'], outDir);
+    } catch (err) {
+      console.warn(`  ⚠ Sorts non extraits : ${err.message}`);
+    }
+
+    // Talents : un registre par classe (talents_classic.ts + talents_warrior.ts),
+    // fusionnés en un seul TALENTS.json { classe: [nœuds...] }.
+    try {
+      const classicPath = path.join(workDir, 'talents_classic.bundle.cjs');
+      const warriorPath = path.join(workDir, 'talents_warrior.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/talents_classic.ts', classicPath);
+      await bundleModule(repoPath, 'src/sim/content/talents_warrior.ts', warriorPath);
+      const classic = require(classicPath);
+      const warrior = require(warriorPath);
+      const TALENTS = {};
+      for (const [cls, key] of [
+        ['druid','DRUID_TALENTS'], ['hunter','HUNTER_TALENTS'], ['mage','MAGE_TALENTS'],
+        ['paladin','PALADIN_TALENTS'], ['priest','PRIEST_TALENTS'], ['rogue','ROGUE_TALENTS'],
+        ['shaman','SHAMAN_TALENTS'], ['warlock','WARLOCK_TALENTS'],
+      ]) {
+        if (key in classic) TALENTS[cls] = classic[key];
+        else console.warn(`  ⚠ Registre "${key}" introuvable dans talents_classic.`);
+      }
+      if ('WARRIOR_TALENTS' in warrior) TALENTS.warrior = warrior.WARRIOR_TALENTS;
+      fs.writeFileSync(path.join(outDir, 'TALENTS.json'), JSON.stringify(TALENTS, null, 2));
+      console.log(`  ✓ TALENTS → TALENTS.json (${Object.keys(TALENTS).length} classes)`);
+    } catch (err) {
+      console.warn(`  ⚠ Talents non extraits : ${err.message}`);
+    }
+
     // Un petit fichier de métadonnées pour tracer d'où vient l'extraction.
     fs.writeFileSync(
       path.join(outDir, '_meta.json'),
