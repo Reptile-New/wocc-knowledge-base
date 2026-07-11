@@ -9,7 +9,7 @@
     },
     "entry": {
       "x": 0,
-      "z": 4
+      "z": -2
     },
     "exitOffset": {
       "x": 0,
@@ -97,7 +97,7 @@
     },
     "entry": {
       "x": 0,
-      "z": 4
+      "z": -2
     },
     "exitOffset": {
       "x": 0,
@@ -185,7 +185,7 @@
     },
     "entry": {
       "x": 0,
-      "z": 4
+      "z": -2
     },
     "exitOffset": {
       "x": 0,
@@ -195,12 +195,12 @@
       {
         "mobId": "sanctum_boneguard",
         "x": -3,
-        "z": 16
+        "z": 20
       },
       {
         "mobId": "sanctum_boneguard",
         "x": 3,
-        "z": 17
+        "z": 21
       },
       {
         "mobId": "sanctum_boneguard",
@@ -412,7 +412,7 @@
     },
     "entry": {
       "x": 0,
-      "z": 4
+      "z": -2
     },
     "exitOffset": {
       "x": 0,
@@ -422,12 +422,12 @@
       {
         "mobId": "drowned_templeguard",
         "x": -3,
-        "z": 14
+        "z": 20
       },
       {
         "mobId": "drowned_templeguard",
         "x": 3,
-        "z": 15
+        "z": 21
       },
       {
         "mobId": "drowned_templeguard",
