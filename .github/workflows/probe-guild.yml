@@ -1,4 +1,4 @@
-# Sonde temporaire (passe 3) : classement des guildes en direct.
+# Sonde temporaire (passe 4) : top 50 des guildes + position de La Clauderie.
 name: Probe guild leaderboard
 on:
   push:
@@ -7,11 +7,10 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Classement des guildes en direct
+      - name: Top guildes
         run: |
-          for page in 1 2; do
-            echo "--- page $page"
-            curl -s -m 15 "https://worldofclaudecraft.com/api/leaderboard?board=guilds&page=$page&pageSize=50" -o /tmp/g.json
-            jq -r '.leaders[]? | "\(.rank). \(.name) — \(.memberCount) membres, topLevel \(.topLevel)"' /tmp/g.json | head -30
-            n=$(jq '.leaders | length' /tmp/g.json); [ "$n" = "0" ] && break
-          done
+          curl -s -m 15 "https://worldofclaudecraft.com/api/leaderboard?board=guilds&page=0&pageSize=50" -o /tmp/g.json
+          echo "=== TOP 15 ==="
+          jq -r '.leaders[]? | "\(.rank). \(.name) — \(.memberCount) membres, topLevel \(.topLevel), XP \(.totalLifetimeXp)"' /tmp/g.json | head -15
+          echo "=== LA CLAUDERIE ==="
+          jq -r '.leaders[]? | select(.name | test("clauderie"; "i")) | "rank=\(.rank) name=\(.name)"' /tmp/g.json
