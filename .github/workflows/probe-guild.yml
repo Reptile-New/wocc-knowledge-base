@@ -1,0 +1,35 @@
+# Sonde temporaire : trouver l'API de classement des guildes du jeu.
+name: Probe guild leaderboard
+on:
+  push:
+    branches: [probe-guild-rank]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Télécharger la source du jeu
+        run: |
+          curl -sL "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/v0.23.0" -o wocc.tar.gz
+          mkdir game && tar xzf wocc.tar.gz -C game --strip-components=1
+      - name: Chercher les classements de guilde
+        run: |
+          cd game
+          echo "=== dossiers racine ==="
+          ls -d */ src/*/ 2>/dev/null | head -30
+          echo "=== fichiers guild/leaderboard ==="
+          grep -rli "guildLeaderboard\|guild_leaderboard\|leaderboard" src/ --include="*.ts" | grep -v i18n | head -20
+          echo "=== endpoints / URLs d'API ==="
+          grep -rhn "https://[a-z0-9.-]*worldofclaudecraft[a-z0-9./-]*\|/api/[a-z0-9_/-]*" src/ --include="*.ts" -o | grep -v i18n | sort | uniq -c | sort -rn | head -25
+          echo "=== contexte guild ranking ==="
+          grep -rn "guildRank\|guild_rank\|rankOfGuild\|topGuilds\|guildScore" src/ --include="*.ts" | grep -v i18n | head -20
+      - name: Tester les endpoints candidats en direct
+        run: |
+          for u in \
+            "https://worldofclaudecraft.com/api/leaderboard/guilds" \
+            "https://worldofclaudecraft.com/api/guilds/leaderboard" \
+            "https://api.worldofclaudecraft.com/leaderboard/guilds" \
+            "https://worldofclaudecraft.com/api/leaderboards" ; do
+            echo "--- $u"
+            curl -s -m 10 -o /tmp/r.json -w "%{http_code}\n" "$u" || true
+            head -c 500 /tmp/r.json 2>/dev/null; echo ""
+          done
