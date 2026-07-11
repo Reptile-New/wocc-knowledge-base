@@ -1,0 +1,296 @@
+[
+  {
+    "id": "recipe_eastbrook_arming_sword",
+    "professionId": "weaponcrafting",
+    "resultItemId": "eastbrook_arming_sword",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "bone_fragments",
+        "count": 2
+      },
+      {
+        "itemId": "linen_scrap",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "trivialAt": 25,
+    "itemLevelBudget": 10
+  },
+  {
+    "id": "recipe_eastbrook_chain_vest",
+    "professionId": "armorcrafting",
+    "resultItemId": "eastbrook_chain_vest",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "bone_fragments",
+        "count": 3
+      }
+    ],
+    "skillReq": 0,
+    "trivialAt": 25,
+    "itemLevelBudget": 10
+  },
+  {
+    "id": "recipe_eastbrook_wool_trousers",
+    "professionId": "tailoring",
+    "resultItemId": "eastbrook_wool_trousers",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "linen_scrap",
+        "count": 3
+      }
+    ],
+    "skillReq": 0,
+    "trivialAt": 25,
+    "itemLevelBudget": 8
+  },
+  {
+    "id": "recipe_tanned_leather_jerkin",
+    "professionId": "leatherworking",
+    "resultItemId": "tanned_leather_jerkin",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "spider_leg",
+        "count": 2
+      },
+      {
+        "itemId": "bone_fragments",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "trivialAt": 25,
+    "itemLevelBudget": 9
+  },
+  {
+    "id": "recipe_tough_jerky",
+    "professionId": "cooking",
+    "resultItemId": "tough_jerky",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "spider_leg",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "trivialAt": 25,
+    "itemLevelBudget": 1
+  },
+  {
+    "id": "recipe_minor_healing_potion",
+    "professionId": "alchemy",
+    "resultItemId": "minor_healing_potion",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "linen_scrap",
+        "count": 1
+      },
+      {
+        "itemId": "spider_leg",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "trivialAt": 25,
+    "itemLevelBudget": 1
+  },
+  {
+    "id": "recipe_thorium_mining_pick",
+    "professionId": "engineering",
+    "resultItemId": "thorium_mining_pick",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "thorium_ore",
+        "count": 4
+      },
+      {
+        "itemId": "mithril_mining_pick",
+        "count": 1
+      }
+    ],
+    "skillReq": 75,
+    "trivialAt": 125,
+    "itemLevelBudget": 20,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_arcanite_mining_pick",
+    "professionId": "engineering",
+    "resultItemId": "arcanite_mining_pick",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "arcanite_bar",
+        "count": 2
+      },
+      {
+        "itemId": "thorium_mining_pick",
+        "count": 1
+      }
+    ],
+    "skillReq": 150,
+    "trivialAt": 200,
+    "itemLevelBudget": 30,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_ashwood_axe",
+    "professionId": "engineering",
+    "resultItemId": "ashwood_axe",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "ashwood_log",
+        "count": 4
+      },
+      {
+        "itemId": "ironbark_axe",
+        "count": 1
+      }
+    ],
+    "skillReq": 75,
+    "trivialAt": 125,
+    "itemLevelBudget": 20,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_elderwood_axe",
+    "professionId": "engineering",
+    "resultItemId": "elderwood_axe",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "elderwood_log",
+        "count": 2
+      },
+      {
+        "itemId": "ashwood_axe",
+        "count": 1
+      }
+    ],
+    "skillReq": 150,
+    "trivialAt": 200,
+    "itemLevelBudget": 30,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_goldleaf_sickle",
+    "professionId": "engineering",
+    "resultItemId": "goldleaf_sickle",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "goldleaf_herb",
+        "count": 4
+      },
+      {
+        "itemId": "silverleaf_sickle",
+        "count": 1
+      }
+    ],
+    "skillReq": 75,
+    "trivialAt": 125,
+    "itemLevelBudget": 20,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_sunpetal_sickle",
+    "professionId": "engineering",
+    "resultItemId": "sunpetal_sickle",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "sunpetal_herb",
+        "count": 2
+      },
+      {
+        "itemId": "goldleaf_sickle",
+        "count": 1
+      }
+    ],
+    "skillReq": 150,
+    "trivialAt": 200,
+    "itemLevelBudget": 30,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_ironbound_warplate_helm",
+    "professionId": "armorcrafting",
+    "resultItemId": "boundstone_helm",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "bone_fragments",
+        "count": 4
+      },
+      {
+        "itemId": "linen_scrap",
+        "count": 2
+      }
+    ],
+    "skillReq": 25,
+    "trivialAt": 50,
+    "itemLevelBudget": 20,
+    "comboRequirement": {
+      "craftA": "armorcrafting",
+      "craftB": "weaponcrafting",
+      "minTier": 1
+    }
+  },
+  {
+    "id": "recipe_forgeguard_bulwark_gauntlets",
+    "professionId": "weaponcrafting",
+    "resultItemId": "gravewyrm_gauntlets",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "bone_fragments",
+        "count": 3
+      },
+      {
+        "itemId": "linen_scrap",
+        "count": 3
+      }
+    ],
+    "skillReq": 25,
+    "trivialAt": 50,
+    "itemLevelBudget": 18,
+    "comboRequirement": {
+      "craftA": "armorcrafting",
+      "craftB": "weaponcrafting",
+      "minTier": 1
+    }
+  },
+  {
+    "id": "recipe_volatile_flux_elixir",
+    "professionId": "alchemy",
+    "resultItemId": "elixir_of_the_bear",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "linen_scrap",
+        "count": 2
+      },
+      {
+        "itemId": "spider_leg",
+        "count": 2
+      }
+    ],
+    "skillReq": 25,
+    "trivialAt": 50,
+    "itemLevelBudget": 16,
+    "comboRequirement": {
+      "craftA": "alchemy",
+      "craftB": "engineering",
+      "minTier": 1
+    }
+  }
+]
