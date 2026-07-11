@@ -1,4 +1,4 @@
-# Sonde temporaire (passe 2) : route exacte du classement des guildes + test live.
+# Sonde temporaire (passe 3) : classement des guildes en direct.
 name: Probe guild leaderboard
 on:
   push:
@@ -7,30 +7,11 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Télécharger la source du jeu
+      - name: Classement des guildes en direct
         run: |
-          curl -sL "https://codeload.github.com/levy-street/world-of-claudecraft/tar.gz/refs/tags/v0.23.0" -o wocc.tar.gz
-          mkdir game && tar xzf wocc.tar.gz -C game --strip-components=1
-      - name: Routes leaderboard côté serveur et client
-        run: |
-          cd game
-          echo "=== routes leaderboard dans server/ ==="
-          grep -rn "leaderboard" server/ --include="*.ts" --include="*.js" -l | head -10
-          grep -rn "api/leaderboard\|'/leaderboard\|\"/leaderboard\|guild" server/ --include="*.ts" --include="*.js" | grep -i "leaderboard" | head -25
-          echo ""
-          echo "=== appel côté client (contexte /api/leaderboard) ==="
-          grep -rn "api/leaderboard" src/ --include="*.ts" -B2 -A6 | grep -v i18n | head -40
-          echo ""
-          echo "=== guild_leaderboard_view : d'où viennent les données ==="
-          head -60 src/ui/guild_leaderboard_view.ts
-      - name: Tester les endpoints en direct
-        run: |
-          for u in \
-            "https://worldofclaudecraft.com/api/leaderboard" \
-            "https://worldofclaudecraft.com/api/leaderboard?type=guild" \
-            "https://worldofclaudecraft.com/api/leaderboard/guild" ; do
-            echo "--- $u"
-            curl -s -m 10 -o /tmp/r.json -w "%{http_code}\n" "$u" || true
-            head -c 900 /tmp/r.json 2>/dev/null; echo ""
-            grep -o "Clauderie" /tmp/r.json 2>/dev/null | head -1 || true
+          for page in 1 2; do
+            echo "--- page $page"
+            curl -s -m 15 "https://worldofclaudecraft.com/api/leaderboard?board=guilds&page=$page&pageSize=50" -o /tmp/g.json
+            jq -r '.leaders[]? | "\(.rank). \(.name) — \(.memberCount) membres, topLevel \(.topLevel)"' /tmp/g.json | head -30
+            n=$(jq '.leaders | length' /tmp/g.json); [ "$n" = "0" ] && break
           done
