@@ -87,6 +87,12 @@
   .gb-nav a { color: #8b93a3; text-decoration: none; }
   .gb-nav a:hover { color: #e6c37a; }
   .gb-cur { color: #e6c37a; font-weight: 600; }
+  .lang-btn {
+    background: none; border: 1px solid rgba(200,160,75,0.35); color: #c8a04b;
+    font: 600 0.72rem/1 'Inter', sans-serif; letter-spacing: 0.06em;
+    padding: 5px 9px; border-radius: 7px; cursor: pointer;
+  }
+  .lang-btn:hover { color: #e6c37a; border-color: #e6c37a; }
   @media (max-width: 620px) { .gb-brand b { display: none; } .gb-nav { gap: 4px 11px; font-size: 0.8rem; } }
 
   /* ---------- entête ---------- */
@@ -507,10 +513,11 @@
 <div class="guild-bar">
   <a href="https://laclauderie.fr/" class="gb-brand"><span class="gb-sigil">C</span><b>La Clauderie</b></a>
   <nav class="gb-nav" aria-label="Navigation du site de la guilde">
-    <a href="https://laclauderie.fr/">Accueil</a>
+    <a href="https://laclauderie.fr/" id="gb-home">Accueil</a>
     <a href="https://laclauderie.fr/bis.html">⚔️ Builds</a>
-    <a href="https://laclauderie.fr/patch-notes.html">📜 Nouveautés</a>
+    <a href="https://laclauderie.fr/patch-notes.html" id="gb-news">📜 Nouveautés</a>
     <span class="gb-cur">📚 Codex</span>
+    <button class="lang-btn" id="lang-btn" type="button"></button>
   </nav>
 </div>
 
@@ -575,7 +582,7 @@ async function load() {
   buildCrossRefs();
 
   document.getElementById('version').textContent =
-    DATA._meta ? DATA._meta.tag : 'données locales';
+    DATA._meta ? DATA._meta.tag : T.localData;
 
   document.getElementById('export-md').onclick = downloadMarkdown;
 
@@ -630,26 +637,66 @@ function buildCrossRefs() {
     if (it.set) (refs.setPieces[it.set] ||= []).push(it);
 }
 
-/* ================= libellés français ================= */
+/* ================= langue (FR / EN) =================
+   L'interface existe en français et en anglais. Les noms du jeu (objets,
+   monstres, quêtes, sorts…) restent en anglais dans les deux langues,
+   comme dans le jeu. Le choix est mémorisé dans localStorage ; le hash
+   (onglet ou fiche ouverte) survit au rechargement. */
+
+const LANG = localStorage.getItem('lang') === 'en' ? 'en' : 'fr';
+document.documentElement.lang = LANG;
+function setLang(l) { localStorage.setItem('lang', l); location.reload(); }
+
+/* ================= libellés (fr + en) ================= */
 
 const QUALITY_ORDER = { poor:0, common:1, uncommon:2, rare:3, epic:4, legendary:5 };
-const QUALITY_FR = { poor:'Médiocre', common:'Commun', uncommon:'Inhabituel', rare:'Rare', epic:'Épique', legendary:'Légendaire' };
-const KIND_FR = { weapon:'Arme', armor:'Armure', bag:'Sac', food:'Nourriture', drink:'Boisson', tool:'Outil', junk:'Camelote', potion:'Potion', elixir:'Élixir', quest:'Objet de quête' };
-const SLOT_FR = { mainhand:'Main droite', chest:'Torse', feet:'Pieds', legs:'Jambes', helmet:'Tête', shoulder:'Épaules', waist:'Taille', gloves:'Mains' };
-const ARMORTYPE_FR = { cloth:'Tissu', leather:'Cuir', mail:'Mailles' };
-const CLASS_FR = { warrior:'Guerrier', mage:'Mage', rogue:'Voleur', priest:'Prêtre', warlock:'Démoniste', druid:'Druide', hunter:'Chasseur', paladin:'Paladin', shaman:'Chaman' };
-const STAT_FR = { str:'Force', sta:'Endurance', agi:'Agilité', int:'Intelligence', spi:'Esprit', armor:'Armure', ap:"Puissance d'attaque", crit:'Critique' };
-const FAMILY_FR = { demon:'Démon', beast:'Bête', spider:'Araignée', humanoid:'Humanoïde', mudfin:'Mudfin', burrower:'Fouisseur', undead:'Mort-vivant', troll:'Troll', ogre:'Ogre', elemental:'Élémentaire', dragonkin:'Draconien' };
-const BIOME_FR = { vale:'Vallée', marsh:'Marais', peaks:'Pics', mountain:'Montagne', forest:'Forêt' };
-const NODE_FR = { ore:'Minerai', herb:'Herbes', wood:'Bois' };
+const QUALITY_L = {
+  fr: { poor:'Médiocre', common:'Commun', uncommon:'Inhabituel', rare:'Rare', epic:'Épique', legendary:'Légendaire' },
+  en: { poor:'Poor', common:'Common', uncommon:'Uncommon', rare:'Rare', epic:'Epic', legendary:'Legendary' },
+};
+const KIND_L = {
+  fr: { weapon:'Arme', armor:'Armure', bag:'Sac', food:'Nourriture', drink:'Boisson', tool:'Outil', junk:'Camelote', potion:'Potion', elixir:'Élixir', quest:'Objet de quête' },
+  en: { weapon:'Weapon', armor:'Armor', bag:'Bag', food:'Food', drink:'Drink', tool:'Tool', junk:'Junk', potion:'Potion', elixir:'Elixir', quest:'Quest item' },
+};
+const SLOT_L = {
+  fr: { mainhand:'Main droite', chest:'Torse', feet:'Pieds', legs:'Jambes', helmet:'Tête', shoulder:'Épaules', waist:'Taille', gloves:'Mains' },
+  en: { mainhand:'Main hand', chest:'Chest', feet:'Feet', legs:'Legs', helmet:'Head', shoulder:'Shoulders', waist:'Waist', gloves:'Hands' },
+};
+const ARMORTYPE_L = {
+  fr: { cloth:'Tissu', leather:'Cuir', mail:'Mailles' },
+  en: { cloth:'Cloth', leather:'Leather', mail:'Mail' },
+};
+const CLASS_L = {
+  fr: { warrior:'Guerrier', mage:'Mage', rogue:'Voleur', priest:'Prêtre', warlock:'Démoniste', druid:'Druide', hunter:'Chasseur', paladin:'Paladin', shaman:'Chaman' },
+  en: { warrior:'Warrior', mage:'Mage', rogue:'Rogue', priest:'Priest', warlock:'Warlock', druid:'Druid', hunter:'Hunter', paladin:'Paladin', shaman:'Shaman' },
+};
+const STAT_L = {
+  fr: { str:'Force', sta:'Endurance', agi:'Agilité', int:'Intelligence', spi:'Esprit', armor:'Armure', ap:"Puissance d'attaque", crit:'Critique' },
+  en: { str:'Strength', sta:'Stamina', agi:'Agility', int:'Intellect', spi:'Spirit', armor:'Armor', ap:'Attack power', crit:'Crit' },
+};
+const FAMILY_L = {
+  fr: { demon:'Démon', beast:'Bête', spider:'Araignée', humanoid:'Humanoïde', mudfin:'Mudfin', burrower:'Fouisseur', undead:'Mort-vivant', troll:'Troll', ogre:'Ogre', elemental:'Élémentaire', dragonkin:'Draconien' },
+  en: { demon:'Demon', beast:'Beast', spider:'Spider', humanoid:'Humanoid', mudfin:'Mudfin', burrower:'Burrower', undead:'Undead', troll:'Troll', ogre:'Ogre', elemental:'Elemental', dragonkin:'Dragonkin' },
+};
+const BIOME_L = {
+  fr: { vale:'Vallée', marsh:'Marais', peaks:'Pics', mountain:'Montagne', forest:'Forêt' },
+  en: { vale:'Vale', marsh:'Marsh', peaks:'Peaks', mountain:'Mountain', forest:'Forest' },
+};
+const NODE_L = {
+  fr: { ore:'Minerai', herb:'Herbes', wood:'Bois' },
+  en: { ore:'Ore', herb:'Herbs', wood:'Wood' },
+};
 
-const fr = (map, k) => (k == null ? '—' : (map[k] || k));
+/* tr : libellé dans la langue courante · both : les deux (pour la recherche) */
+const tr = (map, k) => (k == null ? '—' : (map[LANG][k] || k));
+const both = (map, k) => (k == null ? '' : [map.fr[k], map.en[k]].filter(Boolean).join(' '));
 const quality = it => it.quality || 'common';
 
 /* Capacités spéciales des monstres (drapeaux booléens dans les données).
    La liste sert aussi de filtre : seules les clés présentes ici sont
    considérées comme des capacités (les autres champs du mob sont des stats). */
-const ABILITY_FR = {
+const ABILITY_L = {
+ fr: {
   aoePulse:'Vague de zone', summonAdds:'Invoque des renforts', enrage:'Enrage',
   cleave:'Enchaînement', mortalStrike:'Frappe mortelle', knockback:'Projection',
   stomp:'Piétinement', manaBurn:'Brûlure de mana', packFrenzy:'Frénésie de meute',
@@ -670,8 +717,201 @@ const ABILITY_FR = {
   enfeeble:'Affaiblissement', lockout:'Verrouillage de sorts', enervate:'Énervation',
   expose:"Expose l'armure", aoeSlow:'Ralentissement de zone', bigCast:'Incantation dévastatrice',
   ccImmune:'Insensible au contrôle', slowImmune:'Insensible aux ralentissements',
+ },
+ en: {
+  aoePulse:'AoE pulse', summonAdds:'Summons adds', enrage:'Enrage',
+  cleave:'Cleave', mortalStrike:'Mortal strike', knockback:'Knockback',
+  stomp:'Stomp', manaBurn:'Mana burn', packFrenzy:'Pack frenzy',
+  thorns:'Thorns', venom:'Venom', ensnare:'Ensnare', lifeleech:'Life leech',
+  plague:'Plague', silence:'Silence', terrify:'Terrify', spellReflect:'Spell reflect',
+  stoneskin:'Stoneskin', warcry:'War cry', bleed:'Bleed',
+  disarm:'Disarm', rampage:'Rampage', frostbite:'Frostbite', hex:'Hex',
+  frenzyOnHit:'Frenzy on hit', wardAllies:'Wards allies',
+  stunOnHit:'Stunning strike', polymorphHex:'Polymorph', blind:'Blind',
+  demoralize:'Demoralize', soulrot:'Soul rot', slowStrike:'Slowing strike',
+  corrode:'Corrode', sapVigor:'Saps vigor', desperateHeal:'Desperate heal',
+  critVuln:'Exposes to crits', stackPoison:'Stacking poison', wither:'Wither',
+  purgeOnHit:'Purge on hit', vulnerability:'Vulnerability', healAbsorb:'Absorbs healing',
+  mendAlly:'Mends allies', costTax:'Costlier spells', siphonSpirit:'Spirit siphon',
+  tongues:'Curse of tongues', arcaneRot:'Arcane rot', deathThroes:'Explodes on death',
+  staggerHit:'Staggering strike', rally:'Rally', smolder:'Smolder', cinder:'Burning cinders',
+  concuss:'Concuss', chillOnHit:'Chilling strike', spellVuln:'Exposes to spells',
+  enfeeble:'Enfeeble', lockout:'Spell lockout', enervate:'Enervate',
+  expose:'Exposes armor', aoeSlow:'AoE slow', bigCast:'Devastating cast',
+  ccImmune:'CC immune', slowImmune:'Slow immune',
+ },
 };
-const mobAbilities = m => Object.keys(ABILITY_FR).filter(k => m[k]);
+const mobAbilities = m => Object.keys(ABILITY_L.fr).filter(k => m[k]);
+
+/* ================= textes d'interface ================= */
+
+const UI = {
+ fr: {
+  docTitle: "WoCC Codex — l'encyclopédie de World of ClaudeCraft",
+  langTitle: 'Switch this site to English',
+  navHome: 'Accueil', navNews: '📜 Nouveautés',
+  subtitle: "L'encyclopédie de <strong>World of ClaudeCraft</strong> — objets, monstres, quêtes, donjons. Générée automatiquement depuis le code du jeu, toujours à jour.",
+  searchPh: 'Rechercher un objet, un monstre, une quête, un PNJ…',
+  exportTitle: "Télécharge toute l'encyclopédie en un seul fichier Markdown — à glisser dans une conversation Claude pour poser des questions sur les données.",
+  footer: 'Généré automatiquement depuis le <a href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener">code source de World of ClaudeCraft</a>.\n  Recherche 100% locale — zéro requête serveur, zéro token.',
+  localData: 'données locales',
+  colon: ' : ',
+  tabs: { items:'Objets', mobs:'Monstres', quests:'Quêtes', npcs:'PNJ', dungeons:'Donjons', worldbosses:'World bosses', sets:'Panoplies', zones:'Zones' },
+  placesGroup: 'Donjons & délves',
+  f: { kinds:'Tous les types', qualities:'Toutes les raretés', slots:'Tous les emplacements', classes:'Toutes les classes', families:'Toutes les familles', ranks:'Tous les rangs', givers:'Tous les donneurs' },
+  rank: { boss:'Boss', elite:'Élite', rare:'Rare', normal:'Normal' },
+  results: n => `${n} résultat${n>1?'s':''}`,
+  emptySearch: 'Aucun résultat dans ce grimoire.<br>Essaie un autre terme.',
+  emptyFilters: 'Aucun résultat dans ce grimoire.<br>Essaie un autre terme ou retire des filtres.',
+  money: { g:'\u202fpo', s:'\u202fpa', c:'\u202fpc' },
+  lvl: 'niv.', hp: 'PV', damage: 'dégâts', speed: 'vitesse', elite: 'Élite',
+  lootN: n => `<b>${n}</b> butin${n>1?'s':''}`,
+  group: 'Groupe',
+  nQuests: n => `${n} quête${n>1?'s':''}`,
+  vendor: 'marchand', market: 'marché',
+  delve: 'Délve', dungeon: 'Donjon',
+  nPlayers: n => `${n} joueur${n>1?'s':''}`,
+  nMobTypes: n => `${n} type${n>1?'s':''} de monstres`,
+  respawns: d => `Réapparaît toutes les <b>${d}</b>`,
+  perPlayer: '/joueur',
+  set: 'Panoplie',
+  nPieces: n => `${n} pièce${n>1?'s':''}`,
+  hubOf: n => `capitale : ${n}`,
+  nPois: n => `${n} lieux notables`,
+  back: 'Fiche précédente', close: 'Fermer',
+  retired: 'retirée',
+  slot: 'Emplacement', type: 'Type', damageK: 'Dégâts',
+  capacity: 'Contenance', slotsN: n => `${n} emplacements`,
+  restores: 'Restaure', potion: 'Potion',
+  sell: 'Vente', buy: 'Achat', classes: 'Classes',
+  characteristics: 'Caractéristiques',
+  droppedBy: 'Obtenu sur', heroic: 'Héroïque',
+  soldBy: 'Vendu par', questReward: 'Récompense de quête', neededFor: 'Requis pour',
+  origin: 'Origine',
+  noSource: "Aucune source répertoriée dans les données extraites du jeu — vient probablement de la fabrication (métiers), du dépeçage/récolte, d'un delve ou d'un événement, pas encore couverts par le pipeline.",
+  level: 'Niveau', perLvl: '/niv',
+  notableAbilities: 'Capacités notables', combat: 'Combat',
+  lootTitle: 'Butin', heroicLoot: 'Butin héroïque',
+  heroicLootNote: 'En difficulté Héroïque uniquement — deux objets par kill.',
+  questTarget: 'Cible de quête', foundIn: 'Rencontré dans',
+  wbLink: 'Apparitions et points de vie', every: d => `toutes les ${d}`,
+  position: 'Position', respawnK: 'Réapparition', everyB: d => `toutes les <b>${d}</b>`,
+  baseHp: 'PV de base', perPlayerK: 'Par joueur', hpCap: 'Plafond',
+  spawn: 'Apparition', hpByPlayers: 'Points de vie (selon le nombre de joueurs)', mobK: 'Monstre',
+  kill: 'Tuer', collect: 'Rapporter', gold: 'Or',
+  questChain: 'Chaîne de quêtes', precededBy: 'Précédée de', followedBy: 'Suivie de',
+  retiredFull: 'Retirée du jeu',
+  suggGroup: n => `Groupe conseillé : ${n}`,
+  suggGroupPlayers: n => `Groupe conseillé : ${n} joueurs`,
+  quest: 'Quête', journal: 'Journal', objectives: 'Objectifs', rewards: 'Récompenses', giver: 'Donneur',
+  givesQuest: 'donne la quête', turnInTo: 'à qui la rendre',
+  character: 'Personnage', greeting: 'Accueil',
+  questsOffered: n => `Quêtes proposées (${n})`,
+  forSale: n => `À la vente (${n})`,
+  marketTitle: 'Marché', marketText: 'Donne accès au marché mondial entre joueurs.',
+  entrance: 'Entrée', inhabitants: 'Habitants',
+  affixes: n => `${n} affixe(s) · `,
+  rewardsX: x => `récompenses ×${x}`,
+  levelPlus: n => `Niveau ${n}+`,
+  maxPlayersN: n => `${n} joueur(s) max`,
+  companion: 'Compagnon', difficulties: 'Difficultés',
+  piecesN: n => `Pièces (${n})`, setBonuses: 'Bonus de panoplie',
+  levels: (lo,hi) => `niveaux ${lo}–${hi}`,
+  hubK: 'Capitale', pois: 'Lieux notables', resources: 'Ressources',
+  nodesN: n => `<b>${n}</b> gisements`, fishing: 'Pêche',
+ },
+ en: {
+  docTitle: 'WoCC Codex — the World of ClaudeCraft encyclopedia',
+  langTitle: 'Passer le site en français',
+  navHome: 'Home', navNews: "📜 What's new",
+  subtitle: 'The <strong>World of ClaudeCraft</strong> encyclopedia — items, mobs, quests, dungeons. Generated automatically from the game code, always up to date.',
+  searchPh: 'Search for an item, a mob, a quest, an NPC…',
+  exportTitle: 'Download the whole encyclopedia as a single Markdown file — drop it into a Claude conversation to ask questions about the data.',
+  footer: 'Generated automatically from the <a href="https://github.com/levy-street/world-of-claudecraft" target="_blank" rel="noopener">World of ClaudeCraft source code</a>.\n  100% local search — zero server requests, zero tokens.',
+  localData: 'local data',
+  colon: ': ',
+  tabs: { items:'Items', mobs:'Mobs', quests:'Quests', npcs:'NPCs', dungeons:'Dungeons', worldbosses:'World bosses', sets:'Item sets', zones:'Zones' },
+  placesGroup: 'Dungeons & delves',
+  f: { kinds:'All types', qualities:'All qualities', slots:'All slots', classes:'All classes', families:'All families', ranks:'All ranks', givers:'All quest givers' },
+  rank: { boss:'Boss', elite:'Elite', rare:'Rare', normal:'Normal' },
+  results: n => `${n} result${n>1?'s':''}`,
+  emptySearch: 'Nothing found in this grimoire.<br>Try another term.',
+  emptyFilters: 'Nothing found in this grimoire.<br>Try another term or remove some filters.',
+  money: { g:'g', s:'s', c:'c' },
+  lvl: 'lvl.', hp: 'HP', damage: 'damage', speed: 'speed', elite: 'Elite',
+  lootN: n => `<b>${n}</b> loot drop${n>1?'s':''}`,
+  group: 'Group',
+  nQuests: n => `${n} quest${n>1?'s':''}`,
+  vendor: 'vendor', market: 'market',
+  delve: 'Delve', dungeon: 'Dungeon',
+  nPlayers: n => `${n} player${n>1?'s':''}`,
+  nMobTypes: n => `${n} mob type${n>1?'s':''}`,
+  respawns: d => `Respawns every <b>${d}</b>`,
+  perPlayer: '/player',
+  set: 'Item set',
+  nPieces: n => `${n} piece${n>1?'s':''}`,
+  hubOf: n => `hub: ${n}`,
+  nPois: n => `${n} points of interest`,
+  back: 'Previous sheet', close: 'Close',
+  retired: 'retired',
+  slot: 'Slot', type: 'Type', damageK: 'Damage',
+  capacity: 'Capacity', slotsN: n => `${n} slots`,
+  restores: 'Restores', potion: 'Potion',
+  sell: 'Sell price', buy: 'Buy price', classes: 'Classes',
+  characteristics: 'Details',
+  droppedBy: 'Dropped by', heroic: 'Heroic',
+  soldBy: 'Sold by', questReward: 'Quest reward', neededFor: 'Needed for',
+  origin: 'Source',
+  noSource: 'No source listed in the data extracted from the game — it most likely comes from crafting (professions), skinning/gathering, a delve or an event, which the pipeline does not cover yet.',
+  level: 'Level', perLvl: '/lvl',
+  notableAbilities: 'Notable abilities', combat: 'Combat',
+  lootTitle: 'Loot', heroicLoot: 'Heroic loot',
+  heroicLootNote: 'Heroic difficulty only — two items per kill.',
+  questTarget: 'Quest target', foundIn: 'Found in',
+  wbLink: 'Spawns and hit points', every: d => `every ${d}`,
+  position: 'Position', respawnK: 'Respawn', everyB: d => `every <b>${d}</b>`,
+  baseHp: 'Base HP', perPlayerK: 'Per player', hpCap: 'Cap',
+  spawn: 'Spawn', hpByPlayers: 'Hit points (scales with player count)', mobK: 'Mob',
+  kill: 'Kill', collect: 'Bring back', gold: 'Gold',
+  questChain: 'Quest chain', precededBy: 'Preceded by', followedBy: 'Followed by',
+  retiredFull: 'Removed from the game',
+  suggGroup: n => `Suggested group: ${n}`,
+  suggGroupPlayers: n => `Suggested group: ${n} players`,
+  quest: 'Quest', journal: 'Journal', objectives: 'Objectives', rewards: 'Rewards', giver: 'Quest giver',
+  givesQuest: 'gives the quest', turnInTo: 'turn in to',
+  character: 'Character', greeting: 'Greeting',
+  questsOffered: n => `Quests offered (${n})`,
+  forSale: n => `For sale (${n})`,
+  marketTitle: 'Market', marketText: 'Grants access to the global player market.',
+  entrance: 'Entrance', inhabitants: 'Inhabitants',
+  affixes: n => `${n} affix(es) · `,
+  rewardsX: x => `rewards ×${x}`,
+  levelPlus: n => `Level ${n}+`,
+  maxPlayersN: n => `${n} player(s) max`,
+  companion: 'Companion', difficulties: 'Difficulty tiers',
+  piecesN: n => `Pieces (${n})`, setBonuses: 'Set bonuses',
+  levels: (lo,hi) => `levels ${lo}–${hi}`,
+  hubK: 'Hub', pois: 'Points of interest', resources: 'Resources',
+  nodesN: n => `<b>${n}</b> nodes`, fishing: 'Fishing',
+ },
+};
+const T = UI[LANG];
+
+/* ---- textes statiques de la page + bouton FR/EN ---- */
+function applyStaticLang() {
+  document.title = T.docTitle;
+  document.getElementById('gb-home').textContent = T.navHome;
+  document.getElementById('gb-news').textContent = T.navNews;
+  document.querySelector('.subtitle').innerHTML = T.subtitle;
+  document.getElementById('search').placeholder = T.searchPh;
+  document.getElementById('export-md').title = T.exportTitle;
+  document.querySelector('footer').innerHTML = T.footer;
+  const btn = document.getElementById('lang-btn');
+  btn.textContent = LANG === 'fr' ? 'EN' : 'FR';
+  btn.title = T.langTitle;
+  btn.onclick = () => setLang(LANG === 'fr' ? 'en' : 'fr');
+}
+applyStaticLang();
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -681,9 +921,9 @@ function money(copper) {
   if (copper == null) return '';
   const g = Math.floor(copper / 10000), s = Math.floor(copper / 100) % 100, c = copper % 100;
   const parts = [];
-  if (g) parts.push(`<span class="g">${g} po</span>`);
-  if (s) parts.push(`<span class="s">${s} pa</span>`);
-  if (c || !parts.length) parts.push(`<span class="c">${c} pc</span>`);
+  if (g) parts.push(`<span class="g">${g}${T.money.g}</span>`);
+  if (s) parts.push(`<span class="s">${s}${T.money.s}</span>`);
+  if (c || !parts.length) parts.push(`<span class="c">${c}${T.money.c}</span>`);
   return `<span class="money">${parts.join(' ')}</span>`;
 }
 
@@ -695,7 +935,7 @@ function mobColor(m) {
 }
 
 function levelText(m) {
-  return m.minLevel === m.maxLevel ? `niv. ${m.minLevel}` : `niv. ${m.minLevel}–${m.maxLevel}`;
+  return m.minLevel === m.maxLevel ? `${T.lvl} ${m.minLevel}` : `${T.lvl} ${m.minLevel}–${m.maxLevel}`;
 }
 
 function duration(sec) {
@@ -709,14 +949,14 @@ function duration(sec) {
    français), calculée une fois puis mise en cache sur l'objet. */
 
 const SEARCH_FIELDS = {
-  item:  it => [it.name, it.kind, fr(KIND_FR, it.kind), it.slot && fr(SLOT_FR, it.slot),
-                it.armorType && fr(ARMORTYPE_FR, it.armorType), fr(QUALITY_FR, quality(it))],
-  mob:   m  => [m.name, m.family, fr(FAMILY_FR, m.family), ...mobAbilities(m).map(k => ABILITY_FR[k])],
+  item:  it => [it.name, it.kind, both(KIND_L, it.kind), it.slot && both(SLOT_L, it.slot),
+                it.armorType && both(ARMORTYPE_L, it.armorType), both(QUALITY_L, quality(it))],
+  mob:   m  => [m.name, m.family, both(FAMILY_L, m.family), ...mobAbilities(m).flatMap(k => [ABILITY_L.fr[k], ABILITY_L.en[k]])],
   quest: x  => [x.name, x.text],
   npc:   n  => [n.name, n.title, n.greeting],
   place: d  => [d.name, d.enterText],
   set:   s  => [s.name, ...(s.bonuses || []).map(b => b.text)],
-  zone:  z  => [z.name, z.biome, fr(BIOME_FR, z.biome), z.hub && z.hub.name,
+  zone:  z  => [z.name, z.biome, both(BIOME_L, z.biome), z.hub && z.hub.name,
                 ...(z.pois || []).map(p => p.label)],
 };
 
@@ -738,14 +978,14 @@ function searchSort(list, q, cmp) {
 /* ================= onglets & filtres ================= */
 
 const TABS = [
-  { id:'items',    label:'Objets',   count: () => ITEMS.length },
-  { id:'mobs',     label:'Monstres', count: () => MOBS.length },
-  { id:'quests',   label:'Quêtes',   count: () => QUESTS.filter(q=>!q.retired).length },
-  { id:'npcs',     label:'PNJ',      count: () => NPCS.length },
-  { id:'dungeons', label:'Donjons',  count: () => DUNGEONS.length + DELVES.length },
-  { id:'worldbosses', label:'World bosses', count: () => WORLDBOSSES.length },
-  { id:'sets',     label:'Panoplies',count: () => SETS.length },
-  { id:'zones',    label:'Zones',    count: () => ZONES.length },
+  { id:'items',    label: T.tabs.items,    count: () => ITEMS.length },
+  { id:'mobs',     label: T.tabs.mobs,     count: () => MOBS.length },
+  { id:'quests',   label: T.tabs.quests,   count: () => QUESTS.filter(q=>!q.retired).length },
+  { id:'npcs',     label: T.tabs.npcs,     count: () => NPCS.length },
+  { id:'dungeons', label: T.tabs.dungeons, count: () => DUNGEONS.length + DELVES.length },
+  { id:'worldbosses', label: T.tabs.worldbosses, count: () => WORLDBOSSES.length },
+  { id:'sets',     label: T.tabs.sets,     count: () => SETS.length },
+  { id:'zones',    label: T.tabs.zones,    count: () => ZONES.length },
 ];
 
 let activeTab = 'items';
@@ -779,15 +1019,15 @@ function buildToolbar() {
   if (currentQuery()) {
     // Recherche globale : les filtres par onglet ne s'appliquent pas.
   } else if (activeTab === 'items') {
-    bar.appendChild(sel('kind', 'Tous les types', Object.keys(KIND_FR).filter(k => ITEMS.some(i=>i.kind===k)), k => fr(KIND_FR,k)));
-    bar.appendChild(sel('quality', 'Toutes les raretés', Object.keys(QUALITY_ORDER).filter(q => ITEMS.some(i=>quality(i)===q)), q => fr(QUALITY_FR,q)));
-    bar.appendChild(sel('slot', 'Tous les emplacements', Object.keys(SLOT_FR).filter(s => ITEMS.some(i=>i.slot===s)), s => fr(SLOT_FR,s)));
-    bar.appendChild(sel('cls', 'Toutes les classes', Object.keys(CLASS_FR).filter(c => ITEMS.some(i=>(i.requiredClass||[]).includes(c))), c => fr(CLASS_FR,c)));
+    bar.appendChild(sel('kind', T.f.kinds, Object.keys(KIND_L.fr).filter(k => ITEMS.some(i=>i.kind===k)), k => tr(KIND_L,k)));
+    bar.appendChild(sel('quality', T.f.qualities, Object.keys(QUALITY_ORDER).filter(q => ITEMS.some(i=>quality(i)===q)), q => tr(QUALITY_L,q)));
+    bar.appendChild(sel('slot', T.f.slots, Object.keys(SLOT_L.fr).filter(s => ITEMS.some(i=>i.slot===s)), s => tr(SLOT_L,s)));
+    bar.appendChild(sel('cls', T.f.classes, Object.keys(CLASS_L.fr).filter(c => ITEMS.some(i=>(i.requiredClass||[]).includes(c))), c => tr(CLASS_L,c)));
   } else if (activeTab === 'mobs') {
-    bar.appendChild(sel('family', 'Toutes les familles', [...new Set(MOBS.map(m=>m.family))].sort(), f => fr(FAMILY_FR,f)));
-    bar.appendChild(sel('rank', 'Tous les rangs', ['boss','elite','rare','normal'], r => ({boss:'Boss', elite:'Élite', rare:'Rare', normal:'Normal'})[r]));
+    bar.appendChild(sel('family', T.f.families, [...new Set(MOBS.map(m=>m.family))].sort(), f => tr(FAMILY_L,f)));
+    bar.appendChild(sel('rank', T.f.ranks, ['boss','elite','rare','normal'], r => T.rank[r]));
   } else if (activeTab === 'quests') {
-    bar.appendChild(sel('giver', 'Tous les donneurs', [...new Set(QUESTS.map(q=>q.giverNpcId))].filter(id=>byId.npc[id]).sort((a,b)=>npcName(a).localeCompare(npcName(b))), id => npcName(id)));
+    bar.appendChild(sel('giver', T.f.givers, [...new Set(QUESTS.map(q=>q.giverNpcId))].filter(id=>byId.npc[id]).sort((a,b)=>npcName(a).localeCompare(npcName(b))), id => npcName(id)));
   }
   const c = document.createElement('div');
   c.className = 'count'; c.id = 'count';
@@ -815,13 +1055,13 @@ function renderGrid() {
   if (q) {
     // ----- recherche globale : toutes les catégories, groupées -----
     const groups = [
-      { label:'Objets',    list: searchSort(ITEMS.filter(i => searchText(i,'item').includes(q)), q, sortItems),   card: itemCard },
-      { label:'Monstres',  list: searchSort(MOBS.filter(m => searchText(m,'mob').includes(q)), q, sortMobs),      card: mobCard },
-      { label:'Quêtes',    list: searchSort(QUESTS.filter(x => !x.retired && searchText(x,'quest').includes(q)), q, sortQuests), card: questCard },
-      { label:'PNJ',       list: searchSort(NPCS.filter(n => searchText(n,'npc').includes(q)), q, sortName),      card: npcCard },
-      { label:'Donjons & délves', list: searchSort(allPlaces().filter(d => searchText(d,'place').includes(q)), q, sortName), card: dungeonCard },
-      { label:'Panoplies', list: searchSort(SETS.filter(s => searchText(s,'set').includes(q)), q, sortName),      card: setCard },
-      { label:'Zones',     list: searchSort(ZONES.filter(z => searchText(z,'zone').includes(q)), q, sortName),    card: zoneCard },
+      { label: T.tabs.items,   list: searchSort(ITEMS.filter(i => searchText(i,'item').includes(q)), q, sortItems),   card: itemCard },
+      { label: T.tabs.mobs,    list: searchSort(MOBS.filter(m => searchText(m,'mob').includes(q)), q, sortMobs),      card: mobCard },
+      { label: T.tabs.quests,  list: searchSort(QUESTS.filter(x => !x.retired && searchText(x,'quest').includes(q)), q, sortQuests), card: questCard },
+      { label: T.tabs.npcs,    list: searchSort(NPCS.filter(n => searchText(n,'npc').includes(q)), q, sortName),      card: npcCard },
+      { label: T.placesGroup,  list: searchSort(allPlaces().filter(d => searchText(d,'place').includes(q)), q, sortName), card: dungeonCard },
+      { label: T.tabs.sets,    list: searchSort(SETS.filter(s => searchText(s,'set').includes(q)), q, sortName),      card: setCard },
+      { label: T.tabs.zones,   list: searchSort(ZONES.filter(z => searchText(z,'zone').includes(q)), q, sortName),    card: zoneCard },
     ];
     let total = 0;
     const frag = document.createDocumentFragment();
@@ -835,9 +1075,9 @@ function renderGrid() {
       g.list.forEach(e => frag.appendChild(g.card(e)));
     }
     const count = document.getElementById('count');
-    if (count) count.textContent = `${total} résultat${total > 1 ? 's' : ''}`;
+    if (count) count.textContent = T.results(total);
     if (!total) {
-      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🕯️</span>Aucun résultat dans ce grimoire.<br>Essaie un autre terme.</div>`;
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🕯️</span>${T.emptySearch}</div>`;
       return;
     }
     grid.appendChild(frag);
@@ -882,10 +1122,10 @@ function renderGrid() {
   }
 
   const count = document.getElementById('count');
-  if (count) count.textContent = `${cards.length} résultat${cards.length > 1 ? 's' : ''}`;
+  if (count) count.textContent = T.results(cards.length);
 
   if (!cards.length) {
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🕯️</span>Aucun résultat dans ce grimoire.<br>Essaie un autre terme ou retire des filtres.</div>`;
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">🕯️</span>${T.emptyFilters}</div>`;
     return;
   }
   const frag = document.createDocumentFragment();
@@ -908,9 +1148,9 @@ function card(borderClass, html, onOpen) {
 
 function itemCard(it) {
   const ql = quality(it);
-  const sub = [fr(KIND_FR, it.kind), it.slot && fr(SLOT_FR, it.slot), it.armorType && fr(ARMORTYPE_FR, it.armorType)].filter(Boolean).join(' · ');
-  const w = it.weapon ? `<div class="statline"><b>${it.weapon.min} – ${it.weapon.max}</b> dégâts · vitesse ${it.weapon.speed ?? '—'}</div>` : '';
-  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v]) => `+${v} ${fr(STAT_FR,k)}`).join(' · ')}</div>` : '';
+  const sub = [tr(KIND_L, it.kind), it.slot && tr(SLOT_L, it.slot), it.armorType && tr(ARMORTYPE_L, it.armorType)].filter(Boolean).join(' · ');
+  const w = it.weapon ? `<div class="statline"><b>${it.weapon.min} – ${it.weapon.max}</b> ${T.damage} · ${T.speed} ${it.weapon.speed ?? '—'}</div>` : '';
+  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v]) => `+${v} ${tr(STAT_L,k)}`).join(' · ')}</div>` : '';
   return card('bl-' + ql, `
     <div class="card-top">
       <div>
@@ -925,20 +1165,20 @@ function itemCard(it) {
 function mobCard(m) {
   const badges =
     (m.worldBoss ? '<span class="badge b-worldboss">World boss</span>' : m.boss ? '<span class="badge b-boss">Boss</span>' : '') +
-    (m.elite && !m.boss ? '<span class="badge b-elite">Élite</span>' : '') +
+    (m.elite && !m.boss ? `<span class="badge b-elite">${T.elite}</span>` : '') +
     (m.rare ? '<span class="badge b-rare">Rare</span>' : '');
   const lootN = (m.loot||[]).filter(l=>l.itemId).length;
   return card('bl-mob', `
     <div class="card-top">
       <div>
         <p class="card-name">${mobColor(m)}${esc(m.name)}</p>
-        <div class="card-sub">${fr(FAMILY_FR, m.family)}</div>
+        <div class="card-sub">${tr(FAMILY_L, m.family)}</div>
       </div>
       <span class="lvl">${levelText(m)}</span>
     </div>
     <div class="card-body">
       ${badges}
-      <div class="statline">PV <b>${Math.round(m.hpBase + m.hpPerLevel * m.minLevel)}</b>${lootN ? ` · <b>${lootN}</b> butin${lootN>1?'s':''}` : ''}</div>
+      <div class="statline">${T.hp} <b>${Math.round(m.hpBase + m.hpPerLevel * m.minLevel)}</b>${lootN ? ` · ${T.lootN(lootN)}` : ''}</div>
     </div>
   `, () => openSheet('mob', m.id));
 }
@@ -951,10 +1191,10 @@ function questCard(x) {
         <p class="card-name" style="color:var(--gold-bright)">${esc(x.name)}</p>
         <div class="card-sub">${giver ? esc(giver.name) : esc(x.giverNpcId)}</div>
       </div>
-      ${x.minLevel ? `<span class="lvl">niv. ${x.minLevel}+</span>` : ''}
+      ${x.minLevel ? `<span class="lvl">${T.lvl} ${x.minLevel}+</span>` : ''}
     </div>
     <div class="card-body">
-      ${x.suggestedPlayers ? `<span class="badge b-group">Groupe ${x.suggestedPlayers}</span>` : ''}
+      ${x.suggestedPlayers ? `<span class="badge b-group">${T.group} ${x.suggestedPlayers}</span>` : ''}
       <div class="statline"><b style="color:var(--xp)">${x.xpReward}</b> XP${x.copperReward ? ` · ${money(x.copperReward)}` : ''}</div>
     </div>
   `, () => openSheet('quest', x.id));
@@ -963,9 +1203,9 @@ function questCard(x) {
 function npcCard(n) {
   const nq = (refs.npcQuests[n.id]||[]).filter(q=>!q.retired).length;
   const traits = [
-    nq ? `${nq} quête${nq>1?'s':''}` : null,
-    n.vendorItems ? 'marchand' : null,
-    n.market ? 'marché' : null,
+    nq ? T.nQuests(nq) : null,
+    n.vendorItems ? T.vendor : null,
+    n.market ? T.market : null,
   ].filter(Boolean).join(' · ');
   return card('bl-npc', `
     <div class="card-top">
@@ -985,11 +1225,11 @@ function dungeonCard(d) {
     <div class="card-top">
       <div>
         <p class="card-name" style="color:#7fd4ff">${esc(d.name)}</p>
-        <div class="card-sub">${isDelve ? 'Délve' : 'Donjon'}${d.suggestedPlayers ? ` · ${d.suggestedPlayers} joueur${d.suggestedPlayers>1?'s':''}` : ''}</div>
+        <div class="card-sub">${isDelve ? T.delve : T.dungeon}${d.suggestedPlayers ? ` · ${T.nPlayers(d.suggestedPlayers)}` : ''}</div>
       </div>
-      ${d.minLevel ? `<span class="lvl">niv. ${d.minLevel}+</span>` : ''}
+      ${d.minLevel ? `<span class="lvl">${T.lvl} ${d.minLevel}+</span>` : ''}
     </div>
-    <div class="card-body statline">${isDelve ? `${mobsN} boss` : `${mobsN} type${mobsN>1?'s':''} de monstres`}</div>
+    <div class="card-body statline">${isDelve ? `${mobsN} boss` : T.nMobTypes(mobsN)}</div>
   `, () => openSheet(isDelve ? 'delve' : 'dungeon', d.id));
 }
 
@@ -999,14 +1239,14 @@ function worldBossCard(w) {
     <div class="card-top">
       <div>
         <p class="card-name">${m ? mobColor(m) + esc(m.name) : esc(w.templateId)}</p>
-        <div class="card-sub">${m ? fr(FAMILY_FR, m.family) : ''}</div>
+        <div class="card-sub">${m ? tr(FAMILY_L, m.family) : ''}</div>
       </div>
       ${m ? `<span class="lvl">${levelText(m)}</span>` : ''}
     </div>
     <div class="card-body">
       <span class="badge b-worldboss">World boss</span>
-      <div class="statline">Réapparaît toutes les <b>${duration(w.intervalSeconds)}</b></div>
-      ${w.hpScale ? `<div class="statline">PV <b>${w.hpScale.base}</b> <span class="qty">+${w.hpScale.perPlayer}/joueur</span></div>` : ''}
+      <div class="statline">${T.respawns(duration(w.intervalSeconds))}</div>
+      ${w.hpScale ? `<div class="statline">${T.hp} <b>${w.hpScale.base}</b> <span class="qty">+${w.hpScale.perPlayer}${T.perPlayer}</span></div>` : ''}
     </div>
   `, () => openSheet('worldboss', w.id));
 }
@@ -1017,7 +1257,7 @@ function setCard(s) {
     <div class="card-top">
       <div>
         <p class="card-name q-epic">${esc(s.name)}</p>
-        <div class="card-sub">Panoplie · ${pieces.length} pièce${pieces.length>1?'s':''}</div>
+        <div class="card-sub">${T.set} · ${T.nPieces(pieces.length)}</div>
       </div>
     </div>
     <div class="card-body statline">${(s.bonuses||[]).map(b=>`<b>${b.pieces}p</b>`).join(' · ')} bonus</div>
@@ -1031,11 +1271,11 @@ function zoneCard(z) {
     <div class="card-top">
       <div>
         <p class="card-name" style="color:#7fd4ff">${esc(z.name)}</p>
-        <div class="card-sub">${fr(BIOME_FR, z.biome)}${z.hub ? ` · capitale : ${esc(z.hub.name)}` : ''}</div>
+        <div class="card-sub">${tr(BIOME_L, z.biome)}${z.hub ? ` · ${T.hubOf(esc(z.hub.name))}` : ''}</div>
       </div>
-      ${lo ? `<span class="lvl">niv. ${lo}–${hi}</span>` : ''}
+      ${lo ? `<span class="lvl">${T.lvl} ${lo}–${hi}</span>` : ''}
     </div>
-    <div class="card-body statline">${pois} lieux notables</div>
+    <div class="card-body statline">${T.nPois(pois)}</div>
   `, () => openSheet('zone', z.id));
 }
 
@@ -1120,13 +1360,13 @@ document.addEventListener('keydown', e => {
 function head(kicker, title, titleClass, sub) {
   return `
     <div class="sheet-head">
-      ${sheetStack.length ? '<button class="back" aria-label="Fiche précédente" title="Fiche précédente">←</button>' : ''}
+      ${sheetStack.length ? `<button class="back" aria-label="${T.back}" title="${T.back}">←</button>` : ''}
       <div>
         <div class="kicker">${kicker}</div>
         <h2 class="${titleClass||''}" id="sheet-title">${title}</h2>
         ${sub ? `<div class="sheet-sub">${sub}</div>` : ''}
       </div>
-      <button class="close" aria-label="Fermer">✕</button>
+      <button class="close" aria-label="${T.close}">✕</button>
     </div>`;
 }
 
@@ -1142,72 +1382,72 @@ const itemLink = (id, extra) => {
 const mobLink = (m, extra) =>
   `<li><span class="xlink" data-open="mob|${m.id}">${mobColor(m)}${esc(m.name)}</span>${extra || `<span class="qty">${levelText(m)}</span>`}</li>`;
 const questLink = q =>
-  `<li><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${q.id}">${esc(q.name)}</span>${q.retired?'<span class="badge b-retired">retirée</span>':''}</li>`;
+  `<li><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${q.id}">${esc(q.name)}</span>${q.retired?`<span class="badge b-retired">${T.retired}</span>`:''}</li>`;
 const npcLink = n =>
   `<span class="xlink" data-open="npc|${n.id}">${esc(n.name)}</span>`;
 
 function itemSheet(it) {
   const ql = quality(it);
   const kv = [];
-  if (it.slot) kv.push(`<div><span>Emplacement</span>${fr(SLOT_FR, it.slot)}</div>`);
-  if (it.armorType) kv.push(`<div><span>Type</span>${fr(ARMORTYPE_FR, it.armorType)}</div>`);
-  if (it.weapon) kv.push(`<div><span>Dégâts</span><b class="mono">${it.weapon.min} – ${it.weapon.max}</b>&nbsp;(vitesse ${it.weapon.speed ?? '—'})</div>`);
-  if (it.bagSlots) kv.push(`<div><span>Contenance</span>${it.bagSlots} emplacements</div>`);
-  if (it.foodHp) kv.push(`<div><span>Restaure</span>${it.foodHp} PV</div>`);
-  if (it.drinkMana) kv.push(`<div><span>Restaure</span>${it.drinkMana} mana</div>`);
-  if (it.potionHp) kv.push(`<div><span>Potion</span>${it.potionHp} PV</div>`);
-  if (it.potionMana) kv.push(`<div><span>Potion</span>${it.potionMana} mana</div>`);
-  if (it.sellValue) kv.push(`<div><span>Vente</span>${money(it.sellValue)}</div>`);
-  if (it.buyValue) kv.push(`<div><span>Achat</span>${money(it.buyValue)}</div>`);
+  if (it.slot) kv.push(`<div><span>${T.slot}</span>${tr(SLOT_L, it.slot)}</div>`);
+  if (it.armorType) kv.push(`<div><span>${T.type}</span>${tr(ARMORTYPE_L, it.armorType)}</div>`);
+  if (it.weapon) kv.push(`<div><span>${T.damageK}</span><b class="mono">${it.weapon.min} – ${it.weapon.max}</b>&nbsp;(${T.speed} ${it.weapon.speed ?? '—'})</div>`);
+  if (it.bagSlots) kv.push(`<div><span>${T.capacity}</span>${T.slotsN(it.bagSlots)}</div>`);
+  if (it.foodHp) kv.push(`<div><span>${T.restores}</span>${it.foodHp} ${T.hp}</div>`);
+  if (it.drinkMana) kv.push(`<div><span>${T.restores}</span>${it.drinkMana} mana</div>`);
+  if (it.potionHp) kv.push(`<div><span>${T.potion}</span>${it.potionHp} ${T.hp}</div>`);
+  if (it.potionMana) kv.push(`<div><span>${T.potion}</span>${it.potionMana} mana</div>`);
+  if (it.sellValue) kv.push(`<div><span>${T.sell}</span>${money(it.sellValue)}</div>`);
+  if (it.buyValue) kv.push(`<div><span>${T.buy}</span>${money(it.buyValue)}</div>`);
 
-  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v])=>`+${v} ${fr(STAT_FR,k)}`).join('<br>')}</div>` : '';
-  const classes = it.requiredClass ? `<div class="statline" style="margin-top:8px">Classes : <b>${it.requiredClass.map(c=>fr(CLASS_FR,c)).join(', ')}</b></div>` : '';
+  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v])=>`+${v} ${tr(STAT_L,k)}`).join('<br>')}</div>` : '';
+  const classes = it.requiredClass ? `<div class="statline" style="margin-top:8px">${T.classes}${T.colon}<b>${it.requiredClass.map(c=>tr(CLASS_L,c)).join(', ')}</b></div>` : '';
 
-  const setBlock = it.set && byId.set[it.set] ? section('Panoplie',
+  const setBlock = it.set && byId.set[it.set] ? section(T.set,
     `<ul class="linklist"><li><span class="xlink q-epic" data-open="set|${it.set}">${esc(byId.set[it.set].name)}</span></li></ul>`) : '';
 
   const drops = (refs.droppedBy[it.id]||[]).sort((a,b)=>(b.chance||0)-(a.chance||0));
-  const dropBlock = drops.length ? section('Obtenu sur',
+  const dropBlock = drops.length ? section(T.droppedBy,
     `<ul class="linklist">${drops.map(d => mobLink(d.mob,
-      `${d.heroic ? '<span class="badge b-heroic" style="margin:0 8px 0 0">Héroïque</span>' : ''}<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
+      `${d.heroic ? `<span class="badge b-heroic" style="margin:0 8px 0 0">${T.heroic}</span>` : ''}<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
 
   const sold = refs.soldBy[it.id] || [];
-  const soldBlock = sold.length ? section('Vendu par',
+  const soldBlock = sold.length ? section(T.soldBy,
     `<ul class="linklist">${sold.map(n => `<li>${npcLink(n)}<span class="qty">${esc(n.title||'')}</span></li>`).join('')}</ul>`) : '';
 
   const reward = refs.rewardOf[it.id] || [];
-  const rewardBlock = reward.length ? section('Récompense de quête',
+  const rewardBlock = reward.length ? section(T.questReward,
     `<ul class="linklist">${reward.map(questLink).join('')}</ul>`) : '';
 
   const needed = refs.neededBy[it.id] || [];
-  const neededBlock = needed.length ? section('Requis pour',
+  const neededBlock = needed.length ? section(T.neededFor,
     `<ul class="linklist">${needed.map(questLink).join('')}</ul>`) : '';
 
   // Fiche honnête : si aucune source n'est connue, on le dit au lieu de ne rien afficher.
-  const originBlock = (!drops.length && !sold.length && !reward.length) ? section('Origine',
-    `<div class="statline" style="color:var(--faint)">Aucune source répertoriée dans les données extraites du jeu — vient probablement de la fabrication (métiers), du dépeçage/récolte, d'un delve ou d'un événement, pas encore couverts par le pipeline.</div>`) : '';
+  const originBlock = (!drops.length && !sold.length && !reward.length) ? section(T.origin,
+    `<div class="statline" style="color:var(--faint)">${T.noSource}</div>`) : '';
 
-  return head(`${fr(QUALITY_FR, ql)} · ${fr(KIND_FR, it.kind)}`, esc(it.name), 'q-'+ql)
-    + section('Caractéristiques', `<div class="kv">${kv.join('')}</div>${stats}${classes}` || '')
+  return head(`${tr(QUALITY_L, ql)} · ${tr(KIND_L, it.kind)}`, esc(it.name), 'q-'+ql)
+    + section(T.characteristics, `<div class="kv">${kv.join('')}</div>${stats}${classes}` || '')
     + setBlock + dropBlock + soldBlock + rewardBlock + neededBlock + originBlock;
 }
 
 function mobSheet(m) {
   const rank = m.worldBoss ? '<span class="badge b-worldboss">World boss</span>'
     : (m.boss ? '<span class="badge b-boss">Boss</span>' : '')
-      + (m.elite && !m.boss ? '<span class="badge b-elite">Élite</span>' : '')
+      + (m.elite && !m.boss ? `<span class="badge b-elite">${T.elite}</span>` : '')
       + (m.rare ? '<span class="badge b-rare">Rare</span>' : '');
 
   const lo = m.minLevel, hp = Math.round(m.hpBase + m.hpPerLevel * lo), dmg = (m.dmgBase + m.dmgPerLevel * lo).toFixed(0);
   const kv = [
-    `<div><span>Niveau</span>${levelText(m)}</div>`,
-    `<div><span>PV</span><b class="mono">${hp}</b>${m.hpPerLevel ? `&nbsp;<span class="qty">(+${m.hpPerLevel}/niv)</span>` : ''}</div>`,
-    `<div><span>Dégâts</span><b class="mono">≈${dmg}</b> / ${m.attackSpeed}s</div>`,
+    `<div><span>${T.level}</span>${levelText(m)}</div>`,
+    `<div><span>${T.hp}</span><b class="mono">${hp}</b>${m.hpPerLevel ? `&nbsp;<span class="qty">(+${m.hpPerLevel}${T.perLvl})</span>` : ''}</div>`,
+    `<div><span>${T.damageK}</span><b class="mono">≈${dmg}</b> / ${m.attackSpeed}s</div>`,
   ].join('');
 
   const abilities = mobAbilities(m);
-  const abilityBlock = abilities.length ? section('Capacités notables',
-    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0" title="${a}">${ABILITY_FR[a]}</span>`).join(' ')}</div>`) : '';
+  const abilityBlock = abilities.length ? section(T.notableAbilities,
+    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0" title="${a}">${tr(ABILITY_L, a)}</span>`).join(' ')}</div>`) : '';
 
   const loot = (m.loot||[]);
   const copperLoot = loot.filter(l => l.copper);
@@ -1222,7 +1462,7 @@ function mobSheet(m) {
   const itemLoot = Object.entries(lootAgg)
     .map(([itemId, chance]) => ({ itemId, chance }))
     .sort((a,b) => (b.chance||0) - (a.chance||0));
-  const lootBlock = (copperLoot.length || itemLoot.length) ? section('Butin',
+  const lootBlock = (copperLoot.length || itemLoot.length) ? section(T.lootTitle,
     `<ul class="linklist">
       ${copperLoot.map(l => `<li><span>${money(l.copper)}</span><span class="chance">${pct(l.chance)}</span></li>`).join('')}
       ${itemLoot.map(l => itemLink(l.itemId, `<span class="chance">${pct(l.chance)}</span>`)).join('')}
@@ -1232,24 +1472,24 @@ function mobSheet(m) {
   const hloot = ((DATA.HEROIC_BOSS_LOOT || {})[m.id] || [])
     .filter(l => l.itemId)
     .sort((a,b) => (b.chance||0) - (a.chance||0));
-  const hlootBlock = hloot.length ? section('Butin héroïque',
-    `<div class="statline" style="margin:0 0 8px;color:var(--faint)">En difficulté Héroïque uniquement — deux objets par kill.</div>
+  const hlootBlock = hloot.length ? section(T.heroicLoot,
+    `<div class="statline" style="margin:0 0 8px;color:var(--faint)">${T.heroicLootNote}</div>
      <ul class="linklist">${hloot.map(l => itemLink(l.itemId, `<span class="chance">${pct(l.chance)}</span>`)).join('')}</ul>`) : '';
 
   const quests = refs.killedFor[m.id] || [];
-  const questBlock = quests.length ? section('Cible de quête',
+  const questBlock = quests.length ? section(T.questTarget,
     `<ul class="linklist">${quests.map(questLink).join('')}</ul>`) : '';
 
   const dungeons = refs.mobDungeons[m.id] || [];
-  const dgBlock = dungeons.length ? section('Rencontré dans',
+  const dgBlock = dungeons.length ? section(T.foundIn,
     `<ul class="linklist">${dungeons.map(d => `<li><span class="xlink" style="color:#7fd4ff" data-open="dungeon|${d.id}">${esc(d.name)}</span></li>`).join('')}</ul>`) : '';
 
   const wb = byId.worldboss && byId.worldboss[m.id];
   const wbBlock = wb ? section('World boss',
-    `<ul class="linklist"><li><span class="xlink" style="color:#c77df5" data-open="worldboss|${wb.id}">Apparitions et points de vie</span><span class="qty">toutes les ${duration(wb.intervalSeconds)}</span></li></ul>`) : '';
+    `<ul class="linklist"><li><span class="xlink" style="color:#c77df5" data-open="worldboss|${wb.id}">${T.wbLink}</span><span class="qty">${T.every(duration(wb.intervalSeconds))}</span></li></ul>`) : '';
 
-  return head(fr(FAMILY_FR, m.family), mobColor(m) + esc(m.name), '', rank || null)
-    + section('Combat', `<div class="kv">${kv}</div>`)
+  return head(tr(FAMILY_L, m.family), mobColor(m) + esc(m.name), '', rank || null)
+    + section(T.combat, `<div class="kv">${kv}</div>`)
     + abilityBlock + lootBlock + hlootBlock + questBlock + dgBlock + wbBlock;
 }
 
@@ -1257,20 +1497,20 @@ function worldBossSheet(w) {
   const m = byId.mob[w.templateId];
   const hs = w.hpScale || {};
   const spawn = [
-    w.pos ? `<div><span>Position</span><b class="mono">${w.pos.x}, ${w.pos.z}</b></div>` : '',
-    `<div><span>Réapparition</span>toutes les <b>${duration(w.intervalSeconds)}</b></div>`,
+    w.pos ? `<div><span>${T.position}</span><b class="mono">${w.pos.x}, ${w.pos.z}</b></div>` : '',
+    `<div><span>${T.respawnK}</span>${T.everyB(duration(w.intervalSeconds))}</div>`,
   ].join('');
   const hp = [
-    hs.base != null ? `<div><span>PV de base</span><b class="mono">${hs.base}</b></div>` : '',
-    hs.perPlayer != null ? `<div><span>Par joueur</span><b class="mono">+${hs.perPlayer}</b></div>` : '',
-    hs.max != null ? `<div><span>Plafond</span><b class="mono">${hs.max}</b></div>` : '',
+    hs.base != null ? `<div><span>${T.baseHp}</span><b class="mono">${hs.base}</b></div>` : '',
+    hs.perPlayer != null ? `<div><span>${T.perPlayerK}</span><b class="mono">+${hs.perPlayer}</b></div>` : '',
+    hs.max != null ? `<div><span>${T.hpCap}</span><b class="mono">${hs.max}</b></div>` : '',
   ].join('');
 
   return head('World boss', m ? mobColor(m) + esc(m.name) : esc(w.templateId), '',
-      m ? `${fr(FAMILY_FR, m.family)} · ${levelText(m)}` : null)
-    + section('Apparition', `<div class="kv">${spawn}</div>`)
-    + (hp ? section('Points de vie (selon le nombre de joueurs)', `<div class="kv">${hp}</div>`) : '')
-    + (m ? section('Monstre', `<ul class="linklist">${mobLink(m)}</ul>`) : '');
+      m ? `${tr(FAMILY_L, m.family)} · ${levelText(m)}` : null)
+    + section(T.spawn, `<div class="kv">${spawn}</div>`)
+    + (hp ? section(T.hpByPlayers, `<div class="kv">${hp}</div>`) : '')
+    + (m ? section(T.mobK, `<ul class="linklist">${mobLink(m)}</ul>`) : '');
 }
 
 function questSheet(x) {
@@ -1279,11 +1519,11 @@ function questSheet(x) {
   const objectives = (x.objectives||[]).map(o => {
     if (o.type === 'kill') {
       const m = byId.mob[o.targetMobId];
-      return `<li>${m ? `<span>Tuer <b class="mono">${o.count}</b> × <span class="xlink" data-open="mob|${m.id}">${esc(m.name)}</span></span>` : esc(o.label||o.targetMobId)}</li>`;
+      return `<li>${m ? `<span>${T.kill} <b class="mono">${o.count}</b> × <span class="xlink" data-open="mob|${m.id}">${esc(m.name)}</span></span>` : esc(o.label||o.targetMobId)}</li>`;
     }
     if (o.type === 'collect') {
       const it = byId.item[o.itemId];
-      return `<li>${it ? `<span>Rapporter <b class="mono">${o.count}</b> × <span class="xlink q-${quality(it)}" data-open="item|${it.id}">${esc(it.name)}</span></span>` : esc(o.label||o.itemId)}</li>`;
+      return `<li>${it ? `<span>${T.collect} <b class="mono">${o.count}</b> × <span class="xlink q-${quality(it)}" data-open="item|${it.id}">${esc(it.name)}</span></span>` : esc(o.label||o.itemId)}</li>`;
     }
     return `<li><span>${esc(o.label || o.type)}</span></li>`;
   }).join('');
@@ -1295,33 +1535,33 @@ function questSheet(x) {
     rewardHtml = `<ul class="linklist">${itemLink(uniqueRewards[0])}</ul>`;
   } else if (uniqueRewards.length > 1) {
     rewardHtml = `<ul class="linklist">${Object.entries(rewards).map(([cls,itId]) =>
-      itemLink(itId, `<span class="qty">${fr(CLASS_FR, cls)}</span>`)).join('')}</ul>`;
+      itemLink(itId, `<span class="qty">${tr(CLASS_L, cls)}</span>`)).join('')}</ul>`;
   }
   const gains = `<div class="kv">
       <div><span>XP</span><b style="color:var(--xp)" class="mono">${x.xpReward}</b></div>
-      ${x.copperReward ? `<div><span>Or</span>${money(x.copperReward)}</div>` : ''}
+      ${x.copperReward ? `<div><span>${T.gold}</span>${money(x.copperReward)}</div>` : ''}
     </div>` + rewardHtml;
 
   const prev = x.requiresQuest && byId.quest[x.requiresQuest];
   const next = refs.questNext[x.id] || [];
-  const chain = (prev || next.length) ? section('Chaîne de quêtes',
+  const chain = (prev || next.length) ? section(T.questChain,
     `<ul class="linklist">
-      ${prev ? `<li><span><span class="qty">Précédée de&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${prev.id}">${esc(prev.name)}</span></span></li>` : ''}
-      ${next.map(n => `<li><span><span class="qty">Suivie de&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${n.id}">${esc(n.name)}</span></span></li>`).join('')}
+      ${prev ? `<li><span><span class="qty">${T.precededBy}&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${prev.id}">${esc(prev.name)}</span></span></li>` : ''}
+      ${next.map(n => `<li><span><span class="qty">${T.followedBy}&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${n.id}">${esc(n.name)}</span></span></li>`).join('')}
     </ul>`) : '';
 
   const badges =
-    (x.retired ? '<span class="badge b-retired">Retirée du jeu</span>' : '') +
-    (x.suggestedPlayers ? `<span class="badge b-group">Groupe conseillé : ${x.suggestedPlayers}</span>` : '') +
-    (x.minLevel ? `<span class="badge b-elite">Niveau ${x.minLevel}+</span>` : '');
+    (x.retired ? `<span class="badge b-retired">${T.retiredFull}</span>` : '') +
+    (x.suggestedPlayers ? `<span class="badge b-group">${T.suggGroup(x.suggestedPlayers)}</span>` : '') +
+    (x.minLevel ? `<span class="badge b-elite">${T.levelPlus(x.minLevel)}</span>` : '');
 
-  return head('Quête', esc(x.name), '', badges || null)
-    + section('Journal', `<p class="quote">${esc(x.text)}</p>`)
-    + section('Objectifs', `<ul class="linklist">${objectives}</ul>`)
-    + section('Récompenses', gains)
-    + section('Donneur', `<ul class="linklist">
-        <li>${giver ? npcLink(giver) : esc(x.giverNpcId)}<span class="qty">donne la quête</span></li>
-        ${turnIn && turnIn !== giver ? `<li>${npcLink(turnIn)}<span class="qty">à qui la rendre</span></li>` : ''}
+  return head(T.quest, esc(x.name), '', badges || null)
+    + section(T.journal, `<p class="quote">${esc(x.text)}</p>`)
+    + section(T.objectives, `<ul class="linklist">${objectives}</ul>`)
+    + section(T.rewards, gains)
+    + section(T.giver, `<ul class="linklist">
+        <li>${giver ? npcLink(giver) : esc(x.giverNpcId)}<span class="qty">${T.givesQuest}</span></li>
+        ${turnIn && turnIn !== giver ? `<li>${npcLink(turnIn)}<span class="qty">${T.turnInTo}</span></li>` : ''}
       </ul>`)
     + chain;
 }
@@ -1329,16 +1569,16 @@ function questSheet(x) {
 function npcSheet(n) {
   const given = (refs.npcQuests[n.id] || []).filter(q => !q.retired);
   const vendor = n.vendorItems || [];
-  return head(esc(n.title || 'Personnage'), mobColor(n) + esc(n.name), '')
-    + (n.greeting ? section('Accueil', `<p class="quote">« ${esc(n.greeting)} »</p>`) : '')
-    + (given.length ? section(`Quêtes proposées (${given.length})`,
+  return head(esc(n.title || T.character), mobColor(n) + esc(n.name), '')
+    + (n.greeting ? section(T.greeting, `<p class="quote">« ${esc(n.greeting)} »</p>`) : '')
+    + (given.length ? section(T.questsOffered(given.length),
         `<ul class="linklist">${given.map(questLink).join('')}</ul>`) : '')
-    + (vendor.length ? section(`À la vente (${vendor.length})`,
+    + (vendor.length ? section(T.forSale(vendor.length),
         `<ul class="linklist">${vendor.map(v => {
           const it = byId.item[v];
           return itemLink(v, it && it.buyValue ? `<span class="qty">${money(it.buyValue)}</span>` : '');
         }).join('')}</ul>`) : '')
-    + (n.market ? section('Marché', `<p class="quote">Donne accès au marché mondial entre joueurs.</p>`) : '');
+    + (n.market ? section(T.marketTitle, `<p class="quote">${T.marketText}</p>`) : '');
 }
 
 function dungeonSheet(d) {
@@ -1353,31 +1593,31 @@ function dungeonSheet(d) {
   const list = arr => `<ul class="linklist">${arr.map(e =>
     e.mob ? mobLink(e.mob, `<span class="qty">×${e.n}</span>`) : `<li>${esc(e.id)}</li>`).join('')}</ul>`;
 
-  return head('Donjon', esc(d.name), '', d.suggestedPlayers ? `Groupe conseillé : ${d.suggestedPlayers} joueurs` : null)
-    + (d.enterText ? section('Entrée', `<p class="quote">${esc(d.enterText)}</p>`) : '')
+  return head(T.dungeon, esc(d.name), '', d.suggestedPlayers ? T.suggGroupPlayers(d.suggestedPlayers) : null)
+    + (d.enterText ? section(T.entrance, `<p class="quote">${esc(d.enterText)}</p>`) : '')
     + (bosses.length ? section(`Boss (${bosses.length})`, list(bosses)) : '')
-    + (trash.length ? section('Habitants', list(trash)) : '');
+    + (trash.length ? section(T.inhabitants, list(trash)) : '');
 }
 
 function delveSheet(d) {
   const bosses = (d.bosses||[]).map(id => byId.mob[id]).filter(Boolean);
   const comp = d.autoCompanionId && byId.mob[d.autoCompanionId];
   const tiers = (d.tiers||[]).map(t =>
-    `<li><span>${esc(t.label)}</span><span class="qty">${t.affixCount ? t.affixCount + ' affixe(s) · ' : ''}récompenses ×${t.rewardMult}</span></li>`).join('');
-  return head('Délve', esc(d.name), '',
-      `${d.minLevel ? `Niveau ${d.minLevel}+ · ` : ''}${d.maxPlayers} joueur(s) max`)
-    + (d.enterText ? section('Entrée', `<p class="quote">${esc(d.enterText)}</p>`) : '')
+    `<li><span>${esc(t.label)}</span><span class="qty">${t.affixCount ? T.affixes(t.affixCount) : ''}${T.rewardsX(t.rewardMult)}</span></li>`).join('');
+  return head(T.delve, esc(d.name), '',
+      `${d.minLevel ? `${T.levelPlus(d.minLevel)} · ` : ''}${T.maxPlayersN(d.maxPlayers)}`)
+    + (d.enterText ? section(T.entrance, `<p class="quote">${esc(d.enterText)}</p>`) : '')
     + (bosses.length ? section('Boss', `<ul class="linklist">${bosses.map(b => mobLink(b)).join('')}</ul>`) : '')
-    + (comp ? section('Compagnon', `<ul class="linklist">${mobLink(comp)}</ul>`) : '')
-    + (tiers ? section('Difficultés', `<ul class="linklist">${tiers}</ul>`) : '');
+    + (comp ? section(T.companion, `<ul class="linklist">${mobLink(comp)}</ul>`) : '')
+    + (tiers ? section(T.difficulties, `<ul class="linklist">${tiers}</ul>`) : '');
 }
 
 function setSheet(s) {
   const pieces = (refs.setPieces[s.id] || []).sort((a,b)=>a.name.localeCompare(b.name));
-  return head('Panoplie', esc(s.name), 'q-epic')
-    + section(`Pièces (${pieces.length})`,
-        `<ul class="linklist">${pieces.map(p => itemLink(p.id, `<span class="qty">${fr(SLOT_FR, p.slot)}</span>`)).join('')}</ul>`)
-    + section('Bonus de panoplie',
+  return head(T.set, esc(s.name), 'q-epic')
+    + section(T.piecesN(pieces.length),
+        `<ul class="linklist">${pieces.map(p => itemLink(p.id, `<span class="qty">${tr(SLOT_L, p.slot)}</span>`)).join('')}</ul>`)
+    + section(T.setBonuses,
         (s.bonuses||[]).map(b => `<div class="setbonus"><b>(${b.pieces})</b> ${esc(b.text)}</div>`).join(''));
 }
 
@@ -1390,12 +1630,12 @@ function zoneSheet(z) {
   const fish = DATA.FISHING_TABLES && DATA.FISHING_TABLES[z.id];
   const fishTotal = fish ? fish.reduce((a,f)=>a+f.weight,0) : 0;
 
-  return head('Zone', esc(z.name), '', `${fr(BIOME_FR, z.biome)}${lo ? ` · niveaux ${lo}–${hi}` : ''}`)
-    + (z.hub ? section('Capitale', `<ul class="linklist"><li><span>${esc(z.hub.name)}</span></li></ul>`) : '')
-    + (pois ? section('Lieux notables', `<ul class="linklist">${pois}</ul>`) : '')
-    + (nodes.length ? section('Ressources', `<div class="kv">${Object.entries(nodeCount).map(([t,n]) =>
-        `<div><span>${fr(NODE_FR,t)}</span><b>${n}</b> gisements</div>`).join('')}</div>`) : '')
-    + (fish ? section('Pêche', `<ul class="linklist">${fish.filter(f=>f.itemId).map(f =>
+  return head('Zone', esc(z.name), '', `${tr(BIOME_L, z.biome)}${lo ? ` · ${T.levels(lo, hi)}` : ''}`)
+    + (z.hub ? section(T.hubK, `<ul class="linklist"><li><span>${esc(z.hub.name)}</span></li></ul>`) : '')
+    + (pois ? section(T.pois, `<ul class="linklist">${pois}</ul>`) : '')
+    + (nodes.length ? section(T.resources, `<div class="kv">${Object.entries(nodeCount).map(([t,n]) =>
+        `<div><span>${tr(NODE_L,t)}</span>${T.nodesN(n)}</div>`).join('')}</div>`) : '')
+    + (fish ? section(T.fishing, `<ul class="linklist">${fish.filter(f=>f.itemId).map(f =>
         itemLink(f.itemId, `<span class="chance">${Math.round(f.weight/fishTotal*100)}%</span>`)).join('')}</ul>`) : '');
 }
 
@@ -1404,113 +1644,220 @@ function zoneSheet(z) {
    avec les références résolues (noms au lieu d'identifiants) — à glisser
    dans une conversation Claude pour poser des questions sur les données. */
 
+const MD_MONEY = LANG === 'en'
+  ? { zero: '0c', g: n => `${n}g`, s: n => `${n}s`, c: n => `${n}c` }
+  : { zero: '0 pc', g: n => `${n} po`, s: n => `${n} pa`, c: n => `${n} pc` };
 function moneyTxt(copper) {
-  if (!copper) return '0 pc';
+  if (!copper) return MD_MONEY.zero;
   const g = Math.floor(copper / 10000), s = Math.floor(copper / 100) % 100, c = copper % 100;
-  return [g && `${g} po`, s && `${s} pa`, c && `${c} pc`].filter(Boolean).join(' ');
+  return [g && MD_MONEY.g(g), s && MD_MONEY.s(s), c && MD_MONEY.c(c)].filter(Boolean).join(' ');
 }
 const nameOf = (map, id) => (map[id] && map[id].name) || id;
 
 function buildMarkdown() {
-  const L = [];
-  const tag = DATA._meta ? DATA._meta.tag : 'inconnue';
-  L.push(`# World of ClaudeCraft — encyclopédie (version ${tag})`);
-  L.push('');
-  L.push('Données extraites automatiquement du code source du jeu.');
-  L.push('Monnaie : po = pièces d\'or, pa = argent, pc = cuivre. niv. = niveau. PV = points de vie.');
+  const M = LANG === 'en' ? {
+    title: tag => `# World of ClaudeCraft — encyclopedia (version ${tag})`,
+    unknown: 'unknown',
+    intro1: 'Data extracted automatically from the game source code.',
+    intro2: 'Currency: g = gold, s = silver, c = copper. lvl. = level. HP = hit points.',
+    hItems: 'Items', hMobs: 'Mobs', hQuests: 'Quests', hNpcs: 'NPCs', hDungeons: 'Dungeons',
+    hDelves: 'Delves', hWorldbosses: 'World bosses', hSets: 'Item sets', hZones: 'Zones',
+    slot: v => `slot: ${v}`,
+    dmg: w => `damage ${w.min}–${w.max} (speed ${w.speed ?? '?'})`,
+    bag: n => `${n}-slot bag`,
+    restoreHp: n => `restores ${n} HP`, restoreMana: n => `restores ${n} mana`,
+    potionHp: n => `potion: ${n} HP`, potionMana: n => `potion: ${n} mana`,
+    classes: v => `classes: ${v}`,
+    set: v => `item set “${v}”`,
+    sell: v => `sells for ${v}`, buy: v => `costs ${v}`,
+    questItem: v => `item for the quest “${v}”`,
+    heroicTag: ', heroic',
+    droppedBy: v => `dropped by: ${v}`, soldBy: v => `sold by: ${v}`,
+    rewardOf: v => `reward of: ${v}`, neededFor: v => `needed for: ${v}`,
+    eliteTag: 'elite', rareTag: 'rare',
+    mobStats: (hp, dmg, spd) => `HP ~${hp}, damage ~${dmg} / ${spd}s`,
+    abilities: v => `abilities: ${v}`, loot: v => `loot: ${v}`,
+    questTarget: v => `quest target of: ${v}`, foundIn: v => `found in: ${v}`,
+    retiredTag: ' (removed from the game)',
+    giver: v => `Quest giver: ${v}`, turnIn: v => ` · turn in to: ${v}`,
+    lvlReq: n => `Required level: ${n}`, suggGroup: n => `suggested group: ${n} players`,
+    objectives: v => `Objectives: ${v}`,
+    kill: (c, n) => `kill ${c} × ${n}`, collect: (c, n) => `bring back ${c} × ${n}`,
+    rewards: xp => `Rewards: ${xp} XP`,
+    item1: v => ` · item: ${v}`, itemByClass: v => ` · item by class: ${v}`,
+    requires: v => `Requires completing: “${v}”`,
+    followedBy: v => `Followed by: ${v}`,
+    journal: v => `Journal: “${v}”`,
+    quote: v => `“${v}”`,
+    givesQuests: v => `gives the quests: ${v}`, sells: v => `sells: ${v}`,
+    market: 'grants access to the player market',
+    greeting: v => `greeting: “${v}”`,
+    boss: v => `bosses: ${v}`, trash: v => `inhabitants: ${v}`,
+    lvlPlus: n => `level ${n}+`, maxPlayers: n => `${n} player(s) max`,
+    companion: v => `companion: ${v}`, tiers: v => `difficulty tiers: ${v}`,
+    tier: t => `${t.label} (rewards ×${t.rewardMult}${t.affixCount ? `, ${t.affixCount} affix(es)` : ''})`,
+    respawn: d => `respawns every ${d}`,
+    hpScale: h => `HP ${h.base} +${h.perPlayer}/player${h.max ? ` (max ${h.max})` : ''}`,
+    pos: p => `position ${p.x}, ${p.z}`,
+    pieces: v => `pieces: ${v}`, bonus: v => `Bonuses — ${v}`,
+    pieceBonus: b => `${b.pieces} pieces: ${b.text}`,
+    levels: (lo, hi) => `, levels ${lo}–${hi}`,
+    hub: v => `hub: ${v}`, pois: v => `points of interest: ${v}`,
+    resources: v => `resources: ${v}`, node: (n, t) => `${n} ${t.toLowerCase()} node(s)`,
+    fishing: v => `fishing: ${v}`,
+    welcome: v => `greeting: “${v}”`,
+  } : {
+    title: tag => `# World of ClaudeCraft — encyclopédie (version ${tag})`,
+    unknown: 'inconnue',
+    intro1: 'Données extraites automatiquement du code source du jeu.',
+    intro2: "Monnaie : po = pièces d'or, pa = argent, pc = cuivre. niv. = niveau. PV = points de vie.",
+    hItems: 'Objets', hMobs: 'Monstres', hQuests: 'Quêtes', hNpcs: 'PNJ', hDungeons: 'Donjons',
+    hDelves: 'Délves', hWorldbosses: 'World bosses', hSets: 'Panoplies', hZones: 'Zones',
+    slot: v => `emplacement : ${v}`,
+    dmg: w => `dégâts ${w.min}–${w.max} (vitesse ${w.speed ?? '?'})`,
+    bag: n => `sac de ${n} emplacements`,
+    restoreHp: n => `restaure ${n} PV`, restoreMana: n => `restaure ${n} mana`,
+    potionHp: n => `potion : ${n} PV`, potionMana: n => `potion : ${n} mana`,
+    classes: v => `classes : ${v}`,
+    set: v => `panoplie « ${v} »`,
+    sell: v => `vente ${v}`, buy: v => `achat ${v}`,
+    questItem: v => `objet de la quête « ${v} »`,
+    heroicTag: ', héroïque',
+    droppedBy: v => `obtenu sur : ${v}`, soldBy: v => `vendu par : ${v}`,
+    rewardOf: v => `récompense de : ${v}`, neededFor: v => `requis pour : ${v}`,
+    eliteTag: 'élite', rareTag: 'rare',
+    mobStats: (hp, dmg, spd) => `PV ~${hp}, dégâts ~${dmg} / ${spd}s`,
+    abilities: v => `capacités : ${v}`, loot: v => `butin : ${v}`,
+    questTarget: v => `cible des quêtes : ${v}`, foundIn: v => `rencontré dans : ${v}`,
+    retiredTag: ' (retirée du jeu)',
+    giver: v => `Donneur : ${v}`, turnIn: v => ` · à rendre à : ${v}`,
+    lvlReq: n => `Niveau requis : ${n}`, suggGroup: n => `groupe conseillé : ${n} joueurs`,
+    objectives: v => `Objectifs : ${v}`,
+    kill: (c, n) => `tuer ${c} × ${n}`, collect: (c, n) => `rapporter ${c} × ${n}`,
+    rewards: xp => `Récompenses : ${xp} XP`,
+    item1: v => ` · objet : ${v}`, itemByClass: v => ` · objet selon la classe : ${v}`,
+    requires: v => `Nécessite d'avoir fini : « ${v} »`,
+    followedBy: v => `Suivie de : ${v}`,
+    journal: v => `Journal : « ${v} »`,
+    quote: v => `« ${v} »`,
+    givesQuests: v => `donne les quêtes : ${v}`, sells: v => `vend : ${v}`,
+    market: 'donne accès au marché entre joueurs',
+    greeting: v => `accueil : « ${v} »`,
+    boss: v => `boss : ${v}`, trash: v => `habitants : ${v}`,
+    lvlPlus: n => `niveau ${n}+`, maxPlayers: n => `${n} joueur(s) max`,
+    companion: v => `compagnon : ${v}`, tiers: v => `difficultés : ${v}`,
+    tier: t => `${t.label} (récompenses ×${t.rewardMult}${t.affixCount ? `, ${t.affixCount} affixe(s)` : ''})`,
+    respawn: d => `réapparaît toutes les ${d}`,
+    hpScale: h => `PV ${h.base} +${h.perPlayer}/joueur${h.max ? ` (max ${h.max})` : ''}`,
+    pos: p => `position ${p.x}, ${p.z}`,
+    pieces: v => `pièces : ${v}`, bonus: v => `Bonus — ${v}`,
+    pieceBonus: b => `${b.pieces} pièces : ${b.text}`,
+    levels: (lo, hi) => `, niveaux ${lo}–${hi}`,
+    hub: v => `capitale : ${v}`, pois: v => `lieux notables : ${v}`,
+    resources: v => `ressources : ${v}`, node: (n, t) => `${n} gisement(s) de ${t.toLowerCase()}`,
+    fishing: v => `pêche : ${v}`,
+    welcome: v => `accueil : « ${v} »`,
+  };
 
-  L.push('', `## Objets (${ITEMS.length})`, '');
+  const L = [];
+  const tag = DATA._meta ? DATA._meta.tag : M.unknown;
+  L.push(M.title(tag));
+  L.push('');
+  L.push(M.intro1);
+  L.push(M.intro2);
+
+  L.push('', `## ${M.hItems} (${ITEMS.length})`, '');
   for (const it of [...ITEMS].sort(sortItems)) {
     const p = [];
-    p.push(`${fr(QUALITY_FR, quality(it))}, ${fr(KIND_FR, it.kind).toLowerCase()}`);
-    if (it.slot) p.push(`emplacement : ${fr(SLOT_FR, it.slot)}`);
-    if (it.armorType) p.push(fr(ARMORTYPE_FR, it.armorType).toLowerCase());
-    if (it.weapon) p.push(`dégâts ${it.weapon.min}–${it.weapon.max} (vitesse ${it.weapon.speed ?? '?'})`);
-    if (it.stats) p.push(Object.entries(it.stats).map(([k, v]) => `+${v} ${fr(STAT_FR, k)}`).join(', '));
-    if (it.bagSlots) p.push(`sac de ${it.bagSlots} emplacements`);
-    if (it.foodHp) p.push(`restaure ${it.foodHp} PV`);
-    if (it.drinkMana) p.push(`restaure ${it.drinkMana} mana`);
-    if (it.potionHp) p.push(`potion : ${it.potionHp} PV`);
-    if (it.potionMana) p.push(`potion : ${it.potionMana} mana`);
-    if (it.requiredClass) p.push(`classes : ${it.requiredClass.map(c => fr(CLASS_FR, c)).join(', ')}`);
-    if (it.set) p.push(`panoplie « ${nameOf(byId.set, it.set)} »`);
-    if (it.sellValue) p.push(`vente ${moneyTxt(it.sellValue)}`);
-    if (it.buyValue) p.push(`achat ${moneyTxt(it.buyValue)}`);
-    if (it.questId) p.push(`objet de la quête « ${nameOf(byId.quest, it.questId)} »`);
-    const drops = (refs.droppedBy[it.id] || []).map(d => `${d.mob.name} (${pct(d.chance)}${d.heroic ? ', héroïque' : ''})`);
-    if (drops.length) p.push(`obtenu sur : ${drops.join(', ')}`);
+    p.push(`${tr(QUALITY_L, quality(it))}, ${tr(KIND_L, it.kind).toLowerCase()}`);
+    if (it.slot) p.push(M.slot(tr(SLOT_L, it.slot)));
+    if (it.armorType) p.push(tr(ARMORTYPE_L, it.armorType).toLowerCase());
+    if (it.weapon) p.push(M.dmg(it.weapon));
+    if (it.stats) p.push(Object.entries(it.stats).map(([k, v]) => `+${v} ${tr(STAT_L, k)}`).join(', '));
+    if (it.bagSlots) p.push(M.bag(it.bagSlots));
+    if (it.foodHp) p.push(M.restoreHp(it.foodHp));
+    if (it.drinkMana) p.push(M.restoreMana(it.drinkMana));
+    if (it.potionHp) p.push(M.potionHp(it.potionHp));
+    if (it.potionMana) p.push(M.potionMana(it.potionMana));
+    if (it.requiredClass) p.push(M.classes(it.requiredClass.map(c => tr(CLASS_L, c)).join(', ')));
+    if (it.set) p.push(M.set(nameOf(byId.set, it.set)));
+    if (it.sellValue) p.push(M.sell(moneyTxt(it.sellValue)));
+    if (it.buyValue) p.push(M.buy(moneyTxt(it.buyValue)));
+    if (it.questId) p.push(M.questItem(nameOf(byId.quest, it.questId)));
+    const drops = (refs.droppedBy[it.id] || []).map(d => `${d.mob.name} (${pct(d.chance)}${d.heroic ? M.heroicTag : ''})`);
+    if (drops.length) p.push(M.droppedBy(drops.join(', ')));
     const sold = (refs.soldBy[it.id] || []).map(n => n.name);
-    if (sold.length) p.push(`vendu par : ${sold.join(', ')}`);
-    const rew = (refs.rewardOf[it.id] || []).map(q => `« ${q.name} »`);
-    if (rew.length) p.push(`récompense de : ${rew.join(', ')}`);
-    const need = (refs.neededBy[it.id] || []).map(q => `« ${q.name} »`);
-    if (need.length) p.push(`requis pour : ${need.join(', ')}`);
+    if (sold.length) p.push(M.soldBy(sold.join(', ')));
+    const rew = (refs.rewardOf[it.id] || []).map(q => M.quote(q.name));
+    if (rew.length) p.push(M.rewardOf(rew.join(', ')));
+    const need = (refs.neededBy[it.id] || []).map(q => M.quote(q.name));
+    if (need.length) p.push(M.neededFor(need.join(', ')));
     L.push(`- **${it.name}** — ${p.join(' · ')}`);
   }
 
-  L.push('', `## Monstres (${MOBS.length})`, '');
+  L.push('', `## ${M.hMobs} (${MOBS.length})`, '');
   for (const m of [...MOBS].sort(sortMobs)) {
     const p = [];
-    const rank = m.worldBoss ? 'WORLD BOSS' : m.boss ? 'BOSS' : m.elite ? 'élite' : m.rare ? 'rare' : null;
-    p.push(`${fr(FAMILY_FR, m.family)}${rank ? ', ' + rank : ''}, ${levelText(m)}`);
-    p.push(`PV ~${Math.round(m.hpBase + m.hpPerLevel * m.minLevel)}, dégâts ~${(m.dmgBase + m.dmgPerLevel * m.minLevel).toFixed(0)} / ${m.attackSpeed}s`);
-    const ab = mobAbilities(m).map(k => ABILITY_FR[k]);
-    if (ab.length) p.push(`capacités : ${ab.join(', ')}`);
+    const rank = m.worldBoss ? 'WORLD BOSS' : m.boss ? 'BOSS' : m.elite ? M.eliteTag : m.rare ? M.rareTag : null;
+    p.push(`${tr(FAMILY_L, m.family)}${rank ? ', ' + rank : ''}, ${levelText(m)}`);
+    p.push(M.mobStats(Math.round(m.hpBase + m.hpPerLevel * m.minLevel), (m.dmgBase + m.dmgPerLevel * m.minLevel).toFixed(0), m.attackSpeed));
+    const ab = mobAbilities(m).map(k => tr(ABILITY_L, k));
+    if (ab.length) p.push(M.abilities(ab.join(', ')));
     const loot = [];
     for (const l of (m.loot || [])) {
       if (l.copper) loot.push(`${moneyTxt(l.copper)} (${pct(l.chance)})`);
       else if (l.itemId) loot.push(`${nameOf(byId.item, l.itemId)} (${pct(l.chance)})`);
     }
-    if (loot.length) p.push(`butin : ${loot.join(', ')}`);
-    const kf = (refs.killedFor[m.id] || []).map(q => `« ${q.name} »`);
-    if (kf.length) p.push(`cible des quêtes : ${kf.join(', ')}`);
+    if (loot.length) p.push(M.loot(loot.join(', ')));
+    const kf = (refs.killedFor[m.id] || []).map(q => M.quote(q.name));
+    if (kf.length) p.push(M.questTarget(kf.join(', ')));
     const dg = (refs.mobDungeons[m.id] || []).map(d => d.name);
-    if (dg.length) p.push(`rencontré dans : ${dg.join(', ')}`);
+    if (dg.length) p.push(M.foundIn(dg.join(', ')));
     L.push(`- **${m.name}** — ${p.join(' · ')}`);
   }
 
-  L.push('', `## Quêtes (${QUESTS.length})`, '');
+  L.push('', `## ${M.hQuests} (${QUESTS.length})`, '');
   for (const x of [...QUESTS].sort(sortQuests)) {
-    L.push(`### ${x.name}${x.retired ? ' (retirée du jeu)' : ''}`, '');
-    L.push(`- Donneur : ${nameOf(byId.npc, x.giverNpcId)}${x.turnInNpcId && x.turnInNpcId !== x.giverNpcId ? ` · à rendre à : ${nameOf(byId.npc, x.turnInNpcId)}` : ''}`);
+    L.push(`### ${x.name}${x.retired ? M.retiredTag : ''}`, '');
+    L.push(`- ${M.giver(nameOf(byId.npc, x.giverNpcId))}${x.turnInNpcId && x.turnInNpcId !== x.giverNpcId ? M.turnIn(nameOf(byId.npc, x.turnInNpcId)) : ''}`);
     if (x.minLevel || x.suggestedPlayers)
-      L.push(`- ${[x.minLevel && `Niveau requis : ${x.minLevel}`, x.suggestedPlayers && `groupe conseillé : ${x.suggestedPlayers} joueurs`].filter(Boolean).join(' · ')}`);
+      L.push(`- ${[x.minLevel && M.lvlReq(x.minLevel), x.suggestedPlayers && M.suggGroup(x.suggestedPlayers)].filter(Boolean).join(' · ')}`);
     const obj = (x.objectives || []).map(o => {
-      if (o.type === 'kill') return `tuer ${o.count} × ${nameOf(byId.mob, o.targetMobId)}`;
-      if (o.type === 'collect') return `rapporter ${o.count} × ${nameOf(byId.item, o.itemId)}`;
+      if (o.type === 'kill') return M.kill(o.count, nameOf(byId.mob, o.targetMobId));
+      if (o.type === 'collect') return M.collect(o.count, nameOf(byId.item, o.itemId));
       return o.label || o.type;
     });
-    if (obj.length) L.push(`- Objectifs : ${obj.join(' ; ')}`);
+    if (obj.length) L.push(`- ${M.objectives(obj.join(' ; '))}`);
     const rewards = x.itemRewards || {};
     const uniq = [...new Set(Object.values(rewards))];
     let rtxt = '';
-    if (uniq.length === 1) rtxt = ` · objet : ${nameOf(byId.item, uniq[0])}`;
-    else if (uniq.length > 1) rtxt = ` · objet selon la classe : ${Object.entries(rewards).map(([c, i]) => `${fr(CLASS_FR, c)} → ${nameOf(byId.item, i)}`).join(', ')}`;
-    L.push(`- Récompenses : ${x.xpReward} XP${x.copperReward ? `, ${moneyTxt(x.copperReward)}` : ''}${rtxt}`);
-    if (x.requiresQuest) L.push(`- Nécessite d'avoir fini : « ${nameOf(byId.quest, x.requiresQuest)} »`);
-    const next = (refs.questNext[x.id] || []).map(n => `« ${n.name} »`);
-    if (next.length) L.push(`- Suivie de : ${next.join(', ')}`);
-    if (x.text) L.push(`- Journal : « ${x.text} »`);
+    if (uniq.length === 1) rtxt = M.item1(nameOf(byId.item, uniq[0]));
+    else if (uniq.length > 1) rtxt = M.itemByClass(Object.entries(rewards).map(([c, i]) => `${tr(CLASS_L, c)} → ${nameOf(byId.item, i)}`).join(', '));
+    L.push(`- ${M.rewards(x.xpReward)}${x.copperReward ? `, ${moneyTxt(x.copperReward)}` : ''}${rtxt}`);
+    if (x.requiresQuest) L.push(`- ${M.requires(nameOf(byId.quest, x.requiresQuest))}`);
+    const next = (refs.questNext[x.id] || []).map(n => M.quote(n.name));
+    if (next.length) L.push(`- ${M.followedBy(next.join(', '))}`);
+    if (x.text) L.push(`- ${M.journal(x.text)}`);
     L.push('');
   }
 
-  L.push(`## PNJ (${NPCS.length})`, '');
+  L.push(`## ${M.hNpcs} (${NPCS.length})`, '');
   for (const n of [...NPCS].sort(sortName)) {
     const p = [];
     if (n.title) p.push(n.title);
-    const qs = (refs.npcQuests[n.id] || []).map(q => `« ${q.name} »`);
-    if (qs.length) p.push(`donne les quêtes : ${qs.join(', ')}`);
+    const qs = (refs.npcQuests[n.id] || []).map(q => M.quote(q.name));
+    if (qs.length) p.push(M.givesQuests(qs.join(', ')));
     const v = (n.vendorItems || []).map(id => {
       const it = byId.item[id];
       return it ? `${it.name}${it.buyValue ? ` (${moneyTxt(it.buyValue)})` : ''}` : id;
     });
-    if (v.length) p.push(`vend : ${v.join(', ')}`);
-    if (n.market) p.push('donne accès au marché entre joueurs');
-    if (n.greeting) p.push(`accueil : « ${n.greeting} »`);
+    if (v.length) p.push(M.sells(v.join(', ')));
+    if (n.market) p.push(M.market);
+    if (n.greeting) p.push(M.greeting(n.greeting));
     L.push(`- **${n.name}** — ${p.join(' · ')}`);
   }
 
-  L.push('', `## Donjons (${DUNGEONS.length})`, '');
+  L.push('', `## ${M.hDungeons} (${DUNGEONS.length})`, '');
   for (const d of DUNGEONS) {
     const cnt = {};
     for (const s of (d.spawns || [])) cnt[s.mobId] = (cnt[s.mobId] || 0) + 1;
@@ -1520,60 +1867,60 @@ function buildMarkdown() {
       (m && m.boss ? bosses : trash).push(`${m ? m.name : id}${n > 1 ? ` (×${n})` : ''}`);
     }
     const p = [];
-    if (d.suggestedPlayers) p.push(`groupe conseillé : ${d.suggestedPlayers} joueurs`);
-    if (bosses.length) p.push(`boss : ${bosses.join(', ')}`);
-    if (trash.length) p.push(`habitants : ${trash.join(', ')}`);
+    if (d.suggestedPlayers) p.push(M.suggGroup(d.suggestedPlayers));
+    if (bosses.length) p.push(M.boss(bosses.join(', ')));
+    if (trash.length) p.push(M.trash(trash.join(', ')));
     L.push(`- **${d.name}** — ${p.join(' · ')}`);
   }
 
-  L.push('', `## Délves (${DELVES.length})`, '');
+  L.push('', `## ${M.hDelves} (${DELVES.length})`, '');
   for (const d of DELVES) {
     const p = [];
-    if (d.minLevel) p.push(`niveau ${d.minLevel}+`);
-    p.push(`${d.maxPlayers} joueur(s) max`);
+    if (d.minLevel) p.push(M.lvlPlus(d.minLevel));
+    p.push(M.maxPlayers(d.maxPlayers));
     const b = (d.bosses || []).map(id => nameOf(byId.mob, id));
-    if (b.length) p.push(`boss : ${b.join(', ')}`);
-    if (d.autoCompanionId) p.push(`compagnon : ${nameOf(byId.mob, d.autoCompanionId)}`);
-    const tiers = (d.tiers || []).map(t => `${t.label} (récompenses ×${t.rewardMult}${t.affixCount ? `, ${t.affixCount} affixe(s)` : ''})`);
-    if (tiers.length) p.push(`difficultés : ${tiers.join(', ')}`);
+    if (b.length) p.push(M.boss(b.join(', ')));
+    if (d.autoCompanionId) p.push(M.companion(nameOf(byId.mob, d.autoCompanionId)));
+    const tiers = (d.tiers || []).map(t => M.tier(t));
+    if (tiers.length) p.push(M.tiers(tiers.join(', ')));
     L.push(`- **${d.name}** — ${p.join(' · ')}`);
   }
 
   if (WORLDBOSSES.length) {
-    L.push('', `## World bosses (${WORLDBOSSES.length})`, '');
+    L.push('', `## ${M.hWorldbosses} (${WORLDBOSSES.length})`, '');
     for (const w of WORLDBOSSES) {
       const m = byId.mob[w.templateId];
-      const p = [`réapparaît toutes les ${duration(w.intervalSeconds)}`];
-      if (w.hpScale) p.push(`PV ${w.hpScale.base} +${w.hpScale.perPlayer}/joueur${w.hpScale.max ? ` (max ${w.hpScale.max})` : ''}`);
-      if (w.pos) p.push(`position ${w.pos.x}, ${w.pos.z}`);
+      const p = [M.respawn(duration(w.intervalSeconds))];
+      if (w.hpScale) p.push(M.hpScale(w.hpScale));
+      if (w.pos) p.push(M.pos(w.pos));
       L.push(`- **${m ? m.name : w.templateId}** — ${p.join(' · ')}`);
     }
   }
 
-  L.push('', `## Panoplies (${SETS.length})`, '');
+  L.push('', `## ${M.hSets} (${SETS.length})`, '');
   for (const s of [...SETS].sort(sortName)) {
-    const pieces = (refs.setPieces[s.id] || []).map(p => `${p.name} (${fr(SLOT_FR, p.slot)})`);
-    const bonuses = (s.bonuses || []).map(b => `${b.pieces} pièces : ${b.text}`);
-    L.push(`- **${s.name}** — pièces : ${pieces.join(', ')}. Bonus — ${bonuses.join(' ; ')}`);
+    const pieces = (refs.setPieces[s.id] || []).map(p => `${p.name} (${tr(SLOT_L, p.slot)})`);
+    const bonuses = (s.bonuses || []).map(b => M.pieceBonus(b));
+    L.push(`- **${s.name}** — ${M.pieces(pieces.join(', '))}. ${M.bonus(bonuses.join(' ; '))}`);
   }
 
-  L.push('', `## Zones (${ZONES.length})`, '');
+  L.push('', `## ${M.hZones} (${ZONES.length})`, '');
   for (const z of ZONES) {
     const [lo, hi] = z.levelRange || [];
-    const p = [`${fr(BIOME_FR, z.biome)}${lo ? `, niveaux ${lo}–${hi}` : ''}`];
-    if (z.hub) p.push(`capitale : ${z.hub.name}`);
+    const p = [`${tr(BIOME_L, z.biome)}${lo ? M.levels(lo, hi) : ''}`];
+    if (z.hub) p.push(M.hub(z.hub.name));
     const pois = (z.pois || []).map(x => x.label);
-    if (pois.length) p.push(`lieux notables : ${pois.join(', ')}`);
+    if (pois.length) p.push(M.pois(pois.join(', ')));
     const nodes = asList(DATA.GATHER_NODES).filter(g => g.zoneId === z.id);
     const nc = {};
     for (const g of nodes) nc[g.type] = (nc[g.type] || 0) + 1;
-    if (nodes.length) p.push(`ressources : ${Object.entries(nc).map(([t, n]) => `${n} gisement(s) de ${fr(NODE_FR, t).toLowerCase()}`).join(', ')}`);
+    if (nodes.length) p.push(M.resources(Object.entries(nc).map(([t, n]) => M.node(n, tr(NODE_L, t))).join(', ')));
     const fish = DATA.FISHING_TABLES && DATA.FISHING_TABLES[z.id];
     if (fish) {
       const tot = fish.reduce((a, f) => a + f.weight, 0);
-      p.push(`pêche : ${fish.filter(f => f.itemId).map(f => `${nameOf(byId.item, f.itemId)} (${Math.round(f.weight / tot * 100)}%)`).join(', ')}`);
+      p.push(M.fishing(fish.filter(f => f.itemId).map(f => `${nameOf(byId.item, f.itemId)} (${Math.round(f.weight / tot * 100)}%)`).join(', ')));
     }
-    if (z.welcome) p.push(`accueil : « ${z.welcome} »`);
+    if (z.welcome) p.push(M.welcome(z.welcome));
     L.push(`- **${z.name}** — ${p.join(' · ')}`);
   }
 
@@ -1584,7 +1931,7 @@ function downloadMarkdown() {
   const blob = new Blob([buildMarkdown()], { type: 'text/markdown;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `wocc-codex-${DATA._meta ? DATA._meta.tag : 'donnees'}.md`;
+  a.download = `wocc-codex-${DATA._meta ? DATA._meta.tag : 'donnees'}${LANG === 'en' ? '-en' : ''}.md`;
   document.body.appendChild(a);
   a.click();
   a.remove();
