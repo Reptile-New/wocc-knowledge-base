@@ -129,39 +129,19 @@
   ],
   "nythraxis_scourge_of_thornpeak": [
     {
-      "itemId": "scepter_of_the_deathless_court",
-      "chance": 0.25,
-      "rollGroup": "nythraxis_heroic"
-    },
-    {
-      "itemId": "deathless_warguard_legmail",
-      "chance": 0.25,
-      "rollGroup": "nythraxis_heroic"
-    },
-    {
-      "itemId": "soulrend_diadem",
-      "chance": 0.25,
-      "rollGroup": "nythraxis_heroic"
-    },
-    {
-      "itemId": "scourgehide_carapace",
-      "chance": 0.25,
-      "rollGroup": "nythraxis_heroic"
-    },
-    {
       "itemId": "deathless_greatblade",
       "chance": 0.34,
-      "rollGroup": "nythraxis_heroic2"
+      "rollGroup": "nythraxis_heroic_weapon"
     },
     {
-      "itemId": "soulforged_warplate",
+      "itemId": "scepter_of_the_deathless_court",
       "chance": 0.33,
-      "rollGroup": "nythraxis_heroic2"
+      "rollGroup": "nythraxis_heroic_weapon"
     },
     {
       "itemId": "stormcallers_focus",
       "chance": 0.33,
-      "rollGroup": "nythraxis_heroic2"
+      "rollGroup": "nythraxis_heroic_weapon"
     }
   ]
 }

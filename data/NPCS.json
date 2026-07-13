@@ -193,6 +193,19 @@
     "dynamic": true,
     "greeting": "The truce holds at the Sowfield, $C: boots and shoulders only. Care to play for the Copper Pail?"
   },
+  "chronicler_saul": {
+    "id": "chronicler_saul",
+    "name": "Saul the Chronicler",
+    "title": "The Vale Chronicle",
+    "pos": {
+      "x": 15,
+      "z": -16
+    },
+    "facing": 2.4,
+    "color": 13666862,
+    "questIds": [],
+    "greeting": "Every deed worth doing is worth writing down twice, $N: once for the ledger and once for the fireside."
+  },
   "warden_fenwick": {
     "id": "warden_fenwick",
     "name": "Warden Fenwick",
@@ -318,6 +331,19 @@
     "banker": true,
     "greeting": "The Gilded Strongbox keeps clean ledgers and cleaner vaults. What shall we stow for you?"
   },
+  "chronicler_osric_fenn": {
+    "id": "chronicler_osric_fenn",
+    "name": "Chronicler Osric Fenn",
+    "title": "The Marsh Chronicle",
+    "pos": {
+      "x": -14,
+      "z": 303
+    },
+    "facing": -1.4,
+    "color": 4171371,
+    "questIds": [],
+    "greeting": "Mind the damp on the pages, $N. The fen eats more books than readers ever will."
+  },
   "captain_thessaly": {
     "id": "captain_thessaly",
     "name": "Captain Thessaly",
@@ -429,7 +455,13 @@
       "stalkerhide_jerkin",
       "cragwalker_boots",
       "windguard_leggings",
-      "simple_fishing_pole"
+      "simple_fishing_pole",
+      "thorium_ore",
+      "arcanite_bar",
+      "ashwood_log",
+      "elderwood_log",
+      "goldleaf_herb",
+      "sunpetal_herb"
     ],
     "greeting": "Wool, hardtack, and steel-shod boots — Highwatch runs on all three, and I am short of everything."
   },
@@ -511,6 +543,19 @@
     "banker": true,
     "greeting": "Every crate, coffer, and trinket is safe with the Gilded Strongbox."
   },
+  "chronicler_edda_hartwell": {
+    "id": "chronicler_edda_hartwell",
+    "name": "Chronicler Zenzie",
+    "title": "The Peaks Chronicle",
+    "pos": {
+      "x": 2,
+      "z": 643
+    },
+    "facing": 3.1,
+    "color": 5926870,
+    "questIds": [],
+    "greeting": "The mountain forgets nothing, $N, and neither do I. Let us see what you have done."
+  },
   "tidewatcher_ondrel": {
     "id": "tidewatcher_ondrel",
     "name": "Ondrel Vane",
@@ -530,6 +575,62 @@
       "q_drowned_moon"
     ],
     "greeting": "The mere drinks the moonlight, $C, and gives back the drowned. I have watched that gate for thirty nights — and tonight it is open."
+  },
+  "fury": {
+    "id": "fury",
+    "name": "FURY",
+    "title": "Honor Quartermaster",
+    "pos": {
+      "x": -11,
+      "z": 1
+    },
+    "facing": 1.5707963267948966,
+    "color": 11872810,
+    "questIds": [],
+    "vendorItems": [
+      "furyforged_warhelm",
+      "furyforged_warspaulders",
+      "furyforged_warplate",
+      "furyforged_girdle",
+      "furyforged_legguards",
+      "furyforged_gauntlets",
+      "furyforged_sabatons",
+      "stormbound_crown",
+      "stormbound_spaulders",
+      "stormbound_hauberk",
+      "stormbound_waistguard",
+      "stormbound_legmail",
+      "stormbound_handguards",
+      "stormbound_greaves",
+      "ashstalker_cowl",
+      "ashstalker_shoulderguards",
+      "ashstalker_harness",
+      "ashstalker_waistband",
+      "ashstalker_legguards",
+      "ashstalker_grips",
+      "ashstalker_treads",
+      "cinderweave_cowl",
+      "cinderweave_mantle",
+      "cinderweave_raiment",
+      "cinderweave_cord",
+      "cinderweave_legwraps",
+      "cinderweave_handwraps",
+      "cinderweave_slippers",
+      "final_oath_medallion",
+      "razorwind_torque",
+      "cinder_sigil_pendant",
+      "iron_vow_band",
+      "unbroken_circle",
+      "fleetblood_band",
+      "last_step_signet",
+      "ashen_focus_ring",
+      "spellbreakers_seal",
+      "final_argument_greatblade",
+      "first_blood_razor",
+      "emberglass_warstaff"
+    ],
+    "dynamic": true,
+    "greeting": "The sands remember every victory. Spend your honor well."
   },
   "brother_halven": {
     "id": "brother_halven",

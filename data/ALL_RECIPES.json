@@ -16,7 +16,8 @@
     ],
     "skillReq": 0,
     "trivialAt": 25,
-    "itemLevelBudget": 10
+    "itemLevelBudget": 10,
+    "level": 10
   },
   {
     "id": "recipe_eastbrook_chain_vest",
@@ -31,7 +32,8 @@
     ],
     "skillReq": 0,
     "trivialAt": 25,
-    "itemLevelBudget": 10
+    "itemLevelBudget": 10,
+    "level": 10
   },
   {
     "id": "recipe_eastbrook_wool_trousers",
@@ -46,7 +48,8 @@
     ],
     "skillReq": 0,
     "trivialAt": 25,
-    "itemLevelBudget": 8
+    "itemLevelBudget": 8,
+    "level": 8
   },
   {
     "id": "recipe_tanned_leather_jerkin",
@@ -65,7 +68,8 @@
     ],
     "skillReq": 0,
     "trivialAt": 25,
-    "itemLevelBudget": 9
+    "itemLevelBudget": 9,
+    "level": 9
   },
   {
     "id": "recipe_tough_jerky",
@@ -80,7 +84,8 @@
     ],
     "skillReq": 0,
     "trivialAt": 25,
-    "itemLevelBudget": 1
+    "itemLevelBudget": 1,
+    "level": 1
   },
   {
     "id": "recipe_minor_healing_potion",
@@ -99,7 +104,8 @@
     ],
     "skillReq": 0,
     "trivialAt": 25,
-    "itemLevelBudget": 1
+    "itemLevelBudget": 1,
+    "level": 1
   },
   {
     "id": "recipe_thorium_mining_pick",
@@ -119,6 +125,7 @@
     "skillReq": 75,
     "trivialAt": 125,
     "itemLevelBudget": 20,
+    "level": 20,
     "requiresHubStation": true
   },
   {
@@ -139,6 +146,7 @@
     "skillReq": 150,
     "trivialAt": 200,
     "itemLevelBudget": 30,
+    "level": 20,
     "requiresHubStation": true
   },
   {
@@ -159,6 +167,7 @@
     "skillReq": 75,
     "trivialAt": 125,
     "itemLevelBudget": 20,
+    "level": 20,
     "requiresHubStation": true
   },
   {
@@ -179,6 +188,7 @@
     "skillReq": 150,
     "trivialAt": 200,
     "itemLevelBudget": 30,
+    "level": 20,
     "requiresHubStation": true
   },
   {
@@ -199,6 +209,7 @@
     "skillReq": 75,
     "trivialAt": 125,
     "itemLevelBudget": 20,
+    "level": 20,
     "requiresHubStation": true
   },
   {
@@ -219,6 +230,7 @@
     "skillReq": 150,
     "trivialAt": 200,
     "itemLevelBudget": 30,
+    "level": 20,
     "requiresHubStation": true
   },
   {
@@ -239,6 +251,7 @@
     "skillReq": 25,
     "trivialAt": 50,
     "itemLevelBudget": 20,
+    "level": 15,
     "comboRequirement": {
       "craftA": "armorcrafting",
       "craftB": "weaponcrafting",
@@ -263,6 +276,7 @@
     "skillReq": 25,
     "trivialAt": 50,
     "itemLevelBudget": 18,
+    "level": 15,
     "comboRequirement": {
       "craftA": "armorcrafting",
       "craftB": "weaponcrafting",
@@ -287,6 +301,7 @@
     "skillReq": 25,
     "trivialAt": 50,
     "itemLevelBudget": 16,
+    "level": 15,
     "comboRequirement": {
       "craftA": "alchemy",
       "craftB": "engineering",

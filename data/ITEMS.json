@@ -843,42 +843,48 @@
     "name": "Thorium Ore",
     "kind": "junk",
     "quality": "rare",
-    "sellValue": 15
+    "sellValue": 15,
+    "buyValue": 60
   },
   "arcanite_bar": {
     "id": "arcanite_bar",
     "name": "Arcanite Bar",
     "kind": "junk",
     "quality": "epic",
-    "sellValue": 40
+    "sellValue": 40,
+    "buyValue": 160
   },
   "ashwood_log": {
     "id": "ashwood_log",
     "name": "Ashwood Log",
     "kind": "junk",
     "quality": "rare",
-    "sellValue": 15
+    "sellValue": 15,
+    "buyValue": 60
   },
   "elderwood_log": {
     "id": "elderwood_log",
     "name": "Elderwood Log",
     "kind": "junk",
     "quality": "epic",
-    "sellValue": 40
+    "sellValue": 40,
+    "buyValue": 160
   },
   "goldleaf_herb": {
     "id": "goldleaf_herb",
     "name": "Goldleaf Herb",
     "kind": "junk",
     "quality": "rare",
-    "sellValue": 15
+    "sellValue": 15,
+    "buyValue": 60
   },
   "sunpetal_herb": {
     "id": "sunpetal_herb",
     "name": "Sunpetal Herb",
     "kind": "junk",
     "quality": "epic",
-    "sellValue": 40
+    "sellValue": 40,
+    "buyValue": 160
   },
   "event_skin_token": {
     "id": "event_skin_token",
@@ -898,7 +904,8 @@
     "quality": "rare",
     "stackSize": 20,
     "sellValue": 0,
-    "soulbound": true
+    "soulbound": true,
+    "noDiscard": true
   },
   "raw_mirror_trout": {
     "id": "raw_mirror_trout",
@@ -6495,12 +6502,12 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 28,
-      "max": 49,
+      "min": 29,
+      "max": 51,
       "speed": 2.4
     },
     "stats": {
-      "int": 12,
+      "int": 13,
       "spi": 10
     },
     "sellValue": 16000,
@@ -6508,67 +6515,6 @@
       "mage",
       "priest",
       "warlock",
-      "druid"
-    ]
-  },
-  "deathless_warguard_legmail": {
-    "id": "deathless_warguard_legmail",
-    "name": "Deathless Warguard Legmail",
-    "kind": "armor",
-    "armorType": "mail",
-    "slot": "legs",
-    "quality": "epic",
-    "requiredLevel": 20,
-    "stats": {
-      "armor": 315,
-      "str": 11,
-      "sta": 9
-    },
-    "sellValue": 13000,
-    "requiredClass": [
-      "warrior",
-      "paladin",
-      "shaman"
-    ]
-  },
-  "soulrend_diadem": {
-    "id": "soulrend_diadem",
-    "name": "Soulrend Diadem",
-    "kind": "armor",
-    "armorType": "cloth",
-    "slot": "helmet",
-    "quality": "epic",
-    "requiredLevel": 20,
-    "stats": {
-      "armor": 76,
-      "int": 10,
-      "spi": 8
-    },
-    "sellValue": 12000,
-    "requiredClass": [
-      "mage",
-      "priest",
-      "warlock",
-      "druid"
-    ]
-  },
-  "scourgehide_carapace": {
-    "id": "scourgehide_carapace",
-    "name": "Scourgehide Carapace",
-    "kind": "armor",
-    "armorType": "leather",
-    "slot": "chest",
-    "quality": "epic",
-    "requiredLevel": 20,
-    "stats": {
-      "armor": 172,
-      "agi": 12,
-      "sta": 10
-    },
-    "sellValue": 14000,
-    "requiredClass": [
-      "rogue",
-      "hunter",
       "druid"
     ]
   },
@@ -6580,36 +6526,17 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 43,
-      "max": 66,
+      "min": 45,
+      "max": 68,
       "speed": 3.4
     },
     "stats": {
-      "str": 13,
+      "str": 14,
       "sta": 9
     },
     "sellValue": 16000,
     "requiredClass": [
       "warrior",
-      "paladin",
-      "shaman"
-    ]
-  },
-  "soulforged_warplate": {
-    "id": "soulforged_warplate",
-    "name": "Soulforged Warplate",
-    "kind": "armor",
-    "armorType": "mail",
-    "slot": "chest",
-    "quality": "epic",
-    "requiredLevel": 20,
-    "stats": {
-      "armor": 335,
-      "int": 12,
-      "spi": 10
-    },
-    "sellValue": 14000,
-    "requiredClass": [
       "paladin",
       "shaman"
     ]
@@ -6622,18 +6549,806 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 29,
-      "max": 51,
+      "min": 31,
+      "max": 52,
       "speed": 2.5
     },
     "stats": {
-      "int": 13,
+      "int": 14,
       "spi": 9
     },
     "sellValue": 16000,
     "requiredClass": [
       "paladin",
       "shaman"
+    ]
+  },
+  "furyforged_warhelm": {
+    "id": "furyforged_warhelm",
+    "name": "Furyforged Warhelm",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "helmet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 265,
+      "str": 7,
+      "sta": 10
+    },
+    "pvpOffenseRating": 17,
+    "pvpDefenseRating": 17,
+    "priceHonor": 500,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "furyforged_warspaulders": {
+    "id": "furyforged_warspaulders",
+    "name": "Furyforged Warspaulders",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "shoulder",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 220,
+      "str": 6,
+      "sta": 9
+    },
+    "pvpOffenseRating": 15,
+    "pvpDefenseRating": 15,
+    "priceHonor": 400,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "furyforged_warplate": {
+    "id": "furyforged_warplate",
+    "name": "Furyforged Warplate",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 305,
+      "str": 9,
+      "sta": 11
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 700,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "furyforged_girdle": {
+    "id": "furyforged_girdle",
+    "name": "Furyforged Girdle",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "waist",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 200,
+      "str": 6,
+      "sta": 8
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 250,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "furyforged_legguards": {
+    "id": "furyforged_legguards",
+    "name": "Furyforged Legguards",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 285,
+      "str": 8,
+      "sta": 10
+    },
+    "pvpOffenseRating": 18,
+    "pvpDefenseRating": 18,
+    "priceHonor": 600,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "furyforged_gauntlets": {
+    "id": "furyforged_gauntlets",
+    "name": "Furyforged Gauntlets",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "gloves",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 200,
+      "str": 6,
+      "sta": 8
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "furyforged_sabatons": {
+    "id": "furyforged_sabatons",
+    "name": "Furyforged Sabatons",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "feet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 190,
+      "str": 6,
+      "sta": 7
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_crown": {
+    "id": "stormbound_crown",
+    "name": "Stormbound Crown",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "helmet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 265,
+      "int": 8,
+      "sta": 6,
+      "spi": 3
+    },
+    "pvpOffenseRating": 17,
+    "pvpDefenseRating": 17,
+    "priceHonor": 500,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_spaulders": {
+    "id": "stormbound_spaulders",
+    "name": "Stormbound Spaulders",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "shoulder",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 220,
+      "int": 7,
+      "sta": 5,
+      "spi": 3
+    },
+    "pvpOffenseRating": 15,
+    "pvpDefenseRating": 15,
+    "priceHonor": 400,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_hauberk": {
+    "id": "stormbound_hauberk",
+    "name": "Stormbound Hauberk",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 305,
+      "int": 9,
+      "sta": 7,
+      "spi": 4
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 700,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_waistguard": {
+    "id": "stormbound_waistguard",
+    "name": "Stormbound Waistguard",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "waist",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 200,
+      "int": 6,
+      "sta": 5,
+      "spi": 3
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 250,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_legmail": {
+    "id": "stormbound_legmail",
+    "name": "Stormbound Legmail",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 285,
+      "int": 8,
+      "sta": 6,
+      "spi": 4
+    },
+    "pvpOffenseRating": 18,
+    "pvpDefenseRating": 18,
+    "priceHonor": 600,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_handguards": {
+    "id": "stormbound_handguards",
+    "name": "Stormbound Handguards",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "gloves",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 200,
+      "int": 6,
+      "sta": 5,
+      "spi": 3
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "stormbound_greaves": {
+    "id": "stormbound_greaves",
+    "name": "Stormbound Greaves",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "feet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 190,
+      "int": 6,
+      "sta": 4,
+      "spi": 3
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_cowl": {
+    "id": "ashstalker_cowl",
+    "name": "Ashstalker Cowl",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "helmet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 150,
+      "agi": 8,
+      "sta": 9
+    },
+    "pvpOffenseRating": 17,
+    "pvpDefenseRating": 17,
+    "priceHonor": 500,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_shoulderguards": {
+    "id": "ashstalker_shoulderguards",
+    "name": "Ashstalker Shoulderguards",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "shoulder",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 135,
+      "agi": 7,
+      "sta": 8
+    },
+    "pvpOffenseRating": 15,
+    "pvpDefenseRating": 15,
+    "priceHonor": 400,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_harness": {
+    "id": "ashstalker_harness",
+    "name": "Ashstalker Harness",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 155,
+      "agi": 9,
+      "sta": 11
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 700,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_waistband": {
+    "id": "ashstalker_waistband",
+    "name": "Ashstalker Waistband",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "waist",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 90,
+      "agi": 6,
+      "sta": 8
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 250,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_legguards": {
+    "id": "ashstalker_legguards",
+    "name": "Ashstalker Legguards",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "legs",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 120,
+      "agi": 8,
+      "sta": 10
+    },
+    "pvpOffenseRating": 18,
+    "pvpDefenseRating": 18,
+    "priceHonor": 600,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_grips": {
+    "id": "ashstalker_grips",
+    "name": "Ashstalker Grips",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "gloves",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 95,
+      "agi": 6,
+      "sta": 8
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashstalker_treads": {
+    "id": "ashstalker_treads",
+    "name": "Ashstalker Treads",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "feet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 85,
+      "agi": 6,
+      "sta": 7
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_cowl": {
+    "id": "cinderweave_cowl",
+    "name": "Cinderweave Cowl",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "helmet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 70,
+      "int": 8,
+      "sta": 6,
+      "spi": 3
+    },
+    "pvpOffenseRating": 17,
+    "pvpDefenseRating": 17,
+    "priceHonor": 500,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_mantle": {
+    "id": "cinderweave_mantle",
+    "name": "Cinderweave Mantle",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "shoulder",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 50,
+      "int": 7,
+      "sta": 5,
+      "spi": 3
+    },
+    "pvpOffenseRating": 15,
+    "pvpDefenseRating": 15,
+    "priceHonor": 400,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_raiment": {
+    "id": "cinderweave_raiment",
+    "name": "Cinderweave Raiment",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "chest",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 80,
+      "int": 9,
+      "sta": 7,
+      "spi": 4
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 700,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_cord": {
+    "id": "cinderweave_cord",
+    "name": "Cinderweave Cord",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "waist",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 45,
+      "int": 6,
+      "sta": 5,
+      "spi": 3
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 250,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_legwraps": {
+    "id": "cinderweave_legwraps",
+    "name": "Cinderweave Legwraps",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "legs",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 65,
+      "int": 8,
+      "sta": 6,
+      "spi": 4
+    },
+    "pvpOffenseRating": 18,
+    "pvpDefenseRating": 18,
+    "priceHonor": 600,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_handwraps": {
+    "id": "cinderweave_handwraps",
+    "name": "Cinderweave Handwraps",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "gloves",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 45,
+      "int": 6,
+      "sta": 5,
+      "spi": 3
+    },
+    "pvpOffenseRating": 14,
+    "pvpDefenseRating": 14,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinderweave_slippers": {
+    "id": "cinderweave_slippers",
+    "name": "Cinderweave Slippers",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "feet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 40,
+      "int": 6,
+      "sta": 4,
+      "spi": 3
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 300,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "final_oath_medallion": {
+    "id": "final_oath_medallion",
+    "name": "Medallion of the Final Oath",
+    "kind": "armor",
+    "slot": "neck",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "str": 6,
+      "sta": 7
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 225,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "razorwind_torque": {
+    "id": "razorwind_torque",
+    "name": "Razorwind Torque",
+    "kind": "armor",
+    "slot": "neck",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "agi": 6,
+      "sta": 7
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 225,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "cinder_sigil_pendant": {
+    "id": "cinder_sigil_pendant",
+    "name": "Cinder-Sigil Pendant",
+    "kind": "armor",
+    "slot": "neck",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "int": 6,
+      "sta": 5,
+      "spi": 2
+    },
+    "pvpOffenseRating": 13,
+    "pvpDefenseRating": 13,
+    "priceHonor": 225,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "iron_vow_band": {
+    "id": "iron_vow_band",
+    "name": "Iron Vow Band",
+    "kind": "armor",
+    "slot": "ring",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "str": 5,
+      "sta": 7
+    },
+    "pvpOffenseRating": 12,
+    "pvpDefenseRating": 12,
+    "priceHonor": 150,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "unbroken_circle": {
+    "id": "unbroken_circle",
+    "name": "The Unbroken Circle",
+    "kind": "armor",
+    "slot": "ring",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "str": 6,
+      "sta": 6
+    },
+    "pvpOffenseRating": 12,
+    "pvpDefenseRating": 12,
+    "priceHonor": 150,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "fleetblood_band": {
+    "id": "fleetblood_band",
+    "name": "Fleetblood Band",
+    "kind": "armor",
+    "slot": "ring",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "agi": 6,
+      "sta": 6
+    },
+    "pvpOffenseRating": 12,
+    "pvpDefenseRating": 12,
+    "priceHonor": 150,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "last_step_signet": {
+    "id": "last_step_signet",
+    "name": "Last-Step Signet",
+    "kind": "armor",
+    "slot": "ring",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "agi": 5,
+      "sta": 7
+    },
+    "pvpOffenseRating": 12,
+    "pvpDefenseRating": 12,
+    "priceHonor": 150,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "ashen_focus_ring": {
+    "id": "ashen_focus_ring",
+    "name": "Ashen Focus Ring",
+    "kind": "armor",
+    "slot": "ring",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "int": 6,
+      "sta": 4,
+      "spi": 2
+    },
+    "pvpOffenseRating": 12,
+    "pvpDefenseRating": 12,
+    "priceHonor": 150,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "spellbreakers_seal": {
+    "id": "spellbreakers_seal",
+    "name": "Spellbreaker's Seal",
+    "kind": "armor",
+    "slot": "ring",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "int": 5,
+      "sta": 4,
+      "spi": 3
+    },
+    "pvpOffenseRating": 12,
+    "pvpDefenseRating": 12,
+    "priceHonor": 150,
+    "sellValue": 0,
+    "soulbound": true
+  },
+  "final_argument_greatblade": {
+    "id": "final_argument_greatblade",
+    "name": "Final Argument Greatblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "weapon": {
+      "min": 34,
+      "max": 50,
+      "speed": 2.8
+    },
+    "stats": {
+      "str": 9,
+      "sta": 11
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 800,
+    "sellValue": 0,
+    "soulbound": true,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ]
+  },
+  "first_blood_razor": {
+    "id": "first_blood_razor",
+    "name": "First-Blood Razor",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "weapon": {
+      "min": 20,
+      "max": 31,
+      "speed": 1.7,
+      "dagger": true
+    },
+    "stats": {
+      "agi": 9,
+      "sta": 11
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 800,
+    "sellValue": 0,
+    "soulbound": true,
+    "requiredClass": [
+      "rogue",
+      "hunter",
+      "druid"
+    ]
+  },
+  "emberglass_warstaff": {
+    "id": "emberglass_warstaff",
+    "name": "Emberglass Warstaff",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "weapon": {
+      "min": 37,
+      "max": 54,
+      "speed": 3
+    },
+    "stats": {
+      "int": 9,
+      "sta": 7,
+      "spi": 4
+    },
+    "pvpOffenseRating": 20,
+    "pvpDefenseRating": 20,
+    "priceHonor": 800,
+    "sellValue": 0,
+    "soulbound": true,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
     ]
   },
   "heroic_moggers_shiv": {
@@ -8015,6 +8730,66 @@
     ],
     "heroicOf": "wyrmshadow_talongrips"
   },
+  "heroic_deathless_heartwood": {
+    "id": "heroic_deathless_heartwood",
+    "name": "Heartwood of the Deathless Crown",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "legendary",
+    "weapon": {
+      "min": 43,
+      "max": 70,
+      "speed": 3.2
+    },
+    "stats": {
+      "sta": 14,
+      "int": 16,
+      "spi": 19
+    },
+    "sellValue": 25000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
+    ],
+    "weaponProcs": [
+      {
+        "id": "deathbloom",
+        "name": "Deathbloom",
+        "trigger": "spellDamage",
+        "chance": 0.15,
+        "effects": [
+          {
+            "kind": "dot",
+            "name": "Deathbloom",
+            "school": "nature",
+            "perTick": 12,
+            "interval": 2,
+            "duration": 8
+          }
+        ]
+      },
+      {
+        "id": "lifebloom",
+        "name": "Lifebloom",
+        "trigger": "heal",
+        "chance": 0.15,
+        "effects": [
+          {
+            "kind": "hot",
+            "name": "Lifebloom",
+            "perTick": 10,
+            "interval": 2,
+            "duration": 8
+          }
+        ]
+      }
+    ],
+    "heroicOf": "deathless_heartwood"
+  },
   "heroic_crownforged_dreadhelm": {
     "id": "heroic_crownforged_dreadhelm",
     "set": "crownforged",
@@ -8025,8 +8800,8 @@
     "quality": "epic",
     "stats": {
       "armor": 310,
-      "str": 8,
-      "sta": 9
+      "str": 9,
+      "sta": 11
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8045,8 +8820,8 @@
     "quality": "epic",
     "stats": {
       "armor": 190,
-      "agi": 10,
-      "sta": 7
+      "agi": 12,
+      "sta": 8
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8066,8 +8841,8 @@
     "quality": "epic",
     "stats": {
       "armor": 105,
-      "sta": 6,
-      "int": 11
+      "sta": 7,
+      "int": 13
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8088,8 +8863,8 @@
     "quality": "epic",
     "stats": {
       "armor": 225,
-      "sta": 7,
-      "int": 10
+      "sta": 8,
+      "int": 12
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8107,8 +8882,8 @@
     "quality": "epic",
     "stats": {
       "armor": 165,
-      "agi": 9,
-      "sta": 6
+      "agi": 10,
+      "sta": 7
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8128,8 +8903,8 @@
     "quality": "epic",
     "stats": {
       "armor": 92,
-      "sta": 6,
-      "int": 9
+      "sta": 7,
+      "int": 10
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8139,6 +8914,56 @@
       "druid"
     ],
     "heroicOf": "soulflame_mantle"
+  },
+  "heroic_kingsbane_last_oath": {
+    "id": "heroic_kingsbane_last_oath",
+    "name": "Thronebane, Last Oath of Thornpeak",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "quality": "legendary",
+    "weapon": {
+      "min": 46,
+      "max": 74,
+      "speed": 2.8
+    },
+    "stats": {
+      "str": 17,
+      "agi": 17,
+      "sta": 15
+    },
+    "sellValue": 25000,
+    "requiredClass": [
+      "warrior",
+      "rogue",
+      "hunter",
+      "shaman",
+      "paladin"
+    ],
+    "weaponProcs": [
+      {
+        "id": "thronebane_arc",
+        "name": "Chain Arc",
+        "trigger": "weaponHit",
+        "chance": 0.1,
+        "effects": [
+          {
+            "kind": "chainArc",
+            "school": "nature",
+            "damage": 42,
+            "jumps": 3,
+            "falloff": 0.6,
+            "radius": 8
+          },
+          {
+            "kind": "attackSlow",
+            "name": "Thunderclap",
+            "mult": 1.2,
+            "duration": 6
+          }
+        ]
+      }
+    ],
+    "heroicOf": "kingsbane_last_oath"
   },
   "heroic_crownforged_warspaulders": {
     "id": "heroic_crownforged_warspaulders",
@@ -8150,8 +8975,8 @@
     "quality": "epic",
     "stats": {
       "armor": 260,
-      "str": 7,
-      "sta": 8
+      "str": 8,
+      "sta": 9
     },
     "sellValue": 12000,
     "requiredClass": [
@@ -8170,8 +8995,8 @@
     "quality": "epic",
     "stats": {
       "armor": 190,
-      "sta": 7,
-      "int": 8
+      "sta": 8,
+      "int": 9
     },
     "sellValue": 12000,
     "requiredClass": [
