@@ -42,6 +42,16 @@ python3 -m http.server 8080
    lien public apparaît dans Settings → Pages une fois le premier déploiement
    terminé (onglet Actions → workflow "Deploy WoCC Codex sur GitHub Pages").
 
+## Le Codex sur laclauderie.fr/codex/
+
+Le site de la guilde ([La-Clauderie](https://github.com/Reptile-New/La-Clauderie))
+sert aussi ce Codex **directement sur son domaine** : son workflow de
+déploiement OVH copie `site/` (sous `laclauderie.fr/codex/`) et `data/` (sous
+`laclauderie.fr/data/`) à chaque déploiement puis toutes les 6 h. Rien à faire
+ici — il suffit que ce repo reste public. La barre de navigation « guilde » en
+haut de `site/index.html` détecte l'hôte : servie sur laclauderie.fr, elle
+pointe vers la racine du domaine ; sur GitHub Pages, vers `/La-Clauderie/`.
+
 ## Ce que ça remplace / n'remplace pas
 
 - **Remplace** : le travail manuel de "je télécharge le repo à la main, je
