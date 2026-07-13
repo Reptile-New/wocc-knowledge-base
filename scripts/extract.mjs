@@ -21,7 +21,7 @@
 // Prérequis : Node 18+, et esbuild installé (npm install esbuild).
 // -----------------------------------------------------------------------------
 
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
@@ -38,25 +38,37 @@ const outDir = path.resolve(outDirArg);
 // ---------------------------------------------------------------------------
 // Étape 0 — résoudre "latest" en un vrai nom de tag si besoin
 // ---------------------------------------------------------------------------
+// Le nom du tag vient d'un repo qu'on ne contrôle pas : on le valide avant
+// tout usage (il finit dans une URL et des chemins de fichiers).
+function assertSafeTag(tag) {
+  if (!/^[A-Za-z0-9._+-]+$/.test(tag)) {
+    throw new Error(`Nom de tag invalide ou suspect : ${JSON.stringify(tag)}`);
+  }
+  return tag;
+}
+
 async function resolveTag(tag) {
-  if (tag !== 'latest') return tag;
+  if (tag !== 'latest') return assertSafeTag(tag);
   const res = await fetch(`https://api.github.com/repos/${REPO}/tags?per_page=1`, {
     headers: { 'User-Agent': 'wocc-knowledge-pipeline' },
   });
   if (!res.ok) throw new Error(`Impossible de lister les tags : HTTP ${res.status}`);
   const tags = await res.json();
   if (!tags.length) throw new Error('Aucun tag trouvé sur le repo.');
-  return tags[0].name;
+  return assertSafeTag(tags[0].name);
 }
 
 // ---------------------------------------------------------------------------
 // Étape 1 — télécharger et extraire l'archive du tag
 // ---------------------------------------------------------------------------
 function downloadAndExtract(tag, workDir) {
+  assertSafeTag(tag);
   const url = `https://codeload.github.com/${REPO}/tar.gz/refs/tags/${tag}`;
   const archivePath = path.join(workDir, 'repo.tar.gz');
   console.log(`[1/4] Téléchargement de ${url}`);
-  execSync(`curl -sL -o "${archivePath}" "${url}"`, { stdio: 'inherit' });
+  // execFileSync (sans shell) : les arguments ne sont jamais interprétés,
+  // même si le nom du tag contenait des caractères spéciaux.
+  execFileSync('curl', ['-sL', '-o', archivePath, url], { stdio: 'inherit' });
 
   const stat = fs.statSync(archivePath);
   if (stat.size < 10_000) {
@@ -66,7 +78,7 @@ function downloadAndExtract(tag, workDir) {
   }
 
   console.log(`[1/4] Extraction (${(stat.size / 1024 / 1024).toFixed(1)} Mo)`);
-  execSync(`tar -xzf "${archivePath}" -C "${workDir}"`, { stdio: 'inherit' });
+  execFileSync('tar', ['-xzf', archivePath, '-C', workDir], { stdio: 'inherit' });
 
   const extracted = fs.readdirSync(workDir).find((f) => f.startsWith('world-of-claudecraft-'));
   if (!extracted) throw new Error("Dossier extrait introuvable — le format de l'archive a changé ?");

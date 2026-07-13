@@ -27,6 +27,11 @@ on:
     - cron: '2-59/5 * * * *'    # toutes les 5 minutes (minimum autorisé par GitHub)
   workflow_dispatch: {}      # bouton "Run workflow" manuel dans l'onglet Actions
 
+# Le job "check" n'a besoin que de lire le repo ; seul "update" élève ses
+# permissions (bloc dédié plus bas).
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -80,15 +85,22 @@ jobs:
       - name: Installer les dépendances du pipeline
         run: npm install esbuild --no-save
 
+      # Le nom du tag vient d'un repo tiers : il passe par une variable
+      # d'environnement (jamais interpolé directement dans le script), sinon
+      # un nom de tag piégé pourrait exécuter des commandes sur le runner.
       - name: Extraire les données du nouveau tag (${{ needs.check.outputs.latest_tag }})
-        run: node scripts/extract.mjs ${{ needs.check.outputs.latest_tag }} ./data
+        env:
+          LATEST_TAG: ${{ needs.check.outputs.latest_tag }}
+        run: node scripts/extract.mjs "$LATEST_TAG" ./data
 
       - name: Commiter les nouvelles données
+        env:
+          LATEST_TAG: ${{ needs.check.outputs.latest_tag }}
         run: |
           git config user.name "wocc-knowledge-bot"
           git config user.email "actions@users.noreply.github.com"
           git add data/
-          git commit -m "chore: update knowledge base to ${{ needs.check.outputs.latest_tag }}"
+          git commit -m "chore: update knowledge base to $LATEST_TAG"
           git push
 
       # Un push fait avec le GITHUB_TOKEN ne déclenche PAS les workflows
