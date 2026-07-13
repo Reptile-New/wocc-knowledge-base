@@ -702,8 +702,10 @@ const NODE_L = {
   en: { ore:'Ore', herb:'Herbs', wood:'Wood' },
 };
 
-/* tr : libellé dans la langue courante · both : les deux (pour la recherche) */
-const tr = (map, k) => (k == null ? '—' : (map[LANG][k] || k));
+/* tr : libellé dans la langue courante · both : les deux (pour la recherche)
+   Le repli (clé absente du dictionnaire) est échappé : la clé vient des
+   données du jeu et le résultat de tr() part dans du innerHTML. */
+const tr = (map, k) => (k == null ? '—' : (map[LANG][k] || esc(k)));
 const both = (map, k) => (k == null ? '' : [map.fr[k], map.en[k]].filter(Boolean).join(' '));
 const quality = it => it.quality || 'common';
 
@@ -1401,14 +1403,14 @@ function section(title, html) {
 const itemLink = (id, extra) => {
   const it = byId.item[id];
   if (!it) return `<li><span>${esc(id)}</span>${extra||''}</li>`;
-  return `<li><span class="xlink q-${quality(it)}" data-open="item|${it.id}">${esc(it.name)}</span>${extra||''}</li>`;
+  return `<li><span class="xlink q-${quality(it)}" data-open="item|${esc(it.id)}">${esc(it.name)}</span>${extra||''}</li>`;
 };
 const mobLink = (m, extra) =>
-  `<li><span class="xlink" data-open="mob|${m.id}">${mobColor(m)}${esc(m.name)}</span>${extra || `<span class="qty">${levelText(m)}</span>`}</li>`;
+  `<li><span class="xlink" data-open="mob|${esc(m.id)}">${mobColor(m)}${esc(m.name)}</span>${extra || `<span class="qty">${levelText(m)}</span>`}</li>`;
 const questLink = q =>
-  `<li><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${q.id}">${esc(q.name)}</span>${q.retired?`<span class="badge b-retired">${T.retired}</span>`:''}</li>`;
+  `<li><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${esc(q.id)}">${esc(q.name)}</span>${q.retired?`<span class="badge b-retired">${T.retired}</span>`:''}</li>`;
 const npcLink = n =>
-  `<span class="xlink" data-open="npc|${n.id}">${esc(n.name)}</span>`;
+  `<span class="xlink" data-open="npc|${esc(n.id)}">${esc(n.name)}</span>`;
 
 function itemSheet(it) {
   const ql = quality(it);
@@ -1428,7 +1430,7 @@ function itemSheet(it) {
   const classes = it.requiredClass ? `<div class="statline" style="margin-top:8px">${T.classes}${T.colon}<b>${it.requiredClass.map(c=>tr(CLASS_L,c)).join(', ')}</b></div>` : '';
 
   const setBlock = it.set && byId.set[it.set] ? section(T.set,
-    `<ul class="linklist"><li><span class="xlink q-epic" data-open="set|${it.set}">${esc(byId.set[it.set].name)}</span></li></ul>`) : '';
+    `<ul class="linklist"><li><span class="xlink q-epic" data-open="set|${esc(it.set)}">${esc(byId.set[it.set].name)}</span></li></ul>`) : '';
 
   const drops = (refs.droppedBy[it.id]||[]).sort((a,b)=>(b.chance||0)-(a.chance||0));
   const dropBlock = drops.length ? section(T.droppedBy,
@@ -1471,7 +1473,7 @@ function mobSheet(m) {
 
   const abilities = mobAbilities(m);
   const abilityBlock = abilities.length ? section(T.notableAbilities,
-    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0" title="${a}">${tr(ABILITY_L, a)}</span>`).join(' ')}</div>`) : '';
+    `<div class="statline">${abilities.map(a=>`<span class="badge b-elite" style="text-transform:none;letter-spacing:0" title="${esc(a)}">${tr(ABILITY_L, a)}</span>`).join(' ')}</div>`) : '';
 
   const loot = (m.loot||[]);
   const copperLoot = loot.filter(l => l.copper);
@@ -1506,11 +1508,11 @@ function mobSheet(m) {
 
   const dungeons = refs.mobDungeons[m.id] || [];
   const dgBlock = dungeons.length ? section(T.foundIn,
-    `<ul class="linklist">${dungeons.map(d => `<li><span class="xlink" style="color:#7fd4ff" data-open="dungeon|${d.id}">${esc(d.name)}</span></li>`).join('')}</ul>`) : '';
+    `<ul class="linklist">${dungeons.map(d => `<li><span class="xlink" style="color:#7fd4ff" data-open="dungeon|${esc(d.id)}">${esc(d.name)}</span></li>`).join('')}</ul>`) : '';
 
   const wb = byId.worldboss && byId.worldboss[m.id];
   const wbBlock = wb ? section('World boss',
-    `<ul class="linklist"><li><span class="xlink" style="color:#c77df5" data-open="worldboss|${wb.id}">${T.wbLink}</span><span class="qty">${T.every(duration(wb.intervalSeconds))}</span></li></ul>`) : '';
+    `<ul class="linklist"><li><span class="xlink" style="color:#c77df5" data-open="worldboss|${esc(wb.id)}">${T.wbLink}</span><span class="qty">${T.every(duration(wb.intervalSeconds))}</span></li></ul>`) : '';
 
   return head(tr(FAMILY_L, m.family), mobColor(m) + esc(m.name), '', rank || null)
     + section(T.combat, `<div class="kv">${kv}</div>`)
@@ -1543,11 +1545,11 @@ function questSheet(x) {
   const objectives = (x.objectives||[]).map(o => {
     if (o.type === 'kill') {
       const m = byId.mob[o.targetMobId];
-      return `<li>${m ? `<span>${T.kill} <b class="mono">${o.count}</b> × <span class="xlink" data-open="mob|${m.id}">${esc(m.name)}</span></span>` : esc(o.label||o.targetMobId)}</li>`;
+      return `<li>${m ? `<span>${T.kill} <b class="mono">${o.count}</b> × <span class="xlink" data-open="mob|${esc(m.id)}">${esc(m.name)}</span></span>` : esc(o.label||o.targetMobId)}</li>`;
     }
     if (o.type === 'collect') {
       const it = byId.item[o.itemId];
-      return `<li>${it ? `<span>${T.collect} <b class="mono">${o.count}</b> × <span class="xlink q-${quality(it)}" data-open="item|${it.id}">${esc(it.name)}</span></span>` : esc(o.label||o.itemId)}</li>`;
+      return `<li>${it ? `<span>${T.collect} <b class="mono">${o.count}</b> × <span class="xlink q-${quality(it)}" data-open="item|${esc(it.id)}">${esc(it.name)}</span></span>` : esc(o.label||o.itemId)}</li>`;
     }
     return `<li><span>${esc(o.label || o.type)}</span></li>`;
   }).join('');
@@ -1570,8 +1572,8 @@ function questSheet(x) {
   const next = refs.questNext[x.id] || [];
   const chain = (prev || next.length) ? section(T.questChain,
     `<ul class="linklist">
-      ${prev ? `<li><span><span class="qty">${T.precededBy}&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${prev.id}">${esc(prev.name)}</span></span></li>` : ''}
-      ${next.map(n => `<li><span><span class="qty">${T.followedBy}&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${n.id}">${esc(n.name)}</span></span></li>`).join('')}
+      ${prev ? `<li><span><span class="qty">${T.precededBy}&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${esc(prev.id)}">${esc(prev.name)}</span></span></li>` : ''}
+      ${next.map(n => `<li><span><span class="qty">${T.followedBy}&nbsp;&nbsp;</span><span class="xlink" style="color:var(--gold-bright)" data-open="quest|${esc(n.id)}">${esc(n.name)}</span></span></li>`).join('')}
     </ul>`) : '';
 
   const badges =
