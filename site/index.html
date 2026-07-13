@@ -510,9 +510,11 @@
 <body>
 
 <!-- Barre de navigation commune avec le site de la guilde La Clauderie.
-     Chemins relatifs à la racine du host : le Codex et La-Clauderie sont servis
-     sur le même hébergement GitHub Pages (reptile-new.github.io). À repasser
-     sur https://laclauderie.fr/ quand le domaine fonctionnera. -->
+     Chemins relatifs à la racine du host, écrits pour GitHub Pages
+     (reptile-new.github.io, où le site de la guilde vit sous /La-Clauderie/).
+     Sur laclauderie.fr — où cette page est copiée sous /codex/ à chaque
+     déploiement du site de la guilde — un petit script plus bas repointe ces
+     liens vers la racine « / » du domaine. -->
 <div class="guild-bar">
   <a href="/La-Clauderie/" class="gb-brand"><span class="gb-sigil">C</span><b>La Clauderie</b></a>
   <nav class="gb-nav" aria-label="Navigation du site de la guilde">
@@ -899,6 +901,15 @@ const UI = {
  },
 };
 const T = UI[LANG];
+
+/* ---- barre guilde : racine du site selon l'hôte ----
+   Les liens sont écrits pour GitHub Pages (« /La-Clauderie/ ») ; sur
+   laclauderie.fr, le site de la guilde est à la racine du domaine. */
+if (/(^|\.)laclauderie\.fr$/.test(location.hostname)) {
+  document.querySelectorAll('.guild-bar a[href^="/La-Clauderie/"]').forEach(a => {
+    a.setAttribute('href', '/' + a.getAttribute('href').slice('/La-Clauderie/'.length));
+  });
+}
 
 /* ---- textes statiques de la page + bouton FR/EN ---- */
 function applyStaticLang() {
