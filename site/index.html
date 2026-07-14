@@ -626,6 +626,35 @@ function buildCrossRefs() {
       if (l.itemId) (refs.droppedBy[l.itemId] ||= []).push({ mob: m, chance: l.chance, heroic: true });
   }
 
+  // Jumelles héroïques (« heroic_<id> ») : le jeu échange le drop normal
+  // contre sa variante au kill héroïque (loot/loot_roll.ts), elles n'ont donc
+  // aucune table de butin propre. On dérive la provenance de l'objet de base,
+  // pour les seuls mobs des instances héroïques (4 donjons + arène du raid,
+  // dungeon_difficulty.ts) et seulement quand la variante est un vrai gain
+  // d'ilvl (item_level.ts : variante = source 27 si la base est au butin de
+  // Nythraxis, sinon 22 ; base = niveau max du mob, +3 pour le raid). Les
+  // drops du monde ouvert — boss mondial Thunzharr compris — ne s'échangent
+  // jamais : ces variantes-là restent sans source, et la fiche l'explique.
+  const HEROIC_INSTANCES = new Set(['hollow_crypt', 'sunken_bastion', 'drowned_temple', 'gravewyrm_sanctum', 'nythraxis_boss_arena']);
+  const RAID_BOSS = 'nythraxis_scourge_of_thornpeak';
+  const instanceMobs = new Set(['morthen', 'vael_the_mistcaller', 'ysolei', 'korzul_the_gravewyrm', RAID_BOSS, 'wraithbinder_maldrec']);
+  for (const d of DUNGEONS)
+    if (HEROIC_INSTANCES.has(d.id))
+      for (const sp of (d.spawns || [])) instanceMobs.add(sp.mobId);
+  const raidBases = new Set(((byId.mob[RAID_BOSS] || {}).loot || []).map(l => l.itemId).filter(Boolean));
+  for (const it of ITEMS) {
+    if (!it.id.startsWith('heroic_')) continue;
+    const baseId = it.id.slice('heroic_'.length);
+    if (!byId.item[baseId]) continue;
+    const variantSrc = raidBases.has(baseId) ? 27 : 22;
+    for (const e of (refs.droppedBy[baseId] || [])) {
+      if (e.heroic || !instanceMobs.has(e.mob.id)) continue;
+      const baseSrc = (e.mob.maxLevel || 0) + (e.mob.id === RAID_BOSS ? 3 : 0);
+      if (variantSrc > baseSrc)
+        (refs.droppedBy[it.id] ||= []).push({ mob: e.mob, chance: e.chance, heroic: true });
+    }
+  }
+
   for (const n of NPCS)
     for (const it of (n.vendorItems || []))
       (refs.soldBy[it] ||= []).push(n);
@@ -806,6 +835,7 @@ const UI = {
   soldBy: 'Vendu par', questReward: 'Récompense de quête', neededFor: 'Requis pour',
   origin: 'Origine',
   noSource: "Aucune source répertoriée dans les données extraites du jeu — vient probablement de la fabrication (métiers), du dépeçage/récolte, d'un delve ou d'un événement, pas encore couverts par le pipeline.",
+  heroicNever: "Cette variante héroïque n'est jamais obtenue en jeu : sa version de base ne tombe pas dans une instance héroïque (donjons et raid), et seuls ces butins-là sont échangés contre leur version héroïque au kill. Les drops du monde ouvert — boss mondial compris — restent en version normale.",
   level: 'Niveau', perLvl: '/niv',
   notableAbilities: 'Capacités notables', combat: 'Combat',
   lootTitle: 'Butin', heroicLoot: 'Butin héroïque',
@@ -880,6 +910,7 @@ const UI = {
   soldBy: 'Sold by', questReward: 'Quest reward', neededFor: 'Needed for',
   origin: 'Source',
   noSource: 'No source listed in the data extracted from the game — it most likely comes from crafting (professions), skinning/gathering, a delve or an event, which the pipeline does not cover yet.',
+  heroicNever: 'This heroic variant is never obtained in game: its base version does not drop inside a heroic instance (dungeons and raid), and only those drops are swapped for their heroic version on the kill. Open-world drops — world boss included — stay in their normal version.',
   level: 'Level', perLvl: '/lvl',
   notableAbilities: 'Notable abilities', combat: 'Combat',
   lootTitle: 'Loot', heroicLoot: 'Heroic loot',
@@ -1449,9 +1480,12 @@ function itemSheet(it) {
   const neededBlock = needed.length ? section(T.neededFor,
     `<ul class="linklist">${needed.map(questLink).join('')}</ul>`) : '';
 
-  // Fiche honnête : si aucune source n'est connue, on le dit au lieu de ne rien afficher.
+  // Fiche honnête : si aucune source n'est connue, on le dit au lieu de ne
+  // rien afficher — avec l'explication dédiée pour les variantes héroïques
+  // que le jeu ne droppe jamais (base hors instance héroïque).
+  const heroicOrphan = it.id.startsWith('heroic_') && byId.item[it.id.slice('heroic_'.length)];
   const originBlock = (!drops.length && !sold.length && !reward.length) ? section(T.origin,
-    `<div class="statline" style="color:var(--faint)">${T.noSource}</div>`) : '';
+    `<div class="statline" style="color:var(--faint)">${heroicOrphan ? T.heroicNever : T.noSource}</div>`) : '';
 
   return head(`${tr(QUALITY_L, ql)} · ${tr(KIND_L, it.kind)}`, esc(it.name), 'q-'+ql)
     + section(T.characteristics, `<div class="kv">${kv.join('')}</div>${stats}${classes}` || '')
