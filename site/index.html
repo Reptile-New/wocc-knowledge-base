@@ -571,7 +571,7 @@
 /* ================= chargement des données ================= */
 
 const DATA = {};
-const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','HEROIC_BOSS_LOOT','_meta'];
+const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','HEROIC_BOSS_LOOT','ALL_RECIPES','HEROIC_VENDOR_STOCK','DELVE_SHOPS','CLASSES','_meta'];
 
 async function load() {
   const res = await Promise.all(FILES.map(f =>
@@ -611,7 +611,7 @@ function index(list) { const m = {}; for (const e of list) m[e.id] = e; return m
 
 let ITEMS=[], MOBS=[], QUESTS=[], NPCS=[], ZONES=[], DUNGEONS=[], DELVES=[], SETS=[], WORLDBOSSES=[];
 const byId = {};
-const refs = { droppedBy:{}, soldBy:{}, rewardOf:{}, neededBy:{}, killedFor:{}, npcQuests:{}, mobDungeons:{}, questNext:{}, setPieces:{} };
+const refs = { droppedBy:{}, soldBy:{}, rewardOf:{}, neededBy:{}, killedFor:{}, npcQuests:{}, mobDungeons:{}, questNext:{}, setPieces:{}, origins:{} };
 
 function buildCrossRefs() {
   for (const m of MOBS)
@@ -654,6 +654,120 @@ function buildCrossRefs() {
         (refs.droppedBy[it.id] ||= []).push({ mob: e.mob, chance: e.chance, heroic: true });
     }
   }
+
+  // ------- origines hors tables de butin (refs.origins) --------------------
+  // Le butin des mobs ne couvre qu'une partie des sources du jeu. Tout ce qui
+  // suit vient du code du jeu, registre extrait quand il est exporté
+  // (HEROIC_VENDOR_STOCK, DELVE_SHOPS, ALL_RECIPES, CLASSES, FISHING_TABLES),
+  // ou table recopiée depuis le fichier cité quand le jeu la garde inline.
+  const fr = LANG !== 'en';
+  const addOrigin = (iid, html) => { (refs.origins[iid] ||= []).push(html); };
+  const npcRef = (id) => { const n = byId.npc[id]; return n ? `<span class="xlink" data-open="npc|${esc(id)}">${esc(n.name)}</span>` : esc(id); };
+  const delveRef = (id) => { const d = (DATA.DELVES || {})[id]; return d ? `<span class="xlink" data-open="delve|${esc(id)}">${esc(d.name)}</span>` : esc(id); };
+  const zoneRef = (id) => { const z = (DATA.ZONES || {})[id]; return z ? `<span class="xlink" data-open="zone|${esc(id)}">${esc(z.name)}</span>` : esc(id); };
+  const questRef = (id) => { const q = byId.quest[id]; return q ? `<span class="xlink" data-open="quest|${esc(id)}">« ${esc(q.name)} »</span>` : esc(id); };
+
+  // Quartier-maître héroïque : bijoux payés en Heroic Marks (heroic_vendor.ts).
+  for (const o of (DATA.HEROIC_VENDOR_STOCK || []))
+    addOrigin(o.itemId, fr
+      ? `Vendu par ${npcRef('heroic_quartermaster')} — <b>${o.marks} Heroic Marks</b> (quartier-maître héroïque)`
+      : `Sold by ${npcRef('heroic_quartermaster')} — <b>${o.marks} Heroic Marks</b> (heroic quartermaster)`);
+
+  // Boutiques de delve : pièces payées en Marks, avec leur condition (shop.ts).
+  for (const [delveId, entries] of Object.entries(DATA.DELVE_SHOPS || {}))
+    for (const o of (entries || [])) {
+      let gate = '';
+      if (o.gate === 'heroicClear') gate = fr ? ' · après un clear héroïque' : ' · after a heroic clear';
+      else if (String(o.gate).startsWith('clears:')) {
+        const n = String(o.gate).slice(7);
+        gate = fr ? ` · après ${n} runs` : ` · after ${n} clears`;
+      }
+      addOrigin(o.itemId, (fr ? `Boutique du delve ` : `Delve shop — `) + delveRef(delveId) + ` — <b>${o.marks} Marks</b>${gate}`);
+    }
+
+  // Fabrication (ALL_RECIPES).
+  for (const r of asList(DATA.ALL_RECIPES))
+    if (r.resultItemId)
+      addOrigin(r.resultItemId, fr
+        ? `Fabrication — métier <b>${esc(r.professionId)}</b> (recette niveau ${r.level ?? '?'})`
+        : `Crafted — <b>${esc(r.professionId)}</b> profession (level ${r.level ?? '?'} recipe)`);
+
+  // Pêche (FISHING_TABLES, par zone).
+  for (const [zoneId, entries] of Object.entries(DATA.FISHING_TABLES || {}))
+    for (const e of (entries || []))
+      if (e.itemId) addOrigin(e.itemId, (fr ? 'Pêche — ' : 'Fishing — ') + zoneRef(zoneId));
+
+  // Équipement de départ (CLASSES : startWeapon / startChest / startItems).
+  for (const [clsId, c] of Object.entries(DATA.CLASSES || {})) {
+    const lbl = fr ? `Équipement de départ — ${tr(CLASS_L, clsId)}` : `Starting gear — ${tr(CLASS_L, clsId)}`;
+    for (const iid of [c.startWeapon, c.startChest, ...(c.startItems || []).map(s => s && (s.itemId || s))])
+      if (typeof iid === 'string') addOrigin(iid, lbl);
+  }
+
+  // Coffres de delve — tables inline du jeu, recopiées de
+  // content/delves/lockpick_tiers.ts (Collapsed Reliquary, coffre crocheté)
+  // et content/delves/drowned_litany_loot.ts (rite final du Drowned Litany).
+  const RELIQUARY_CHEST = ['deacon_reliquary_helm', 'varric_shadow_cowl', 'reliquary_plate_chest', 'reliquary_cloth_chest', 'reliquary_leather_chest', 'reliquary_gloves_rog', 'reliquary_legs', 'reliquary_helm', 'reliquary_shoulder'];
+  for (const iid of RELIQUARY_CHEST)
+    addOrigin(iid, (fr ? 'Coffre verrouillé (crochetage) — delve ' : 'Locked chest (lockpicking) — delve ') + delveRef('collapsed_reliquary'));
+  const LITANY_CHEST = ['siltguard_helm', 'bulwark_rusted_pauldrons', 'nhalias_bell_maul', 'reedstalker_jerkin', 'mirejaw_fang_knife', 'widow_silk_hood', 'cantors_drowned_sash', 'corpse_candle_focus', 'nhalias_litany_rod'];
+  for (const iid of LITANY_CHEST)
+    addOrigin(iid, (fr ? 'Reliquaire du rite final — delve ' : 'Final rite reliquary — delve ') + delveRef('drowned_litany'));
+  for (const iid of ['blackwater_vanguard_chest', 'siltstep_leggings', 'sunken_reliquary_hood'])
+    addOrigin(iid, (fr ? 'Reliquaire <b>bountiful</b> du rite final (3 %) — delve ' : '<b>Bountiful</b> final rite reliquary (3%) — delve ') + delveRef('drowned_litany'));
+
+  // Marché mondial : stock permanent de la maison (market.ts, seedHouseListings).
+  const MARKET_HOUSE = ['roadwardens_helm', 'wayfarers_hood', 'acolytes_circlet', 'reinforced_pauldrons', 'embroidered_mantle', 'sturdy_belt', 'silk_sash', 'roughspun_gloves', 'outrider_brigandine', 'caravan_quilted_vest', 'outrider_legguards', 'pilgrims_leggings', 'outrider_sabatons', 'tradesman_hatchet', 'drovers_staff', 'caravan_warden_dirk', 'greyjaw_pelt_cloak', 'oiled_boots', 'quilted_trousers', 'roasted_boar', 'spring_water'];
+  for (const iid of MARKET_HOUSE)
+    addOrigin(iid, fr
+      ? `Marché mondial — stock permanent de la maison (consignation du quartier-maître)`
+      : `World Market — standing house stock (Quartermaster's Consignment)`);
+
+  // Cas particuliers, portés du code du jeu (fichier cité).
+  const SPECIAL = {
+    conjured_water:  fr ? 'Conjuré par le mage — sort <b>Conjure Water</b> (combat/casting_lifecycle.ts)' : 'Conjured by the mage — <b>Conjure Water</b> spell',
+    conjured_water2: fr ? 'Conjuré par le mage — <b>Conjure Water</b> rang 2' : 'Conjured by the mage — <b>Conjure Water</b> rank 2',
+    conjured_water3: fr ? 'Conjuré par le mage — <b>Conjure Water</b> rang 3' : 'Conjured by the mage — <b>Conjure Water</b> rank 3',
+    conjured_bread:  fr ? 'Conjuré par le mage — sort <b>Conjure Food</b>' : 'Conjured by the mage — <b>Conjure Food</b> spell',
+    conjured_bread2: fr ? 'Conjuré par le mage — <b>Conjure Food</b> rang 2' : 'Conjured by the mage — <b>Conjure Food</b> rank 2',
+    conjured_bread3: fr ? 'Conjuré par le mage — <b>Conjure Food</b> rang 3' : 'Conjured by the mage — <b>Conjure Food</b> rank 3',
+    arcane_dust:    fr ? 'Désenchantement d\'objets magiques — métier <b>Enchantement</b>' : 'Disenchanting magic items — <b>Enchanting</b> profession',
+    arcane_essence: fr ? 'Désenchantement d\'objets magiques — métier <b>Enchantement</b>' : 'Disenchanting magic items — <b>Enchanting</b> profession',
+    arcane_shard:   fr ? 'Désenchantement d\'objets rares — métier <b>Enchantement</b>' : 'Disenchanting rare items — <b>Enchanting</b> profession',
+    heroic_mark: fr ? 'Jeton de participation : accordé à chaque kill du <b>boss final d\'une instance héroïque</b> (donjons & raid)' : 'Participation token: granted on every <b>heroic final boss kill</b> (dungeons & raid)',
+    the_codfather: fr ? 'Prise <b>rare de pêche</b> — déclenche la quête ' + questRef('q_the_codfather') : 'Rare <b>fishing catch</b> — starts the quest ' + questRef('q_the_codfather'),
+    event_skin_token: fr ? 'Distribution <b>événementielle</b> (cache cosmétique de skins d\'armes)' : '<b>Event</b> distribution (weapon-skin cosmetic cache)',
+  };
+  for (const [iid, line] of Object.entries(SPECIAL)) addOrigin(iid, line);
+
+  // Plaques « chroma » du mécanoïde (skins.ts, MECH_CHROMAS) : consommables
+  // cosmétiques de compte, distribués par événements — pas de butin en jeu.
+  for (const it of ITEMS)
+    if (it.id.endsWith('_armor_plate') && it.id !== 'alien_armor_plate')
+      addOrigin(it.id, fr
+        ? 'Débloque un <b>chroma du mécanoïde</b> (cosmétique de compte) — distribution événementielle, aucun butin en jeu'
+        : 'Unlocks a <b>mech chroma</b> (account cosmetic) — event distribution, no in-game drop');
+
+  // Objets de quête : liés à leur quête plutôt que « sans source ».
+  for (const it of ITEMS) {
+    if (refs.origins[it.id] || refs.droppedBy[it.id] || refs.soldBy[it.id] || refs.rewardOf[it.id]) continue;
+    if (it.questId && byId.quest[it.questId])
+      addOrigin(it.id, (fr ? 'Objet de la quête ' : 'Quest object — ') + questRef(it.questId));
+    else if (it.kind === 'quest')
+      addOrigin(it.id, fr
+        ? 'Objet de quête — obtenu ou utilisé au fil d\'une quête (ramassage, interaction), pas un butin'
+        : 'Quest object — obtained or used during a quest (pickup, interaction), not a loot drop');
+  }
+
+  // Héritage : défini dans les données mais placé nulle part dans le jeu
+  // actuel (vérifié dans le code v0.25.0 — aucun butin, vendeur, coffre,
+  // quête ni événement n'y fait référence).
+  const LEGACY = ['crossroads_saber', 'bristlehide_spaulders', 'sableweb_cord', 'wanderers_chestguard', 'valeborn_spellblade', 'hollowbound_legguards', 'gravepath_treads', 'soft_down', 'amber_hide', 'stag_antler', 'brightwood_venison', 'monarch_crown_helm', 'bramblehide_jerkin'];
+  for (const iid of LEGACY)
+    if (!refs.origins[iid] && !refs.droppedBy[iid] && !refs.soldBy[iid] && !refs.rewardOf[iid])
+      addOrigin(iid, fr
+        ? 'Hors jeu actuellement : défini dans les données mais placé nulle part (contenu retiré ou à venir) — impossible à obtenir'
+        : 'Currently out of game: defined in the data but placed nowhere (removed or upcoming content) — cannot be obtained');
 
   for (const n of NPCS)
     for (const it of (n.vendorItems || []))
@@ -1480,16 +1594,22 @@ function itemSheet(it) {
   const neededBlock = needed.length ? section(T.neededFor,
     `<ul class="linklist">${needed.map(questLink).join('')}</ul>`) : '';
 
+  // Origines hors tables de butin : vendeur à Marks, boutique/coffre de delve,
+  // fabrication, pêche, équipement de départ, quêtes, héritage… (refs.origins).
+  const origins = refs.origins[it.id] || [];
+  const originsBlock = origins.length ? section(T.origin,
+    `<ul class="linklist">${origins.map(o => `<li>${o}</li>`).join('')}</ul>`) : '';
+
   // Fiche honnête : si aucune source n'est connue, on le dit au lieu de ne
   // rien afficher — avec l'explication dédiée pour les variantes héroïques
   // que le jeu ne droppe jamais (base hors instance héroïque).
   const heroicOrphan = it.id.startsWith('heroic_') && byId.item[it.id.slice('heroic_'.length)];
-  const originBlock = (!drops.length && !sold.length && !reward.length) ? section(T.origin,
+  const originBlock = (!drops.length && !sold.length && !reward.length && !origins.length) ? section(T.origin,
     `<div class="statline" style="color:var(--faint)">${heroicOrphan ? T.heroicNever : T.noSource}</div>`) : '';
 
   return head(`${tr(QUALITY_L, ql)} · ${tr(KIND_L, it.kind)}`, esc(it.name), 'q-'+ql)
     + section(T.characteristics, `<div class="kv">${kv.join('')}</div>${stats}${classes}` || '')
-    + setBlock + dropBlock + soldBlock + rewardBlock + neededBlock + originBlock;
+    + setBlock + dropBlock + soldBlock + rewardBlock + neededBlock + originsBlock + originBlock;
 }
 
 function mobSheet(m) {

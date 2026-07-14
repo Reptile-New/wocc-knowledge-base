@@ -1,0 +1,96 @@
+{
+  "collapsed_reliquary": [
+    {
+      "itemId": "reliquary_legs",
+      "marks": 8,
+      "gate": "available"
+    },
+    {
+      "itemId": "reliquary_shoulder",
+      "marks": 8,
+      "gate": "available"
+    },
+    {
+      "itemId": "reliquary_gloves_rog",
+      "marks": 8,
+      "gate": "available"
+    },
+    {
+      "itemId": "reliquary_cloth_chest",
+      "marks": 10,
+      "gate": "available"
+    },
+    {
+      "itemId": "reliquary_leather_chest",
+      "marks": 10,
+      "gate": "available"
+    },
+    {
+      "itemId": "reliquary_plate_chest",
+      "marks": 10,
+      "gate": "available"
+    },
+    {
+      "itemId": "reliquary_helm",
+      "marks": 12,
+      "gate": "clears:3"
+    },
+    {
+      "itemId": "deacon_reliquary_helm",
+      "marks": 28,
+      "gate": "heroicClear"
+    },
+    {
+      "itemId": "varric_shadow_cowl",
+      "marks": 28,
+      "gate": "heroicClear"
+    }
+  ],
+  "drowned_litany": [
+    {
+      "itemId": "litany_legs",
+      "marks": 16,
+      "gate": "available"
+    },
+    {
+      "itemId": "litany_shoulder",
+      "marks": 16,
+      "gate": "available"
+    },
+    {
+      "itemId": "litany_gloves_rog",
+      "marks": 16,
+      "gate": "available"
+    },
+    {
+      "itemId": "litany_cloth_chest",
+      "marks": 20,
+      "gate": "available"
+    },
+    {
+      "itemId": "litany_leather_chest",
+      "marks": 20,
+      "gate": "available"
+    },
+    {
+      "itemId": "litany_plate_chest",
+      "marks": 20,
+      "gate": "available"
+    },
+    {
+      "itemId": "litany_helm",
+      "marks": 24,
+      "gate": "clears:3"
+    },
+    {
+      "itemId": "sister_nhalia_choir_plate",
+      "marks": 56,
+      "gate": "heroicClear"
+    },
+    {
+      "itemId": "drowned_choir_fang",
+      "marks": 56,
+      "gate": "heroicClear"
+    }
+  ]
+}

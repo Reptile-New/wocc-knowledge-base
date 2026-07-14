@@ -17,6 +17,9 @@
 //   node scripts/extract.mjs <tag> <outputDir>
 //   node scripts/extract.mjs v0.21.0 ./data
 //   node scripts/extract.mjs latest ./data   (résout automatiquement le dernier tag)
+//   node scripts/extract.mjs v0.25.0 ./data --repo /chemin/vers/un/clone
+//     (--repo : utilise un clone local du jeu au lieu de télécharger l'archive ;
+//      le tag passé sert uniquement à renseigner _meta.json)
 //
 // Prérequis : Node 18+, et esbuild installé (npm install esbuild).
 // -----------------------------------------------------------------------------
@@ -32,7 +35,11 @@ const require = createRequire(import.meta.url);
 
 const REPO = 'levy-street/world-of-claudecraft';
 
-const [, , tagArg = 'latest', outDirArg = './data'] = process.argv;
+const argv = process.argv.slice(2);
+const repoFlag = argv.indexOf('--repo');
+const localRepoPath = repoFlag !== -1 ? path.resolve(argv[repoFlag + 1]) : null;
+if (repoFlag !== -1) argv.splice(repoFlag, 2);
+const [tagArg = 'latest', outDirArg = './data'] = argv;
 const outDir = path.resolve(outDirArg);
 
 // ---------------------------------------------------------------------------
@@ -122,14 +129,15 @@ function dumpRegistries(bundlePath, registryNames, outDir) {
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
-  const tag = await resolveTag(tagArg);
+  const tag = localRepoPath ? assertSafeTag(tagArg) : await resolveTag(tagArg);
   console.log(`=== World of ClaudeCraft knowledge extraction — tag ${tag} ===`);
 
   const workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wocc-'));
   fs.mkdirSync(outDir, { recursive: true });
 
   try {
-    const repoPath = downloadAndExtract(tag, workDir);
+    const repoPath = localRepoPath ?? downloadAndExtract(tag, workDir);
+    if (localRepoPath) console.log(`[1/4] Clone local : ${localRepoPath}`);
 
     console.log('[2/4] Bundling des modules de données (esbuild)');
     const dataBundlePath = path.join(workDir, 'data.bundle.cjs');
@@ -166,11 +174,33 @@ async function main() {
     // Recettes de fabrication (ré-exportées par data.ts, donc déjà bundlées).
     dumpRegistries(dataBundlePath, ['ALL_RECIPES'], outDir);
 
-    // Sorts de classes : registre ABILITIES de classes.ts.
+    // Stock du quartier-maître héroïque (bijoux payés en Heroic Marks) et
+    // boutiques de delve (pièces payées en Marks, avec leurs conditions de
+    // déblocage) : les seules sources de plusieurs cous/anneaux épiques et des
+    // pièces « reliquary »/« litany » — sans elles, le Codex affichait à tort
+    // « aucune source » pour ces objets. Tolérés absents (tags plus anciens).
+    try {
+      const vendorBundlePath = path.join(workDir, 'heroic_vendor.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/heroic_vendor.ts', vendorBundlePath);
+      dumpRegistries(vendorBundlePath, ['HEROIC_VENDOR_STOCK'], outDir);
+    } catch (err) {
+      console.warn(`  ⚠ Stock du quartier-maître héroïque non extrait : ${err.message}`);
+    }
+    try {
+      const delveShopBundlePath = path.join(workDir, 'delve_shop.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/delves/shop.ts', delveShopBundlePath);
+      dumpRegistries(delveShopBundlePath, ['DELVE_SHOPS'], outDir);
+    } catch (err) {
+      console.warn(`  ⚠ Boutiques de delve non extraites : ${err.message}`);
+    }
+
+    // Sorts de classes : registre ABILITIES de classes.ts — et CLASSES (specs,
+    // équipement de départ startWeapon/startChest, la source des objets
+    // « recruit_tunic » et compagnie).
     try {
       const classesBundlePath = path.join(workDir, 'classes.bundle.cjs');
       await bundleModule(repoPath, 'src/sim/content/classes.ts', classesBundlePath);
-      dumpRegistries(classesBundlePath, ['ABILITIES'], outDir);
+      dumpRegistries(classesBundlePath, ['ABILITIES', 'CLASSES'], outDir);
     } catch (err) {
       console.warn(`  ⚠ Sorts non extraits : ${err.message}`);
     }
