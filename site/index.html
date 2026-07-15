@@ -833,9 +833,19 @@ const CLASS_L = {
   en: { warrior:'Warrior', mage:'Mage', rogue:'Rogue', priest:'Priest', warlock:'Warlock', druid:'Druid', hunter:'Hunter', paladin:'Paladin', shaman:'Shaman' },
 };
 const STAT_L = {
-  fr: { str:'Force', sta:'Endurance', agi:'Agilité', int:'Intelligence', spi:'Esprit', armor:'Armure', ap:"Puissance d'attaque", crit:'Critique' },
-  en: { str:'Strength', sta:'Stamina', agi:'Agility', int:'Intellect', spi:'Spirit', armor:'Armor', ap:'Attack power', crit:'Crit' },
+  fr: { str:'Force', sta:'Endurance', agi:'Agilité', int:'Intelligence', spi:'Esprit', armor:'Armure', ap:"Puissance d'attaque", crit:'Critique', hit:'Précision', haste:'Hâte', sp:'Puissance des sorts' },
+  en: { str:'Strength', sta:'Stamina', agi:'Agility', int:'Intellect', spi:'Spirit', armor:'Armor', ap:'Attack power', crit:'Crit', hit:'Hit rating', haste:'Haste', sp:'Spell power' },
 };
+// Stats affichées = it.stats PLUS les combat ratings, stockés à part dans les
+// données (hitRating/critRating/hasteRating/spellPower) et sinon invisibles
+// (ex. le Hit Rating ajouté en v0.26). Une seule source de vérité pour tous
+// les rendus d'objet du Codex.
+function itemStatParts(it) {
+  const parts = Object.entries(it.stats || {}).map(([k, v]) => `+${v} ${tr(STAT_L, k)}`);
+  for (const [key, sk] of [['hitRating', 'hit'], ['critRating', 'crit'], ['hasteRating', 'haste'], ['spellPower', 'sp']])
+    if (it[key]) parts.push(`+${it[key]} ${tr(STAT_L, sk)}`);
+  return parts;
+}
 const FAMILY_L = {
   fr: { demon:'Démon', beast:'Bête', spider:'Araignée', humanoid:'Humanoïde', mudfin:'Mudfin', burrower:'Fouisseur', undead:'Mort-vivant', troll:'Troll', ogre:'Ogre', elemental:'Élémentaire', dragonkin:'Draconien' },
   en: { demon:'Demon', beast:'Beast', spider:'Spider', humanoid:'Humanoid', mudfin:'Mudfin', burrower:'Burrower', undead:'Undead', troll:'Troll', ogre:'Ogre', elemental:'Elemental', dragonkin:'Dragonkin' },
@@ -1324,7 +1334,7 @@ function itemCard(it) {
   const ql = quality(it);
   const sub = [tr(KIND_L, it.kind), it.slot && tr(SLOT_L, it.slot), it.armorType && tr(ARMORTYPE_L, it.armorType)].filter(Boolean).join(' · ');
   const w = it.weapon ? `<div class="statline"><b>${it.weapon.min} – ${it.weapon.max}</b> ${T.damage} · ${T.speed} ${it.weapon.speed ?? '—'}</div>` : '';
-  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v]) => `+${v} ${tr(STAT_L,k)}`).join(' · ')}</div>` : '';
+  const _sp = itemStatParts(it); const stats = _sp.length ? `<div class="stat-green">${_sp.join(' · ')}</div>` : '';
   return card('bl-' + ql, `
     <div class="card-top">
       <div>
@@ -1574,13 +1584,26 @@ function itemSheet(it) {
   if (it.sellValue) kv.push(`<div><span>${T.sell}</span>${money(it.sellValue)}</div>`);
   if (it.buyValue) kv.push(`<div><span>${T.buy}</span>${money(it.buyValue)}</div>`);
 
-  const stats = it.stats ? `<div class="stat-green">${Object.entries(it.stats).map(([k,v])=>`+${v} ${tr(STAT_L,k)}`).join('<br>')}</div>` : '';
+  const _sp = itemStatParts(it); const stats = _sp.length ? `<div class="stat-green">${_sp.join('<br>')}</div>` : '';
   const classes = it.requiredClass ? `<div class="statline" style="margin-top:8px">${T.classes}${T.colon}<b>${it.requiredClass.map(c=>tr(CLASS_L,c)).join(', ')}</b></div>` : '';
 
   const setBlock = it.set && byId.set[it.set] ? section(T.set,
     `<ul class="linklist"><li><span class="xlink q-epic" data-open="set|${esc(it.set)}">${esc(byId.set[it.set].name)}</span></li></ul>`) : '';
 
-  const drops = (refs.droppedBy[it.id]||[]).sort((a,b)=>(b.chance||0)-(a.chance||0));
+  // Agrégé par monstre : un objet occupe souvent plusieurs slots d'une même
+  // table de butin. On combine en probabilité d'en obtenir au moins un
+  // (1 − Π(1 − chance_i)) → une seule ligne par source, plus de doublon.
+  const _dropAgg = new Map();
+  for (const d of (refs.droppedBy[it.id] || [])) {
+    const key = (d.mob.id || d.mob.name) + '|' + (d.heroic ? 'h' : 'n');
+    if (!_dropAgg.has(key)) _dropAgg.set(key, { mob: d.mob, heroic: d.heroic, chances: [] });
+    _dropAgg.get(key).chances.push(d.chance);
+  }
+  const drops = [..._dropAgg.values()].map(g => {
+    let p = 1, has = false;
+    for (const c of g.chances) if (c != null) { p *= (1 - c); has = true; }
+    return { mob: g.mob, heroic: g.heroic, chance: has ? 1 - p : null };
+  }).sort((a,b)=>(b.chance||0)-(a.chance||0));
   const dropBlock = drops.length ? section(T.droppedBy,
     `<ul class="linklist">${drops.map(d => mobLink(d.mob,
       `${d.heroic ? `<span class="badge b-heroic" style="margin:0 8px 0 0">${T.heroic}</span>` : ''}<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
@@ -1956,7 +1979,7 @@ function buildMarkdown() {
     if (it.slot) p.push(M.slot(tr(SLOT_L, it.slot)));
     if (it.armorType) p.push(tr(ARMORTYPE_L, it.armorType).toLowerCase());
     if (it.weapon) p.push(M.dmg(it.weapon));
-    if (it.stats) p.push(Object.entries(it.stats).map(([k, v]) => `+${v} ${tr(STAT_L, k)}`).join(', '));
+    { const _p = itemStatParts(it); if (_p.length) p.push(_p.join(', ')); }
     if (it.bagSlots) p.push(M.bag(it.bagSlots));
     if (it.foodHp) p.push(M.restoreHp(it.foodHp));
     if (it.drinkMana) p.push(M.restoreMana(it.drinkMana));
