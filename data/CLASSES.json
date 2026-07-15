@@ -48,7 +48,8 @@
       "demoralizing_shout",
       "sunder_armor",
       "taunt",
-      "pummel"
+      "pummel",
+      "ironhold"
     ],
     "color": 13081710
   },
@@ -226,7 +227,8 @@
       "consecration",
       "righteous_fury",
       "retribution_aura",
-      "rebuke"
+      "rebuke",
+      "sacred_bulwark"
     ],
     "color": 16092346
   },
@@ -540,7 +542,8 @@
       "tigers_fury",
       "rip",
       "hurricane",
-      "skull_bash"
+      "skull_bash",
+      "primal_reflexes"
     ],
     "color": 16743690
   }

@@ -4657,6 +4657,7 @@
       "str": 8,
       "sta": 9
     },
+    "hitRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "warrior",
@@ -4676,6 +4677,7 @@
       "str": 7,
       "sta": 8
     },
+    "hitRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "warrior",
@@ -4695,6 +4697,7 @@
       "agi": 10,
       "sta": 7
     },
+    "hitRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "rogue",
@@ -4715,6 +4718,7 @@
       "agi": 9,
       "sta": 6
     },
+    "hitRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "rogue",
@@ -4735,6 +4739,7 @@
       "int": 11,
       "sta": 6
     },
+    "hitRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "mage",
@@ -4756,6 +4761,7 @@
       "int": 9,
       "sta": 6
     },
+    "hitRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "mage",
@@ -4777,6 +4783,7 @@
       "int": 10,
       "sta": 7
     },
+    "critRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "shaman"
@@ -4795,6 +4802,7 @@
       "int": 8,
       "sta": 7
     },
+    "critRating": 20,
     "sellValue": 12000,
     "requiredClass": [
       "shaman"
@@ -5886,6 +5894,7 @@
       "str": 7,
       "sta": 4
     },
+    "hitRating": 25,
     "sellValue": 4500
   },
   "nielas_coldlight_band": {
@@ -5899,6 +5908,7 @@
       "int": 7,
       "sta": 4
     },
+    "hitRating": 25,
     "sellValue": 4500
   },
   "sutils_gambit": {
@@ -5912,6 +5922,7 @@
       "agi": 7,
       "sta": 4
     },
+    "critRating": 25,
     "sellValue": 4500
   },
   "oath_of_the_round_table": {
@@ -5925,6 +5936,7 @@
       "sta": 6,
       "str": 5
     },
+    "hitRating": 25,
     "sellValue": 4500
   },
   "zyzzs_deathless_signet": {
@@ -5938,6 +5950,7 @@
       "spi": 6,
       "int": 5
     },
+    "hasteRating": 25,
     "sellValue": 4500
   },
   "architects_cornerstone": {
@@ -5951,6 +5964,7 @@
       "int": 6,
       "spi": 5
     },
+    "hasteRating": 25,
     "sellValue": 4500
   },
   "yumis_keepsake_locket": {
@@ -5964,6 +5978,7 @@
       "agi": 7,
       "sta": 5
     },
+    "hasteRating": 25,
     "sellValue": 6000
   },
   "zense_meridian": {
@@ -5977,6 +5992,7 @@
       "int": 7,
       "spi": 5
     },
+    "critRating": 25,
     "sellValue": 6000
   },
   "swiftfang_talisman": {
@@ -5990,6 +6006,7 @@
       "str": 6,
       "agi": 6
     },
+    "hitRating": 25,
     "sellValue": 6000
   },
   "medallion_of_endless_profit": {
@@ -6003,6 +6020,7 @@
       "str": 7,
       "sta": 5
     },
+    "critRating": 25,
     "sellValue": 6000
   },
   "morthens_cryptforged_hauberk": {
@@ -6018,6 +6036,7 @@
       "str": 12,
       "sta": 10
     },
+    "hitRating": 40,
     "sellValue": 14000,
     "requiredClass": [
       "warrior",
@@ -6038,6 +6057,7 @@
       "int": 9,
       "spi": 6
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "mage",
@@ -6059,6 +6079,7 @@
       "agi": 9,
       "sta": 5
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "rogue",
@@ -6078,6 +6099,7 @@
       "str": 10,
       "sta": 8
     },
+    "hitRating": 40,
     "sellValue": 12000,
     "requiredClass": [
       "warrior",
@@ -6098,6 +6120,7 @@
       "int": 8,
       "spi": 6
     },
+    "critRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "mage",
@@ -6119,6 +6142,7 @@
       "agi": 9,
       "sta": 6
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "rogue",
@@ -6142,6 +6166,7 @@
       "agi": 13,
       "sta": 9
     },
+    "critRating": 50,
     "sellValue": 15000,
     "requiredClass": [
       "rogue",
@@ -6161,6 +6186,7 @@
       "agi": 10,
       "sta": 6
     },
+    "critRating": 40,
     "sellValue": 11000,
     "requiredClass": [
       "rogue",
@@ -6181,6 +6207,7 @@
       "int": 9,
       "sta": 6
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "mage",
@@ -6202,6 +6229,7 @@
       "str": 9,
       "sta": 7
     },
+    "critRating": 40,
     "sellValue": 11000,
     "requiredClass": [
       "warrior",
@@ -6222,6 +6250,7 @@
       "agi": 10,
       "sta": 8
     },
+    "critRating": 40,
     "sellValue": 12000,
     "requiredClass": [
       "rogue",
@@ -6241,6 +6270,7 @@
       "int": 9,
       "spi": 7
     },
+    "hasteRating": 40,
     "sellValue": 11000,
     "requiredClass": [
       "mage",
@@ -6265,6 +6295,7 @@
       "int": 13,
       "spi": 9
     },
+    "hitRating": 50,
     "sellValue": 15000,
     "requiredClass": [
       "mage",
@@ -6286,6 +6317,7 @@
       "agi": 12,
       "sta": 8
     },
+    "hitRating": 40,
     "sellValue": 12000,
     "requiredClass": [
       "rogue",
@@ -6305,6 +6337,7 @@
       "int": 10,
       "spi": 8
     },
+    "hasteRating": 40,
     "sellValue": 12000,
     "requiredClass": [
       "paladin",
@@ -6324,6 +6357,7 @@
       "int": 12,
       "spi": 8
     },
+    "hitRating": 40,
     "sellValue": 12000,
     "requiredClass": [
       "mage",
@@ -6345,6 +6379,7 @@
       "int": 9,
       "spi": 7
     },
+    "critRating": 40,
     "sellValue": 11000,
     "requiredClass": [
       "paladin",
@@ -6364,6 +6399,7 @@
       "str": 8,
       "sta": 6
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "warrior",
@@ -6387,6 +6423,7 @@
       "str": 13,
       "sta": 9
     },
+    "critRating": 50,
     "sellValue": 15000,
     "requiredClass": [
       "warrior",
@@ -6407,6 +6444,7 @@
       "int": 12,
       "spi": 10
     },
+    "critRating": 40,
     "sellValue": 14000,
     "requiredClass": [
       "mage",
@@ -6428,6 +6466,7 @@
       "agi": 9,
       "sta": 6
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "rogue",
@@ -6448,6 +6487,7 @@
       "str": 9,
       "sta": 6
     },
+    "critRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "warrior",
@@ -6468,6 +6508,7 @@
       "str": 9,
       "sta": 6
     },
+    "hitRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "warrior",
@@ -6488,6 +6529,7 @@
       "int": 9,
       "spi": 6
     },
+    "hasteRating": 40,
     "sellValue": 9500,
     "requiredClass": [
       "paladin",
@@ -6510,6 +6552,8 @@
       "int": 13,
       "spi": 10
     },
+    "hasteRating": 65,
+    "critRating": 20,
     "sellValue": 16000,
     "requiredClass": [
       "mage",
@@ -6534,6 +6578,8 @@
       "str": 14,
       "sta": 9
     },
+    "hitRating": 65,
+    "critRating": 20,
     "sellValue": 16000,
     "requiredClass": [
       "warrior",
@@ -6557,7 +6603,89 @@
       "int": 14,
       "spi": 9
     },
+    "hasteRating": 65,
+    "critRating": 20,
     "sellValue": 16000,
+    "requiredClass": [
+      "paladin",
+      "shaman"
+    ]
+  },
+  "deathless_warguard_legmail": {
+    "id": "deathless_warguard_legmail",
+    "name": "Deathless Warguard Legmail",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 315,
+      "str": 11,
+      "sta": 9
+    },
+    "sellValue": 13000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ]
+  },
+  "soulrend_diadem": {
+    "id": "soulrend_diadem",
+    "name": "Soulrend Diadem",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "helmet",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 76,
+      "int": 10,
+      "spi": 8
+    },
+    "sellValue": 12000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "druid"
+    ]
+  },
+  "scourgehide_carapace": {
+    "id": "scourgehide_carapace",
+    "name": "Scourgehide Carapace",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 172,
+      "agi": 12,
+      "sta": 10
+    },
+    "sellValue": 14000,
+    "requiredClass": [
+      "rogue",
+      "hunter",
+      "druid"
+    ]
+  },
+  "soulforged_warplate": {
+    "id": "soulforged_warplate",
+    "name": "Soulforged Warplate",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "chest",
+    "quality": "epic",
+    "requiredLevel": 20,
+    "stats": {
+      "armor": 335,
+      "int": 12,
+      "spi": 10
+    },
+    "sellValue": 14000,
     "requiredClass": [
       "paladin",
       "shaman"
@@ -6573,8 +6701,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 265,
-      "str": 7,
-      "sta": 10
+      "str": 4,
+      "sta": 6
     },
     "pvpOffenseRating": 17,
     "pvpDefenseRating": 17,
@@ -6592,8 +6720,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 220,
-      "str": 6,
-      "sta": 9
+      "str": 4,
+      "sta": 5
     },
     "pvpOffenseRating": 15,
     "pvpDefenseRating": 15,
@@ -6611,8 +6739,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 305,
-      "str": 9,
-      "sta": 11
+      "str": 5,
+      "sta": 7
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -6630,8 +6758,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 200,
-      "str": 6,
-      "sta": 8
+      "str": 3,
+      "sta": 5
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -6649,8 +6777,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 285,
-      "str": 8,
-      "sta": 10
+      "str": 5,
+      "sta": 6
     },
     "pvpOffenseRating": 18,
     "pvpDefenseRating": 18,
@@ -6668,8 +6796,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 200,
-      "str": 6,
-      "sta": 8
+      "str": 3,
+      "sta": 5
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -6687,8 +6815,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 190,
-      "str": 6,
-      "sta": 7
+      "str": 4,
+      "sta": 4
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -6706,9 +6834,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 265,
-      "int": 8,
-      "sta": 6,
-      "spi": 3
+      "int": 5,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 17,
     "pvpDefenseRating": 17,
@@ -6726,9 +6854,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 220,
-      "int": 7,
-      "sta": 5,
-      "spi": 3
+      "int": 4,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 15,
     "pvpDefenseRating": 15,
@@ -6746,9 +6874,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 305,
-      "int": 9,
-      "sta": 7,
-      "spi": 4
+      "int": 6,
+      "sta": 4,
+      "spi": 2
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -6766,9 +6894,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 200,
-      "int": 6,
-      "sta": 5,
-      "spi": 3
+      "int": 3,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -6786,9 +6914,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 285,
-      "int": 8,
-      "sta": 6,
-      "spi": 4
+      "int": 5,
+      "sta": 4,
+      "spi": 2
     },
     "pvpOffenseRating": 18,
     "pvpDefenseRating": 18,
@@ -6806,9 +6934,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 200,
-      "int": 6,
-      "sta": 5,
-      "spi": 3
+      "int": 3,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -6826,9 +6954,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 190,
-      "int": 6,
-      "sta": 4,
-      "spi": 3
+      "int": 4,
+      "sta": 2,
+      "spi": 2
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -6846,8 +6974,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 150,
-      "agi": 8,
-      "sta": 9
+      "agi": 5,
+      "sta": 5
     },
     "pvpOffenseRating": 17,
     "pvpDefenseRating": 17,
@@ -6865,8 +6993,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 135,
-      "agi": 7,
-      "sta": 8
+      "agi": 4,
+      "sta": 5
     },
     "pvpOffenseRating": 15,
     "pvpDefenseRating": 15,
@@ -6884,8 +7012,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 155,
-      "agi": 9,
-      "sta": 11
+      "agi": 5,
+      "sta": 7
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -6903,8 +7031,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 90,
-      "agi": 6,
-      "sta": 8
+      "agi": 3,
+      "sta": 5
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -6922,8 +7050,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 120,
-      "agi": 8,
-      "sta": 10
+      "agi": 5,
+      "sta": 6
     },
     "pvpOffenseRating": 18,
     "pvpDefenseRating": 18,
@@ -6941,8 +7069,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 95,
-      "agi": 6,
-      "sta": 8
+      "agi": 3,
+      "sta": 5
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -6960,8 +7088,8 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 85,
-      "agi": 6,
-      "sta": 7
+      "agi": 4,
+      "sta": 4
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -6979,9 +7107,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 70,
-      "int": 8,
-      "sta": 6,
-      "spi": 3
+      "int": 5,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 17,
     "pvpDefenseRating": 17,
@@ -6999,9 +7127,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 50,
-      "int": 7,
-      "sta": 5,
-      "spi": 3
+      "int": 4,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 15,
     "pvpDefenseRating": 15,
@@ -7019,9 +7147,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 80,
-      "int": 9,
-      "sta": 7,
-      "spi": 4
+      "int": 6,
+      "sta": 4,
+      "spi": 2
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -7039,9 +7167,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 45,
-      "int": 6,
-      "sta": 5,
-      "spi": 3
+      "int": 3,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -7059,9 +7187,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 65,
-      "int": 8,
-      "sta": 6,
-      "spi": 4
+      "int": 5,
+      "sta": 4,
+      "spi": 2
     },
     "pvpOffenseRating": 18,
     "pvpDefenseRating": 18,
@@ -7079,9 +7207,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 45,
-      "int": 6,
-      "sta": 5,
-      "spi": 3
+      "int": 3,
+      "sta": 3,
+      "spi": 2
     },
     "pvpOffenseRating": 14,
     "pvpDefenseRating": 14,
@@ -7099,9 +7227,9 @@
     "requiredLevel": 20,
     "stats": {
       "armor": 40,
-      "int": 6,
-      "sta": 4,
-      "spi": 3
+      "int": 4,
+      "sta": 2,
+      "spi": 2
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -7117,8 +7245,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "str": 6,
-      "sta": 7
+      "str": 4,
+      "sta": 4
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -7134,8 +7262,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "agi": 6,
-      "sta": 7
+      "agi": 4,
+      "sta": 4
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -7151,9 +7279,9 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "int": 6,
-      "sta": 5,
-      "spi": 2
+      "int": 4,
+      "sta": 3,
+      "spi": 1
     },
     "pvpOffenseRating": 13,
     "pvpDefenseRating": 13,
@@ -7169,8 +7297,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "str": 5,
-      "sta": 7
+      "str": 3,
+      "sta": 4
     },
     "pvpOffenseRating": 12,
     "pvpDefenseRating": 12,
@@ -7186,8 +7314,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "str": 6,
-      "sta": 6
+      "str": 4,
+      "sta": 3
     },
     "pvpOffenseRating": 12,
     "pvpDefenseRating": 12,
@@ -7203,8 +7331,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "agi": 6,
-      "sta": 6
+      "agi": 4,
+      "sta": 3
     },
     "pvpOffenseRating": 12,
     "pvpDefenseRating": 12,
@@ -7220,8 +7348,8 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "agi": 5,
-      "sta": 7
+      "agi": 3,
+      "sta": 4
     },
     "pvpOffenseRating": 12,
     "pvpDefenseRating": 12,
@@ -7237,9 +7365,9 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "int": 6,
-      "sta": 4,
-      "spi": 2
+      "int": 4,
+      "sta": 2,
+      "spi": 1
     },
     "pvpOffenseRating": 12,
     "pvpDefenseRating": 12,
@@ -7255,9 +7383,9 @@
     "quality": "epic",
     "requiredLevel": 20,
     "stats": {
-      "int": 5,
-      "sta": 4,
-      "spi": 3
+      "int": 3,
+      "sta": 2,
+      "spi": 2
     },
     "pvpOffenseRating": 12,
     "pvpDefenseRating": 12,
@@ -7278,8 +7406,8 @@
       "speed": 2.8
     },
     "stats": {
-      "str": 9,
-      "sta": 11
+      "str": 5,
+      "sta": 7
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -7306,8 +7434,8 @@
       "dagger": true
     },
     "stats": {
-      "agi": 9,
-      "sta": 11
+      "agi": 5,
+      "sta": 7
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -7333,9 +7461,9 @@
       "speed": 3
     },
     "stats": {
-      "int": 9,
-      "sta": 7,
-      "spi": 4
+      "int": 6,
+      "sta": 4,
+      "spi": 2
     },
     "pvpOffenseRating": 20,
     "pvpDefenseRating": 20,
@@ -8788,7 +8916,9 @@
         ]
       }
     ],
-    "heroicOf": "deathless_heartwood"
+    "heroicOf": "deathless_heartwood",
+    "hasteRating": 70,
+    "critRating": 30
   },
   "heroic_crownforged_dreadhelm": {
     "id": "heroic_crownforged_dreadhelm",
@@ -8803,12 +8933,14 @@
       "str": 9,
       "sta": 11
     },
+    "hitRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "warrior",
       "paladin"
     ],
-    "heroicOf": "crownforged_dreadhelm"
+    "heroicOf": "crownforged_dreadhelm",
+    "critRating": 20
   },
   "heroic_nighttalon_crown": {
     "id": "heroic_nighttalon_crown",
@@ -8823,13 +8955,15 @@
       "agi": 12,
       "sta": 8
     },
+    "hitRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "rogue",
       "hunter",
       "druid"
     ],
-    "heroicOf": "nighttalon_crown"
+    "heroicOf": "nighttalon_crown",
+    "critRating": 20
   },
   "heroic_soulflame_cowl": {
     "id": "heroic_soulflame_cowl",
@@ -8844,6 +8978,7 @@
       "sta": 7,
       "int": 13
     },
+    "hitRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "mage",
@@ -8851,7 +8986,8 @@
       "warlock",
       "druid"
     ],
-    "heroicOf": "soulflame_cowl"
+    "heroicOf": "soulflame_cowl",
+    "hasteRating": 20
   },
   "heroic_stormcallers_crown": {
     "id": "heroic_stormcallers_crown",
@@ -8866,11 +9002,13 @@
       "sta": 8,
       "int": 12
     },
+    "critRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "shaman"
     ],
-    "heroicOf": "stormcallers_crown"
+    "heroicOf": "stormcallers_crown",
+    "hasteRating": 20
   },
   "heroic_nighttalon_shoulderguards": {
     "id": "heroic_nighttalon_shoulderguards",
@@ -8885,13 +9023,15 @@
       "agi": 10,
       "sta": 7
     },
+    "hitRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "rogue",
       "hunter",
       "druid"
     ],
-    "heroicOf": "nighttalon_shoulderguards"
+    "heroicOf": "nighttalon_shoulderguards",
+    "critRating": 20
   },
   "heroic_soulflame_mantle": {
     "id": "heroic_soulflame_mantle",
@@ -8906,6 +9046,7 @@
       "sta": 7,
       "int": 10
     },
+    "hitRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "mage",
@@ -8913,7 +9054,8 @@
       "warlock",
       "druid"
     ],
-    "heroicOf": "soulflame_mantle"
+    "heroicOf": "soulflame_mantle",
+    "hasteRating": 20
   },
   "heroic_kingsbane_last_oath": {
     "id": "heroic_kingsbane_last_oath",
@@ -8963,7 +9105,9 @@
         ]
       }
     ],
-    "heroicOf": "kingsbane_last_oath"
+    "heroicOf": "kingsbane_last_oath",
+    "hitRating": 70,
+    "critRating": 30
   },
   "heroic_crownforged_warspaulders": {
     "id": "heroic_crownforged_warspaulders",
@@ -8978,12 +9122,14 @@
       "str": 8,
       "sta": 9
     },
+    "hitRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "warrior",
       "paladin"
     ],
-    "heroicOf": "crownforged_warspaulders"
+    "heroicOf": "crownforged_warspaulders",
+    "critRating": 20
   },
   "heroic_stormcallers_spaulders": {
     "id": "heroic_stormcallers_spaulders",
@@ -8998,11 +9144,13 @@
       "sta": 8,
       "int": 9
     },
+    "critRating": 55,
     "sellValue": 12000,
     "requiredClass": [
       "shaman"
     ],
-    "heroicOf": "stormcallers_spaulders"
+    "heroicOf": "stormcallers_spaulders",
+    "hasteRating": 20
   },
   "heroic_selthes_seastriders": {
     "id": "heroic_selthes_seastriders",
