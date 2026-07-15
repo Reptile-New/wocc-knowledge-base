@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WoCC Codex — l'encyclopédie de World of ClaudeCraft</title>
+<!-- Barre de navigation partagée avec le site de la guilde (source de vérité
+     unique des onglets). Chargée depuis le domaine guilde pour rester alignée
+     partout ; « defer » = s'exécute après le rendu de la barre. Si le domaine
+     est injoignable (miroir GitHub Pages hors-ligne), seule cette barre reste
+     minimale — le reste du Codex fonctionne normalement. -->
+<script defer src="https://laclauderie.fr/assets/nav.js"></script>
 <meta name="description" content="Cherche n'importe quel objet, monstre, quête, donjon ou PNJ de World of ClaudeCraft — toujours à jour de la dernière version du jeu.">
 <meta name="theme-color" content="#c8a04b">
 <meta property="og:type" content="website">
@@ -526,11 +532,9 @@
 <div class="guild-bar">
   <div class="gb-row">
     <a href="/La-Clauderie/" class="gb-brand"><span class="gb-sigil">C</span><b>La Clauderie</b></a>
-    <nav class="gb-nav" aria-label="Navigation du site de la guilde">
-      <a href="/La-Clauderie/" id="gb-home">Accueil</a>
-      <a href="/La-Clauderie/bis.html">⚔️ Builds</a>
-      <a href="/La-Clauderie/patch-notes.html" id="gb-news">📜 Nouveautés</a>
-      <span class="gb-cur">📚 Codex</span>
+    <!-- Onglets rendus par la source de vérité unique (nav.js du site guilde) ;
+         seul le bouton de langue est en dur (nav.js le préserve). -->
+    <nav class="gb-nav" data-guild-nav data-current="codex" aria-label="Navigation du site de la guilde">
       <button class="lang-btn" id="lang-btn" type="button"></button>
     </nav>
   </div>
@@ -1071,8 +1075,7 @@ if (/(^|\.)laclauderie\.fr$/.test(location.hostname)) {
 /* ---- textes statiques de la page + bouton FR/EN ---- */
 function applyStaticLang() {
   document.title = T.docTitle;
-  document.getElementById('gb-home').textContent = T.navHome;
-  document.getElementById('gb-news').textContent = T.navNews;
+  // Les libellés des onglets guilde sont gérés par nav.js (source unique).
   document.querySelector('.subtitle').innerHTML = T.subtitle;
   document.getElementById('search').placeholder = T.searchPh;
   document.getElementById('export-md').title = T.exportTitle;
