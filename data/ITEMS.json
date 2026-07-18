@@ -842,7 +842,7 @@
     "id": "thorium_ore",
     "name": "Thorium Ore",
     "kind": "junk",
-    "quality": "rare",
+    "quality": "common",
     "sellValue": 15,
     "buyValue": 60
   },
@@ -850,7 +850,7 @@
     "id": "arcanite_bar",
     "name": "Arcanite Bar",
     "kind": "junk",
-    "quality": "epic",
+    "quality": "common",
     "sellValue": 40,
     "buyValue": 160
   },
@@ -858,7 +858,7 @@
     "id": "ashwood_log",
     "name": "Ashwood Log",
     "kind": "junk",
-    "quality": "rare",
+    "quality": "common",
     "sellValue": 15,
     "buyValue": 60
   },
@@ -866,7 +866,7 @@
     "id": "elderwood_log",
     "name": "Elderwood Log",
     "kind": "junk",
-    "quality": "epic",
+    "quality": "common",
     "sellValue": 40,
     "buyValue": 160
   },
@@ -874,7 +874,7 @@
     "id": "goldleaf_herb",
     "name": "Goldleaf Herb",
     "kind": "junk",
-    "quality": "rare",
+    "quality": "common",
     "sellValue": 15,
     "buyValue": 60
   },
@@ -882,7 +882,7 @@
     "id": "sunpetal_herb",
     "name": "Sunpetal Herb",
     "kind": "junk",
-    "quality": "epic",
+    "quality": "common",
     "sellValue": 40,
     "buyValue": 160
   },
@@ -1078,6 +1078,14 @@
     "drinkMana": 672,
     "sellValue": 0
   },
+  "conjured_water4": {
+    "id": "conjured_water4",
+    "name": "Conjured Springwater",
+    "kind": "drink",
+    "quality": "common",
+    "drinkMana": 1150,
+    "sellValue": 0
+  },
   "conjured_bread": {
     "id": "conjured_bread",
     "name": "Conjured Oatcake",
@@ -1102,6 +1110,14 @@
     "foodHp": 552,
     "sellValue": 0
   },
+  "conjured_bread4": {
+    "id": "conjured_bread4",
+    "name": "Conjured Feastloaf",
+    "kind": "food",
+    "quality": "common",
+    "foodHp": 980,
+    "sellValue": 0
+  },
   "eastbrook_arming_sword": {
     "id": "eastbrook_arming_sword",
     "name": "Eastbrook Arming Sword",
@@ -1115,6 +1131,21 @@
     },
     "sellValue": 140,
     "buyValue": 1400
+  },
+  "eastbrook_greatsword": {
+    "id": "eastbrook_greatsword",
+    "name": "Eastbrook Greatsword",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "hand": "twohand",
+    "quality": "common",
+    "weapon": {
+      "min": 9,
+      "max": 15,
+      "speed": 3.4
+    },
+    "sellValue": 160,
+    "buyValue": 1600
   },
   "bronzework_mace": {
     "id": "bronzework_mace",
@@ -1161,6 +1192,27 @@
     },
     "sellValue": 150,
     "buyValue": 1500
+  },
+  "eastbrook_buckler": {
+    "id": "eastbrook_buckler",
+    "name": "Eastbrook Buckler",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "offhand",
+    "shield": true,
+    "blockValue": 6,
+    "quality": "common",
+    "stats": {
+      "armor": 34,
+      "sta": 1
+    },
+    "sellValue": 130,
+    "buyValue": 1300,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ]
   },
   "eastbrook_chain_vest": {
     "id": "eastbrook_chain_vest",
@@ -1226,6 +1278,93 @@
     },
     "sellValue": 110,
     "buyValue": 1100
+  },
+  "eastbrook_ritual_vestments": {
+    "id": "eastbrook_ritual_vestments",
+    "name": "Eastbrook Ritual Vestments",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "chest",
+    "quality": "uncommon",
+    "stats": {
+      "armor": 30,
+      "int": 2,
+      "spi": 1
+    },
+    "sellValue": 210,
+    "buyValue": 2100
+  },
+  "eastbrook_druids_hide": {
+    "id": "eastbrook_druids_hide",
+    "name": "Eastbrook Druid's Hide",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "chest",
+    "quality": "uncommon",
+    "stats": {
+      "armor": 52,
+      "int": 2,
+      "spi": 1
+    },
+    "sellValue": 230,
+    "buyValue": 2300
+  },
+  "eastbrook_warded_leggings": {
+    "id": "eastbrook_warded_leggings",
+    "name": "Eastbrook Warded Leggings",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "legs",
+    "quality": "uncommon",
+    "stats": {
+      "armor": 50,
+      "int": 2,
+      "spi": 1
+    },
+    "sellValue": 220,
+    "buyValue": 2200
+  },
+  "wardweave_cowl": {
+    "id": "wardweave_cowl",
+    "name": "Wardweave Cowl",
+    "kind": "armor",
+    "armorType": "cloth",
+    "slot": "helmet",
+    "quality": "rare",
+    "stats": {
+      "armor": 44,
+      "int": 7,
+      "spi": 4
+    },
+    "sellValue": 440
+  },
+  "duskhide_wraps": {
+    "id": "duskhide_wraps",
+    "name": "Duskhide Wraps",
+    "kind": "armor",
+    "armorType": "leather",
+    "slot": "gloves",
+    "quality": "rare",
+    "stats": {
+      "armor": 46,
+      "int": 6,
+      "spi": 3
+    },
+    "sellValue": 420
+  },
+  "sootscale_mantle": {
+    "id": "sootscale_mantle",
+    "name": "Sootscale Mantle",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "shoulder",
+    "quality": "rare",
+    "stats": {
+      "armor": 78,
+      "int": 6,
+      "spi": 4
+    },
+    "sellValue": 470
   },
   "gravecaller_blade": {
     "id": "gravecaller_blade",
@@ -1694,21 +1833,21 @@
     "id": "spider_leg",
     "name": "Twitching Spider Leg",
     "kind": "junk",
-    "quality": "poor",
+    "quality": "common",
     "sellValue": 4
   },
   "bone_fragments": {
     "id": "bone_fragments",
     "name": "Bone Fragments",
     "kind": "junk",
-    "quality": "poor",
+    "quality": "common",
     "sellValue": 7
   },
   "linen_scrap": {
     "id": "linen_scrap",
     "name": "Linen Scrap",
     "kind": "junk",
-    "quality": "poor",
+    "quality": "common",
     "sellValue": 3
   },
   "arcane_dust": {
@@ -4254,6 +4393,7 @@
     "name": "Wyrmfang Greatblade",
     "kind": "weapon",
     "slot": "mainhand",
+    "hand": "twohand",
     "quality": "epic",
     "weapon": {
       "min": 30,
@@ -4261,13 +4401,12 @@
       "speed": 2.6
     },
     "stats": {
-      "str": 11,
-      "sta": 7
+      "str": 22,
+      "sta": 14
     },
     "sellValue": 8000,
     "requiredClass": [
       "warrior",
-      "rogue",
       "hunter",
       "shaman",
       "paladin"
@@ -4808,6 +4947,97 @@
       "shaman"
     ]
   },
+  "bonewrought_greatsword": {
+    "id": "bonewrought_greatsword",
+    "name": "Bonewrought Greatsword",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "hand": "twohand",
+    "quality": "epic",
+    "weapon": {
+      "min": 45,
+      "max": 75,
+      "speed": 3.4
+    },
+    "stats": {
+      "str": 22,
+      "sta": 18
+    },
+    "hitRating": 20,
+    "sellValue": 12000,
+    "requiredClass": [
+      "warrior",
+      "hunter",
+      "shaman",
+      "paladin"
+    ]
+  },
+  "direfang_greatblade": {
+    "id": "direfang_greatblade",
+    "name": "Direfang Greatblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "hand": "twohand",
+    "quality": "epic",
+    "weapon": {
+      "min": 40,
+      "max": 66,
+      "speed": 3
+    },
+    "stats": {
+      "agi": 22,
+      "sta": 18
+    },
+    "hitRating": 20,
+    "sellValue": 12000,
+    "requiredClass": [
+      "hunter"
+    ]
+  },
+  "bonewrought_bulwark": {
+    "id": "bonewrought_bulwark",
+    "name": "Bonewrought Bulwark",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "offhand",
+    "shield": true,
+    "quality": "epic",
+    "blockValue": 30,
+    "stats": {
+      "armor": 680,
+      "sta": 10,
+      "str": 5
+    },
+    "hitRating": 20,
+    "sellValue": 12000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ]
+  },
+  "wraithfire_orb": {
+    "id": "wraithfire_orb",
+    "name": "Wraithfire Orb",
+    "kind": "held_offhand",
+    "slot": "offhand",
+    "quality": "epic",
+    "stats": {
+      "int": 7,
+      "spi": 5,
+      "sta": 3
+    },
+    "critRating": 20,
+    "sellValue": 12000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
+    ]
+  },
   "trail_hardtack": {
     "id": "trail_hardtack",
     "name": "Highwatch Trail Hardtack",
@@ -4857,6 +5087,42 @@
     },
     "sellValue": 600,
     "buyValue": 6000
+  },
+  "highwatch_greatsword": {
+    "id": "highwatch_greatsword",
+    "name": "Highwatch Greatsword",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "hand": "twohand",
+    "quality": "common",
+    "weapon": {
+      "min": 26,
+      "max": 40,
+      "speed": 3.4
+    },
+    "sellValue": 680,
+    "buyValue": 6800
+  },
+  "highwatch_wallshield": {
+    "id": "highwatch_wallshield",
+    "name": "Highwatch Wallshield",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "offhand",
+    "shield": true,
+    "blockValue": 14,
+    "quality": "common",
+    "stats": {
+      "armor": 112,
+      "sta": 2
+    },
+    "sellValue": 560,
+    "buyValue": 5600,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ]
   },
   "craghorn_staff": {
     "id": "craghorn_staff",
@@ -6567,6 +6833,7 @@
     "name": "Deathless Greatblade",
     "kind": "weapon",
     "slot": "mainhand",
+    "hand": "twohand",
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
@@ -6575,8 +6842,8 @@
       "speed": 3.4
     },
     "stats": {
-      "str": 14,
-      "sta": 9
+      "str": 28,
+      "sta": 18
     },
     "hitRating": 65,
     "critRating": 20,
@@ -8663,6 +8930,7 @@
     "name": "Wyrmfang Greatblade",
     "kind": "weapon",
     "slot": "mainhand",
+    "hand": "twohand",
     "quality": "epic",
     "weapon": {
       "min": 30,
@@ -8670,13 +8938,12 @@
       "speed": 2.6
     },
     "stats": {
-      "str": 12,
-      "sta": 8
+      "str": 24,
+      "sta": 16
     },
     "sellValue": 8000,
     "requiredClass": [
       "warrior",
-      "rogue",
       "hunter",
       "shaman",
       "paladin"
@@ -8920,6 +9187,33 @@
     "hasteRating": 70,
     "critRating": 30
   },
+  "heroic_bonewrought_greatsword": {
+    "id": "heroic_bonewrought_greatsword",
+    "name": "Bonewrought Greatsword",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "hand": "twohand",
+    "quality": "epic",
+    "weapon": {
+      "min": 45,
+      "max": 75,
+      "speed": 3.4
+    },
+    "stats": {
+      "str": 25,
+      "sta": 21
+    },
+    "hitRating": 65,
+    "sellValue": 12000,
+    "requiredClass": [
+      "warrior",
+      "hunter",
+      "shaman",
+      "paladin"
+    ],
+    "heroicOf": "bonewrought_greatsword",
+    "critRating": 20
+  },
   "heroic_crownforged_dreadhelm": {
     "id": "heroic_crownforged_dreadhelm",
     "set": "crownforged",
@@ -9109,6 +9403,30 @@
     "hitRating": 70,
     "critRating": 30
   },
+  "heroic_bonewrought_bulwark": {
+    "id": "heroic_bonewrought_bulwark",
+    "name": "Bonewrought Bulwark",
+    "kind": "armor",
+    "armorType": "mail",
+    "slot": "offhand",
+    "shield": true,
+    "quality": "epic",
+    "blockValue": 30,
+    "stats": {
+      "armor": 680,
+      "str": 6,
+      "sta": 11
+    },
+    "hitRating": 55,
+    "sellValue": 12000,
+    "requiredClass": [
+      "warrior",
+      "paladin",
+      "shaman"
+    ],
+    "heroicOf": "bonewrought_bulwark",
+    "critRating": 20
+  },
   "heroic_crownforged_warspaulders": {
     "id": "heroic_crownforged_warspaulders",
     "set": "crownforged",
@@ -9151,6 +9469,54 @@
     ],
     "heroicOf": "stormcallers_spaulders",
     "hasteRating": 20
+  },
+  "heroic_wraithfire_orb": {
+    "id": "heroic_wraithfire_orb",
+    "name": "Wraithfire Orb",
+    "kind": "held_offhand",
+    "slot": "offhand",
+    "quality": "epic",
+    "stats": {
+      "sta": 3,
+      "int": 8,
+      "spi": 6
+    },
+    "critRating": 55,
+    "sellValue": 12000,
+    "requiredClass": [
+      "mage",
+      "priest",
+      "warlock",
+      "shaman",
+      "paladin",
+      "druid"
+    ],
+    "heroicOf": "wraithfire_orb",
+    "hasteRating": 20
+  },
+  "heroic_direfang_greatblade": {
+    "id": "heroic_direfang_greatblade",
+    "name": "Direfang Greatblade",
+    "kind": "weapon",
+    "slot": "mainhand",
+    "hand": "twohand",
+    "quality": "epic",
+    "weapon": {
+      "min": 40,
+      "max": 66,
+      "speed": 3
+    },
+    "stats": {
+      "agi": 25,
+      "sta": 21
+    },
+    "hitRating": 65,
+    "sellValue": 12000,
+    "requiredClass": [
+      "hunter"
+    ],
+    "heroicOf": "direfang_greatblade",
+    "critRating": 20
   },
   "heroic_selthes_seastriders": {
     "id": "heroic_selthes_seastriders",

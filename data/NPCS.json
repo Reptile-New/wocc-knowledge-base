@@ -28,9 +28,7 @@
       "q_greyjaw",
       "q_bandits",
       "q_ringleader",
-      "q_mogger",
-      "q_archetype_acceptance",
-      "q_prof_make_amends"
+      "q_mogger"
     ],
     "greeting": "Keep your blade close, $C. The Vale is not what it was."
   },
@@ -117,12 +115,18 @@
     },
     "facing": -2.7,
     "color": 7371644,
-    "questIds": [],
+    "questIds": [
+      "q_archetype_acceptance",
+      "q_prof_make_amends",
+      "q_prof_hobby_switch"
+    ],
     "vendorItems": [
       "eastbrook_arming_sword",
+      "eastbrook_greatsword",
       "bronzework_mace",
       "vale_carving_knife",
       "hickory_shortstaff",
+      "eastbrook_buckler",
       "eastbrook_chain_vest",
       "valespun_robe",
       "tanned_leather_jerkin",
@@ -178,6 +182,20 @@
     "questIds": [],
     "banker": true,
     "greeting": "Welcome to the Gilded Strongbox. Your goods rest safe behind our locks."
+  },
+  "card_master": {
+    "id": "card_master",
+    "name": "Card Master",
+    "title": "Dealer of Chance",
+    "pos": {
+      "x": 13,
+      "z": 2
+    },
+    "facing": -1.5707963267948966,
+    "color": 8007567,
+    "questIds": [],
+    "cardMaster": true,
+    "greeting": "Care for a Card Duel? Best of three, winner takes the bragging rights."
   },
   "groundskeeper_bram": {
     "id": "groundskeeper_bram",
@@ -478,6 +496,8 @@
     "questIds": [],
     "vendorItems": [
       "highwatch_warblade",
+      "highwatch_greatsword",
+      "highwatch_wallshield",
       "craghorn_staff",
       "icevein_dirk"
     ],

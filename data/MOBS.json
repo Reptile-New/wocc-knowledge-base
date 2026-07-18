@@ -3733,33 +3733,38 @@
         "rollGroup": "nythraxis_drop_1"
       },
       {
+        "itemId": "bonewrought_greatsword",
+        "chance": 0.13,
+        "rollGroup": "nythraxis_drop_1"
+      },
+      {
         "itemId": "crownforged_dreadhelm",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_1"
       },
       {
         "itemId": "nighttalon_crown",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_1"
       },
       {
         "itemId": "soulflame_cowl",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_1"
       },
       {
         "itemId": "stormcallers_crown",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_1"
       },
       {
         "itemId": "nighttalon_shoulderguards",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_1"
       },
       {
         "itemId": "soulflame_mantle",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_1"
       },
       {
@@ -3768,93 +3773,108 @@
         "rollGroup": "nythraxis_drop_2"
       },
       {
+        "itemId": "bonewrought_bulwark",
+        "chance": 0.13,
+        "rollGroup": "nythraxis_drop_2"
+      },
+      {
         "itemId": "crownforged_warspaulders",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_2"
       },
       {
         "itemId": "nighttalon_shoulderguards",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_2"
       },
       {
         "itemId": "soulflame_mantle",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_2"
       },
       {
         "itemId": "crownforged_dreadhelm",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_2"
       },
       {
         "itemId": "nighttalon_crown",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_2"
       },
       {
         "itemId": "stormcallers_spaulders",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_2"
       },
       {
+        "itemId": "wraithfire_orb",
+        "chance": 0.16,
+        "rollGroup": "nythraxis_drop_3"
+      },
+      {
         "itemId": "crownforged_dreadhelm",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_3"
       },
       {
         "itemId": "nighttalon_crown",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_3"
       },
       {
         "itemId": "soulflame_cowl",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_3"
       },
       {
         "itemId": "stormcallers_crown",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_3"
       },
       {
         "itemId": "nighttalon_shoulderguards",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_3"
       },
       {
         "itemId": "soulflame_mantle",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_3"
       },
       {
+        "itemId": "direfang_greatblade",
+        "chance": 0.16,
+        "rollGroup": "nythraxis_drop_4"
+      },
+      {
         "itemId": "soulflame_mantle",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_4"
       },
       {
         "itemId": "crownforged_warspaulders",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_4"
       },
       {
         "itemId": "nighttalon_shoulderguards",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_4"
       },
       {
         "itemId": "stormcallers_spaulders",
-        "chance": 0.17,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_4"
       },
       {
         "itemId": "crownforged_dreadhelm",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_4"
       },
       {
         "itemId": "nighttalon_crown",
-        "chance": 0.16,
+        "chance": 0.14,
         "rollGroup": "nythraxis_drop_4"
       }
     ],
@@ -3998,6 +4018,36 @@
       "range": 28,
       "school": "shadow"
     }
+  },
+  "water_elemental": {
+    "id": "water_elemental",
+    "name": "Water Elemental",
+    "minLevel": 1,
+    "maxLevel": 60,
+    "family": "elemental",
+    "hpBase": 40,
+    "hpPerLevel": 14,
+    "dmgBase": 5,
+    "dmgPerLevel": 1,
+    "attackSpeed": 2.2,
+    "armorPerLevel": 10,
+    "moveSpeed": 5.2,
+    "aggroRadius": 8,
+    "loot": [],
+    "scale": 0.6,
+    "color": 9360127,
+    "petRanged": {
+      "range": 25,
+      "school": "frost",
+      "jet": {
+        "total": 30,
+        "duration": 3,
+        "interval": 1,
+        "slow": 0.6,
+        "cooldown": 8
+      }
+    },
+    "petCanTaunt": false
   },
   "glimmermere_wader": {
     "id": "glimmermere_wader",

@@ -80,10 +80,10 @@
       {
         "pieces": 2,
         "effect": {
-          "knockbackResistance": 1,
+          "castPushbackReduction": 1,
           "sp": 20
         },
-        "text": "Increases spell power by 20. You cannot be knocked back (100% knockback resistance)."
+        "text": "Increases spell power by 20. Damage taken no longer delays your spellcasting (100% pushback resistance)."
       },
       {
         "pieces": 3,
@@ -201,10 +201,10 @@
       {
         "pieces": 2,
         "effect": {
-          "knockbackResistance": 1,
+          "castPushbackReduction": 1,
           "sp": 20
         },
-        "text": "Increases spell power by 20. You cannot be knocked back (100% knockback resistance)."
+        "text": "Increases spell power by 20. Damage taken no longer delays your spellcasting (100% pushback resistance)."
       },
       {
         "pieces": 3,
@@ -240,10 +240,10 @@
       {
         "pieces": 2,
         "effect": {
-          "knockbackResistance": 1,
+          "castPushbackReduction": 1,
           "sp": 20
         },
-        "text": "Increases spell power by 20. You cannot be knocked back (100% knockback resistance)."
+        "text": "Increases spell power by 20. Damage taken no longer delays your spellcasting (100% pushback resistance)."
       },
       {
         "pieces": 3,

@@ -15,7 +15,6 @@
       }
     ],
     "skillReq": 0,
-    "trivialAt": 25,
     "itemLevelBudget": 10,
     "level": 10
   },
@@ -31,7 +30,6 @@
       }
     ],
     "skillReq": 0,
-    "trivialAt": 25,
     "itemLevelBudget": 10,
     "level": 10
   },
@@ -47,7 +45,6 @@
       }
     ],
     "skillReq": 0,
-    "trivialAt": 25,
     "itemLevelBudget": 8,
     "level": 8
   },
@@ -67,7 +64,6 @@
       }
     ],
     "skillReq": 0,
-    "trivialAt": 25,
     "itemLevelBudget": 9,
     "level": 9
   },
@@ -83,7 +79,6 @@
       }
     ],
     "skillReq": 0,
-    "trivialAt": 25,
     "itemLevelBudget": 1,
     "level": 1
   },
@@ -103,9 +98,65 @@
       }
     ],
     "skillReq": 0,
-    "trivialAt": 25,
     "itemLevelBudget": 1,
     "level": 1
+  },
+  {
+    "id": "recipe_eastbrook_ritual_vestments",
+    "professionId": "tailoring",
+    "resultItemId": "eastbrook_ritual_vestments",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "linen_scrap",
+        "count": 3
+      },
+      {
+        "itemId": "spider_leg",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "itemLevelBudget": 9,
+    "level": 9
+  },
+  {
+    "id": "recipe_eastbrook_druids_hide",
+    "professionId": "leatherworking",
+    "resultItemId": "eastbrook_druids_hide",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "spider_leg",
+        "count": 2
+      },
+      {
+        "itemId": "bone_fragments",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "itemLevelBudget": 9,
+    "level": 9
+  },
+  {
+    "id": "recipe_eastbrook_warded_leggings",
+    "professionId": "armorcrafting",
+    "resultItemId": "eastbrook_warded_leggings",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "bone_fragments",
+        "count": 3
+      },
+      {
+        "itemId": "linen_scrap",
+        "count": 1
+      }
+    ],
+    "skillReq": 0,
+    "itemLevelBudget": 10,
+    "level": 10
   },
   {
     "id": "recipe_thorium_mining_pick",
@@ -123,7 +174,6 @@
       }
     ],
     "skillReq": 75,
-    "trivialAt": 125,
     "itemLevelBudget": 20,
     "level": 20,
     "requiresHubStation": true
@@ -144,7 +194,6 @@
       }
     ],
     "skillReq": 150,
-    "trivialAt": 200,
     "itemLevelBudget": 30,
     "level": 20,
     "requiresHubStation": true
@@ -165,7 +214,6 @@
       }
     ],
     "skillReq": 75,
-    "trivialAt": 125,
     "itemLevelBudget": 20,
     "level": 20,
     "requiresHubStation": true
@@ -186,7 +234,6 @@
       }
     ],
     "skillReq": 150,
-    "trivialAt": 200,
     "itemLevelBudget": 30,
     "level": 20,
     "requiresHubStation": true
@@ -207,7 +254,6 @@
       }
     ],
     "skillReq": 75,
-    "trivialAt": 125,
     "itemLevelBudget": 20,
     "level": 20,
     "requiresHubStation": true
@@ -228,8 +274,67 @@
       }
     ],
     "skillReq": 150,
-    "trivialAt": 200,
     "itemLevelBudget": 30,
+    "level": 20,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_wardweave_cowl",
+    "professionId": "tailoring",
+    "resultItemId": "wardweave_cowl",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "thorium_ore",
+        "count": 3
+      },
+      {
+        "itemId": "linen_scrap",
+        "count": 2
+      }
+    ],
+    "skillReq": 75,
+    "itemLevelBudget": 20,
+    "level": 20,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_duskhide_wraps",
+    "professionId": "leatherworking",
+    "resultItemId": "duskhide_wraps",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "thorium_ore",
+        "count": 3
+      },
+      {
+        "itemId": "spider_leg",
+        "count": 2
+      }
+    ],
+    "skillReq": 75,
+    "itemLevelBudget": 20,
+    "level": 20,
+    "requiresHubStation": true
+  },
+  {
+    "id": "recipe_sootscale_mantle",
+    "professionId": "armorcrafting",
+    "resultItemId": "sootscale_mantle",
+    "resultCount": 1,
+    "reagents": [
+      {
+        "itemId": "thorium_ore",
+        "count": 4
+      },
+      {
+        "itemId": "bone_fragments",
+        "count": 2
+      }
+    ],
+    "skillReq": 75,
+    "itemLevelBudget": 20,
     "level": 20,
     "requiresHubStation": true
   },
@@ -249,7 +354,6 @@
       }
     ],
     "skillReq": 25,
-    "trivialAt": 50,
     "itemLevelBudget": 20,
     "level": 15,
     "comboRequirement": {
@@ -274,7 +378,6 @@
       }
     ],
     "skillReq": 25,
-    "trivialAt": 50,
     "itemLevelBudget": 18,
     "level": 15,
     "comboRequirement": {
@@ -299,7 +402,6 @@
       }
     ],
     "skillReq": 25,
-    "trivialAt": 50,
     "itemLevelBudget": 16,
     "level": 15,
     "comboRequirement": {
