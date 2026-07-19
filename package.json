@@ -1,6 +1,7 @@
 {
   "name": "wocc-knowledge-pipeline",
   "version": "1.0.0",
+  "kbSchema": 2,
   "description": "",
   "main": "index.js",
   "scripts": {

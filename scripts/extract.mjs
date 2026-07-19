@@ -35,6 +35,12 @@ const require = createRequire(import.meta.url);
 
 const REPO = 'levy-street/world-of-claudecraft';
 
+// Version du schéma d'extraction, recopiée dans _meta.json. Le workflow
+// update-knowledge-base.yml relance une extraction quand ce numéro (lu dans
+// package.json, champ "kbSchema") diffère de celui de _meta.json — sans ça,
+// un enrichissement du pipeline n'était appliqué qu'à la MAJ suivante du jeu.
+const SCHEMA_VERSION = require('../package.json').kbSchema;
+
 const argv = process.argv.slice(2);
 const repoFlag = argv.indexOf('--repo');
 const localRepoPath = repoFlag !== -1 ? path.resolve(argv[repoFlag + 1]) : null;
@@ -224,17 +230,51 @@ async function main() {
         else console.warn(`  ⚠ Registre "${key}" introuvable dans talents_classic.`);
       }
       if ('WARRIOR_TALENTS' in warrior) TALENTS.warrior = warrior.WARRIOR_TALENTS;
+
+      // Talents 2.0 (v0.27.0) : les rangées de choix ne vivent plus dans les
+      // registres *_TALENTS (réduits aux spés + maîtrises) mais dans
+      // talent_rows.ts (ROW_TREES, agrégé par classe). Sans cette étape,
+      // TALENTS.json perdait toutes les rangées — et les fiches « talent »
+      // du site (codex-popup) ne trouvaient plus rien.
+      try {
+        const rowsPath = path.join(workDir, 'talent_rows.bundle.cjs');
+        await bundleModule(repoPath, 'src/sim/content/talent_rows.ts', rowsPath);
+        const rowsMod = require(rowsPath);
+        const trees = rowsMod.ROW_TREES || {};
+        let rowCount = 0;
+        for (const [cls, rows] of Object.entries(trees)) {
+          if (!TALENTS[cls]) TALENTS[cls] = { class: cls, specs: [] };
+          TALENTS[cls].rows = rows;
+          rowCount += (rows || []).length;
+        }
+        console.log(`  ✓ Rangées de talents fusionnées (${rowCount} rangées)`);
+      } catch (err) {
+        console.warn(`  ⚠ Rangées de talents non extraites (tag antérieur à v0.27.0 ?) : ${err.message}`);
+      }
+
       fs.writeFileSync(path.join(outDir, 'TALENTS.json'), JSON.stringify(TALENTS, null, 2));
       console.log(`  ✓ TALENTS → TALENTS.json (${Object.keys(TALENTS).length} classes)`);
     } catch (err) {
       console.warn(`  ⚠ Talents non extraits : ${err.message}`);
     }
 
+    // Enchantements : depuis les Métiers 2.0 (v0.27.0), les recettes vivent
+    // dans un vrai registre (src/sim/content/enchants.ts) — extractible comme
+    // le reste. Le guide Enchantement du site reste éditorial, mais ces
+    // données permettent de le vérifier (et de l'automatiser un jour).
+    try {
+      const enchantsPath = path.join(workDir, 'enchants.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/enchants.ts', enchantsPath);
+      dumpRegistries(enchantsPath, ['ENCHANTS'], outDir);
+    } catch (err) {
+      console.warn(`  ⚠ Enchantements non extraits (tag antérieur à v0.27.0 ?) : ${err.message}`);
+    }
+
     // Un petit fichier de métadonnées pour tracer d'où vient l'extraction.
     fs.writeFileSync(
       path.join(outDir, '_meta.json'),
       JSON.stringify(
-        { tag, extractedAt: new Date().toISOString(), repo: REPO },
+        { tag, schema: SCHEMA_VERSION, extractedAt: new Date().toISOString(), repo: REPO },
         null,
         2,
       ),

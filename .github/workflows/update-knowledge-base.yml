@@ -52,15 +52,21 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           KNOWN_TAG="none"
+          KNOWN_SCHEMA="0"
           if [ -f data/_meta.json ]; then
             KNOWN_TAG=$(node -p "require('./data/_meta.json').tag")
+            KNOWN_SCHEMA=$(node -p "require('./data/_meta.json').schema || 0")
           fi
+          # Version du schéma d'extraction : si le pipeline s'enrichit
+          # (nouveaux registres extraits), les données doivent être refaites
+          # même sans nouveau tag du jeu.
+          WANT_SCHEMA=$(node -p "require('./package.json').kbSchema || 0")
           LATEST_TAG=$(curl -s "https://api.github.com/repos/levy-street/world-of-claudecraft/tags?per_page=1" \
             -H "User-Agent: wocc-knowledge-pipeline" \
             -H "Authorization: Bearer $GH_TOKEN" \
             | node -p "JSON.parse(require('fs').readFileSync(0))[0].name")
           echo "latest_tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
-          if [ "$LATEST_TAG" == "$KNOWN_TAG" ]; then
+          if [ "$LATEST_TAG" == "$KNOWN_TAG" ] && [ "$WANT_SCHEMA" == "$KNOWN_SCHEMA" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
