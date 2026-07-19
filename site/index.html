@@ -575,7 +575,7 @@
 /* ================= chargement des données ================= */
 
 const DATA = {};
-const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','HEROIC_BOSS_LOOT','ALL_RECIPES','HEROIC_VENDOR_STOCK','DELVE_SHOPS','CLASSES','_meta'];
+const FILES = ['ITEMS','MOBS','QUESTS','NPCS','ZONES','DUNGEONS','DELVES','ITEM_SETS','GATHER_NODES','FISHING_TABLES','WORLD_BOSSES','HEROIC_BOSS_LOOT','ALL_RECIPES','HEROIC_VENDOR_STOCK','DELVE_SHOPS','DELVE_COMPANIONS','CLASSES','_meta'];
 
 async function load() {
   const res = await Promise.all(FILES.map(f =>
@@ -602,6 +602,19 @@ async function load() {
 
   document.getElementById('version').textContent =
     DATA._meta ? DATA._meta.tag : T.localData;
+
+  // Si AUCUNE donnée n'a pu être chargée (hors ligne, /data/ absent), afficher
+  // une vraie erreur plutôt qu'une encyclopédie vide à « 0 résultat ».
+  if (!ITEMS.length && !MOBS.length && !QUESTS.length) {
+    const main = document.querySelector('main') || document.body;
+    const div = document.createElement('div');
+    div.style.cssText = 'margin:40px auto;max-width:520px;text-align:center;color:#8b93a3;padding:0 16px';
+    div.innerHTML = LANG === 'en'
+      ? '<h2 style="color:#dfe3ea">Game data unreachable</h2><p>The Codex could not load its data files (offline, or <code>/data/</code> not served here). Try reloading, or browse the Codex at <a href="https://laclauderie.fr/codex/" style="color:#c8a04b">laclauderie.fr/codex</a>.</p>'
+      : '<h2 style="color:#dfe3ea">Données du jeu injoignables</h2><p>Le Codex n\'a pas pu charger ses fichiers de données (hors ligne, ou <code>/data/</code> non servi ici). Recharge la page, ou consulte le Codex sur <a href="https://laclauderie.fr/codex/" style="color:#c8a04b">laclauderie.fr/codex</a>.</p>';
+    main.prepend(div);
+    return;
+  }
 
   document.getElementById('export-md').onclick = downloadMarkdown;
 
@@ -817,12 +830,12 @@ const QUALITY_L = {
   en: { poor:'Poor', common:'Common', uncommon:'Uncommon', rare:'Rare', epic:'Epic', legendary:'Legendary' },
 };
 const KIND_L = {
-  fr: { weapon:'Arme', armor:'Armure', bag:'Sac', food:'Nourriture', drink:'Boisson', tool:'Outil', junk:'Camelote', potion:'Potion', elixir:'Élixir', quest:'Objet de quête' },
-  en: { weapon:'Weapon', armor:'Armor', bag:'Bag', food:'Food', drink:'Drink', tool:'Tool', junk:'Junk', potion:'Potion', elixir:'Elixir', quest:'Quest item' },
+  fr: { weapon:'Arme', armor:'Armure', bag:'Sac', food:'Nourriture', drink:'Boisson', tool:'Outil', junk:'Camelote', potion:'Potion', elixir:'Élixir', quest:'Objet de quête', held_offhand:'Tenu en main gauche' },
+  en: { weapon:'Weapon', armor:'Armor', bag:'Bag', food:'Food', drink:'Drink', tool:'Tool', junk:'Junk', potion:'Potion', elixir:'Elixir', quest:'Quest item', held_offhand:'Held in off-hand' },
 };
 const SLOT_L = {
-  fr: { mainhand:'Main droite', chest:'Torse', feet:'Pieds', legs:'Jambes', helmet:'Tête', shoulder:'Épaules', waist:'Taille', gloves:'Mains' },
-  en: { mainhand:'Main hand', chest:'Chest', feet:'Feet', legs:'Legs', helmet:'Head', shoulder:'Shoulders', waist:'Waist', gloves:'Hands' },
+  fr: { mainhand:'Main droite', offhand:'Main gauche', chest:'Torse', feet:'Pieds', legs:'Jambes', helmet:'Tête', shoulder:'Épaules', waist:'Taille', gloves:'Mains', neck:'Cou', ring:'Anneau' },
+  en: { mainhand:'Main hand', offhand:'Off hand', chest:'Chest', feet:'Feet', legs:'Legs', helmet:'Head', shoulder:'Shoulders', waist:'Waist', gloves:'Hands', neck:'Neck', ring:'Ring' },
 };
 const ARMORTYPE_L = {
   fr: { cloth:'Tissu', leather:'Cuir', mail:'Mailles' },
@@ -844,6 +857,11 @@ function itemStatParts(it) {
   const parts = Object.entries(it.stats || {}).map(([k, v]) => `+${v} ${tr(STAT_L, k)}`);
   for (const [key, sk] of [['hitRating', 'hit'], ['critRating', 'crit'], ['hasteRating', 'haste'], ['spellPower', 'sp']])
     if (it[key]) parts.push(`+${it[key]} ${tr(STAT_L, sk)}`);
+  // Champs restés invisibles jusqu'à l'audit de juillet 2026 : le blocage des
+  // boucliers et les scores JcJ de l'équipement FURY.
+  if (it.shield && it.blockValue) parts.push(`${it.blockValue} ${LANG === 'en' ? 'block value' : 'points de blocage'}`);
+  if (it.pvpOffenseRating) parts.push(`+${it.pvpOffenseRating} ${LANG === 'en' ? 'PvP offense' : 'Offense JcJ'}`);
+  if (it.pvpDefenseRating) parts.push(`+${it.pvpDefenseRating} ${LANG === 'en' ? 'PvP defense' : 'Défense JcJ'}`);
   return parts;
 }
 const FAMILY_L = {
@@ -1609,8 +1627,12 @@ function itemSheet(it) {
       `${d.heroic ? `<span class="badge b-heroic" style="margin:0 8px 0 0">${T.heroic}</span>` : ''}<span class="chance">${pct(d.chance)}</span>`)).join('')}</ul>`) : '';
 
   const sold = refs.soldBy[it.id] || [];
+  // Prix affiché à côté du vendeur : en pièces (buyValue) ou, pour
+  // l'équipement JcJ de FURY, en points d'honneur (priceHonor).
+  const soldPrice = it.buyValue ? ` · ${money(it.buyValue)}`
+    : it.priceHonor ? ` · ${it.priceHonor} ${LANG === 'en' ? 'honor points' : "points d'honneur"}` : '';
   const soldBlock = sold.length ? section(T.soldBy,
-    `<ul class="linklist">${sold.map(n => `<li>${npcLink(n)}<span class="qty">${esc(n.title||'')}</span></li>`).join('')}</ul>`) : '';
+    `<ul class="linklist">${sold.map(n => `<li>${npcLink(n)}<span class="qty">${esc(n.title||'')}${soldPrice}</span></li>`).join('')}</ul>`) : '';
 
   const reward = refs.rewardOf[it.id] || [];
   const rewardBlock = reward.length ? section(T.questReward,
@@ -1807,7 +1829,7 @@ function dungeonSheet(d) {
 
 function delveSheet(d) {
   const bosses = (d.bosses||[]).map(id => byId.mob[id]).filter(Boolean);
-  const comp = d.autoCompanionId && byId.mob[d.autoCompanionId];
+  const comp = d.autoCompanionId && companionMob(d.autoCompanionId);
   const tiers = (d.tiers||[]).map(t =>
     `<li><span>${esc(t.label)}</span><span class="qty">${t.affixCount ? T.affixes(t.affixCount) : ''}${T.rewardsX(t.rewardMult)}</span></li>`).join('');
   return head(T.delve, esc(d.name), '',
@@ -1859,6 +1881,19 @@ function moneyTxt(copper) {
   return [g && MD_MONEY.g(g), s && MD_MONEY.s(s), c && MD_MONEY.c(c)].filter(Boolean).join(' ');
 }
 const nameOf = (map, id) => (map[id] && map[id].name) || id;
+// Les delves référencent un compagnon (companion_tessa…) dont le gabarit de
+// monstre vit sous un AUTRE id (DELVE_COMPANIONS: companion_tessa →
+// acolyte_tessa). Sans cette indirection, la fiche restait vide.
+const companionMob = cid => {
+  const c = (DATA.DELVE_COMPANIONS || {})[cid];
+  return (c && byId.mob[c.mobTemplateId]) || byId.mob[cid] || null;
+};
+const companionName = cid => {
+  const m = companionMob(cid);
+  if (m) return m.name;
+  const c = (DATA.DELVE_COMPANIONS || {})[cid];
+  return (c && c.name) || cid;
+};
 
 function buildMarkdown() {
   const M = LANG === 'en' ? {
@@ -2086,7 +2121,7 @@ function buildMarkdown() {
     p.push(M.maxPlayers(d.maxPlayers));
     const b = (d.bosses || []).map(id => nameOf(byId.mob, id));
     if (b.length) p.push(M.boss(b.join(', ')));
-    if (d.autoCompanionId) p.push(M.companion(nameOf(byId.mob, d.autoCompanionId)));
+    if (d.autoCompanionId) p.push(M.companion(companionName(d.autoCompanionId)));
     const tiers = (d.tiers || []).map(t => M.tier(t));
     if (tiers.length) p.push(M.tiers(tiers.join(', ')));
     L.push(`- **${d.name}** — ${p.join(' · ')}`);

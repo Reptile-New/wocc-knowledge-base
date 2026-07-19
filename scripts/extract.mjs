@@ -200,6 +200,17 @@ async function main() {
       console.warn(`  ⚠ Boutiques de delve non extraites : ${err.message}`);
     }
 
+    // Compagnons de delve : DELVES référence companion_tessa/companion_edda,
+    // dont le gabarit de monstre vit sous un autre id (mobTemplateId) dans ce
+    // registre — sans lui, la fiche « Compagnon » du Codex restait vide.
+    try {
+      const companionsPath = path.join(workDir, 'delve_companions.bundle.cjs');
+      await bundleModule(repoPath, 'src/sim/content/delves/companions.ts', companionsPath);
+      dumpRegistries(companionsPath, ['DELVE_COMPANIONS'], outDir);
+    } catch (err) {
+      console.warn(`  ⚠ Compagnons de delve non extraits : ${err.message}`);
+    }
+
     // Sorts de classes : registre ABILITIES de classes.ts — et CLASSES (specs,
     // équipement de départ startWeapon/startChest, la source des objets
     // « recruit_tunic » et compagnie).
