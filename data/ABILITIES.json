@@ -365,10 +365,10 @@
       },
       {
         "type": "gainResource",
-        "amount": 8
+        "amount": 4
       }
     ],
-    "description": "Instantly strike with your weapon twice, each hit dealing 40% weapon damage plus $d, and generate 8 rage. Stores up to 2 charges. (Fury)"
+    "description": "Instantly strike with your weapon twice, each hit dealing 40% weapon damage plus $d, and generate 4 rage. Stores up to 2 charges. (Fury)"
   },
   "execute": {
     "id": "execute",
@@ -6516,12 +6516,7 @@
         "type": "aoeDamage",
         "min": 30,
         "max": 42,
-        "radius": 8,
-        "rageOnHit": {
-          "base": 5,
-          "perTarget": 1,
-          "capTargets": 5
-        }
+        "radius": 8
       },
       {
         "type": "selfBuff",
@@ -6533,7 +6528,7 @@
         "auraName": "Bladed Echo"
       }
     ],
-    "description": "Spin in a deadly arc, striking all nearby enemies for $d and generating rage for each foe struck instead of costing any. Your next 2 single-target abilities also strike enemies near their target. (Fury talent)"
+    "description": "Spin in a deadly arc, striking all nearby enemies for $d at no rage cost. Your next 2 single-target abilities also strike enemies near their target. (Fury talent)"
   },
   "berserker_rage": {
     "id": "berserker_rage",

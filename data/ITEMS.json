@@ -4396,13 +4396,13 @@
     "hand": "twohand",
     "quality": "epic",
     "weapon": {
-      "min": 30,
-      "max": 48,
+      "min": 33,
+      "max": 53,
       "speed": 2.6
     },
     "stats": {
-      "str": 22,
-      "sta": 14
+      "str": 14,
+      "sta": 9
     },
     "sellValue": 8000,
     "requiredClass": [
@@ -4960,8 +4960,8 @@
       "speed": 3.4
     },
     "stats": {
-      "str": 22,
-      "sta": 18
+      "str": 14,
+      "sta": 12
     },
     "hitRating": 20,
     "sellValue": 12000,
@@ -4985,8 +4985,8 @@
       "speed": 3
     },
     "stats": {
-      "agi": 22,
-      "sta": 18
+      "agi": 14,
+      "sta": 12
     },
     "hitRating": 20,
     "sellValue": 12000,
@@ -6837,13 +6837,13 @@
     "quality": "epic",
     "requiredLevel": 20,
     "weapon": {
-      "min": 45,
-      "max": 68,
+      "min": 52,
+      "max": 78,
       "speed": 3.4
     },
     "stats": {
-      "str": 28,
-      "sta": 18
+      "str": 18,
+      "sta": 12
     },
     "hitRating": 65,
     "critRating": 20,
@@ -8933,13 +8933,13 @@
     "hand": "twohand",
     "quality": "epic",
     "weapon": {
-      "min": 30,
-      "max": 48,
+      "min": 35,
+      "max": 56,
       "speed": 2.6
     },
     "stats": {
-      "str": 24,
-      "sta": 16
+      "str": 16,
+      "sta": 10
     },
     "sellValue": 8000,
     "requiredClass": [
@@ -9195,13 +9195,13 @@
     "hand": "twohand",
     "quality": "epic",
     "weapon": {
-      "min": 45,
-      "max": 75,
+      "min": 49,
+      "max": 81,
       "speed": 3.4
     },
     "stats": {
-      "str": 25,
-      "sta": 21
+      "str": 16,
+      "sta": 14
     },
     "hitRating": 65,
     "sellValue": 12000,
@@ -9502,13 +9502,13 @@
     "hand": "twohand",
     "quality": "epic",
     "weapon": {
-      "min": 40,
-      "max": 66,
+      "min": 43,
+      "max": 71,
       "speed": 3
     },
     "stats": {
-      "agi": 25,
-      "sta": 21
+      "agi": 16,
+      "sta": 14
     },
     "hitRating": 65,
     "sellValue": 12000,
