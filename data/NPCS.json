@@ -224,6 +224,94 @@
     "questIds": [],
     "greeting": "Every deed worth doing is worth writing down twice, $N: once for the ledger and once for the fireside."
   },
+  "forgemistress_darva": {
+    "id": "forgemistress_darva",
+    "name": "Forgemistress Darva",
+    "title": "Master of the Forge",
+    "pos": {
+      "x": 5,
+      "z": 15
+    },
+    "facing": -2.4,
+    "color": 11883548,
+    "questIds": [],
+    "vendorItems": [
+      "copper_mining_pick",
+      "iron_mining_pick",
+      "mithril_mining_pick",
+      "smithing_flux",
+      "thorium_ore"
+    ],
+    "greeting": "The forge answers to me, $C. Bring good ore and it will answer to you too."
+  },
+  "cook_marlow": {
+    "id": "cook_marlow",
+    "name": "Cook Marlow",
+    "title": "Master of the Kitchens",
+    "pos": {
+      "x": -12.5,
+      "z": 3
+    },
+    "facing": 1.5707963267948966,
+    "color": 13208139,
+    "questIds": [],
+    "vendorItems": [
+      "baked_bread",
+      "spring_water",
+      "roasted_boar",
+      "tough_jerky",
+      "brightwood_venison",
+      "cooking_salt"
+    ],
+    "greeting": "Nothing leaves my kitchens half-cooked, $C. Sit, eat, then get back out there."
+  },
+  "weaver_ottilie": {
+    "id": "weaver_ottilie",
+    "name": "Weaver Ottilie",
+    "title": "Master of the Loom",
+    "pos": {
+      "x": -4,
+      "z": -9
+    },
+    "facing": 0.8,
+    "color": 7430568,
+    "questIds": [],
+    "vendorItems": [
+      "linen_pouch",
+      "travelers_knapsack",
+      "gathering_sickle",
+      "spool_of_thread",
+      "thorium_ore"
+    ],
+    "greeting": "Mind the threads, $C. A steady hand at the loom beats a strong one."
+  },
+  "tinker_gizzel": {
+    "id": "tinker_gizzel",
+    "name": "Tinker Gizzel",
+    "title": "Master of the Toolworks",
+    "pos": {
+      "x": 9.5,
+      "z": -14
+    },
+    "facing": -0.8,
+    "color": 11570519,
+    "questIds": [],
+    "vendorItems": [
+      "handaxe",
+      "felling_axe",
+      "ironbark_axe",
+      "bronze_sickle",
+      "silverleaf_sickle",
+      "simple_fishing_pole",
+      "thorium_ore",
+      "arcanite_bar",
+      "ashwood_log",
+      "elderwood_log",
+      "goldleaf_herb",
+      "sunpetal_herb"
+    ],
+    "greeting": "Springs, sprockets, and sharp edges, $C: the toolworks has whatever your hands lack."
+  },
   "warden_fenwick": {
     "id": "warden_fenwick",
     "name": "Warden Fenwick",
@@ -361,6 +449,26 @@
     "color": 4171371,
     "questIds": [],
     "greeting": "Mind the damp on the pages, $N. The fen eats more books than readers ever will."
+  },
+  "tanner_hesk": {
+    "id": "tanner_hesk",
+    "name": "Tanner Hesk",
+    "title": "Master of the Tannery",
+    "pos": {
+      "x": -11,
+      "z": 315.5
+    },
+    "facing": 2.3,
+    "color": 9067050,
+    "questIds": [],
+    "vendorItems": [
+      "travelers_knapsack",
+      "tough_jerky",
+      "smoked_eel",
+      "tanning_agent",
+      "thorium_ore"
+    ],
+    "greeting": "A hide is only as good as its tanning, $C. The vats are ready when you are."
   },
   "captain_thessaly": {
     "id": "captain_thessaly",
@@ -575,6 +683,27 @@
     "color": 5926870,
     "questIds": [],
     "greeting": "The mountain forgets nothing, $N, and neither do I. Let us see what you have done."
+  },
+  "alchemist_verane": {
+    "id": "alchemist_verane",
+    "name": "Alchemist Verane",
+    "title": "Master of the Apothecary",
+    "pos": {
+      "x": 8.5,
+      "z": 658
+    },
+    "facing": -0.4,
+    "color": 5812380,
+    "questIds": [],
+    "vendorItems": [
+      "minor_healing_potion",
+      "minor_mana_potion",
+      "lesser_healing_potion",
+      "lesser_mana_potion",
+      "elixir_of_the_bear",
+      "glass_vial"
+    ],
+    "greeting": "Measure twice and pour once, $C. The apothecary has no patience for spilled reagents."
   },
   "tidewatcher_ondrel": {
     "id": "tidewatcher_ondrel",

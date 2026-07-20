@@ -178,7 +178,8 @@
     "color": 9654550,
     "componentTags": [
       "hide",
-      "tusk"
+      "tusk",
+      "meat"
     ]
   },
   "webwood_spider": {
@@ -517,7 +518,10 @@
       "duration": 5,
       "name": "Blinding Powder",
       "school": "physical"
-    }
+    },
+    "componentTags": [
+      "cloth"
+    ]
   },
   "restless_bones": {
     "id": "restless_bones",
@@ -786,7 +790,8 @@
     },
     "componentTags": [
       "hide",
-      "claw"
+      "claw",
+      "meat"
     ]
   },
   "deepfen_murloc": {
@@ -1245,7 +1250,10 @@
       "school": "shadow"
     },
     "scale": 1,
-    "color": 7091331
+    "color": 7091331,
+    "componentTags": [
+      "cloth"
+    ]
   },
   "gravecaller_summoner": {
     "id": "gravecaller_summoner",
@@ -1286,7 +1294,10 @@
       }
     ],
     "scale": 1,
-    "color": 8933024
+    "color": 8933024,
+    "componentTags": [
+      "cloth"
+    ]
   },
   "gravecaller_mender": {
     "id": "gravecaller_mender",
@@ -1575,7 +1586,8 @@
     "color": 9208432,
     "componentTags": [
       "hide",
-      "claw"
+      "claw",
+      "meat"
     ]
   },
   "old_cragmaw": {
@@ -2103,7 +2115,10 @@
       "school": "fire"
     },
     "scale": 1,
-    "color": 7750794
+    "color": 7750794,
+    "componentTags": [
+      "cloth"
+    ]
   },
   "wyrmcult_necromancer": {
     "id": "wyrmcult_necromancer",
@@ -2146,7 +2161,10 @@
       "school": "shadow"
     },
     "scale": 1,
-    "color": 5453158
+    "color": 5453158,
+    "componentTags": [
+      "cloth"
+    ]
   },
   "boneclad_revenant": {
     "id": "boneclad_revenant",
