@@ -9,5 +9,7 @@
 - La barre de navigation de `site/index.html` est chargée depuis
   `https://laclauderie.fr/assets/nav.js` (source unique côté La-Clauderie).
 - Le hook `.claude/hooks/session-start.sh` clone le code du jeu en lecture
-  seule dans `../world-of-claudecraft`.
+  seule dans `../world-of-claudecraft`. En session multi-repos il ne se
+  déclenche pas tout seul : si le clone est absent, le lancer à la main
+  (`bash .claude/hooks/session-start.sh`).
 - Runbook complet de l'écosystème : `La-Clauderie/CLAUDE.md`.

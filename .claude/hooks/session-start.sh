@@ -12,7 +12,11 @@ if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
 fi
 
 GAME_URL="https://github.com/levy-street/world-of-claudecraft"
-DEST="$(dirname "$CLAUDE_PROJECT_DIR")/world-of-claudecraft"
+# Racine du repo déduite de l'emplacement du script lui-même : le hook reste
+# lançable à la main (sessions multi-repos, où CLAUDE_PROJECT_DIR n'est pas
+# la racine d'un repo et où le hook ne se déclenche pas tout seul).
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+DEST="$(dirname "$REPO_ROOT")/world-of-claudecraft"
 SPARSE_DIRS=(src server scripts tests mediawiki)
 
 TAG="$(git ls-remote --tags --refs "$GAME_URL" 'v*' | awk -F/ '{print $NF}' | sort -V | tail -1 || true)"
