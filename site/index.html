@@ -156,6 +156,14 @@
   }
 
   .subtitle { color: var(--dim); font-size: 0.9rem; margin: 6px 0 22px; }
+  /* Pastille « à jour de la version » (même langage visuel que le site de la guilde) */
+  .ver-badge { display: inline-flex; align-items: baseline; gap: 6px; margin: -12px 0 22px;
+    font-family: var(--mono, monospace); font-size: 0.74rem; letter-spacing: 0.02em;
+    border: 1px solid color-mix(in srgb, #58c46a 45%, transparent);
+    color: #58c46a; border-radius: 7px; padding: 4px 10px; }
+  .ver-badge b { font-weight: 700; }
+  .ver-badge.warn { border-color: color-mix(in srgb, var(--gold, #c8a04b) 55%, transparent);
+    color: var(--gold-bright, #e6c37a); }
 
   .gold-rule {
     height: 1px;
@@ -602,6 +610,7 @@ async function load() {
 
   document.getElementById('version').textContent =
     DATA._meta ? DATA._meta.tag : T.localData;
+  checkFreshness(DATA._meta && DATA._meta.tag);
 
   // Si AUCUNE donnée n'a pu être chargée (hors ligne, /data/ absent), afficher
   // une vraie erreur plutôt qu'une encyclopédie vide à « 0 résultat ».
@@ -621,6 +630,46 @@ async function load() {
   buildTabs();
   applyHash();
   renderAll();
+}
+
+/* Pastille « à jour de la version » : compare le tag des données (_meta.json)
+   à la dernière release du jeu via l'API GitHub — la seule source joignable
+   depuis tous les hôtes du Codex (laclauderie.fr/codex ET le miroir GitHub
+   Pages, où patch-notes.json du site de la guilde n'existe pas). Réponse
+   mise en cache 15 min dans localStorage pour ménager le quota anonyme de
+   l'API (60 req/h/IP). Sans réponse, pas de pastille : le tag affiché dans
+   l'en-tête reste la seule affirmation qu'on peut prouver. */
+async function checkFreshness(tag) {
+  if (!tag) return;
+  let latest = null;
+  try {
+    const cached = JSON.parse(localStorage.getItem('wocc-latest-release') || 'null');
+    if (cached && Date.now() - cached.at < 15 * 60 * 1000) {
+      latest = cached.tag;
+    } else {
+      const r = await fetch('https://api.github.com/repos/levy-street/world-of-claudecraft/releases/latest');
+      if (r.ok) {
+        latest = (await r.json()).tag_name;
+        localStorage.setItem('wocc-latest-release', JSON.stringify({ tag: latest, at: Date.now() }));
+      }
+    }
+  } catch (e) { /* hors ligne ou quota API : on n'affirme rien */ }
+  if (!latest) return;
+  const sub = document.querySelector('.subtitle');
+  if (!sub) return;
+  const el = document.createElement('p');
+  el.className = 'ver-badge';
+  if (latest === tag) {
+    el.innerHTML = LANG === 'en'
+      ? '✓ Up to date with <b>' + latest + '</b> — the latest game version'
+      : '✓ À jour de la <b>' + latest + '</b> — la dernière version du jeu';
+  } else {
+    el.className += ' warn';
+    el.innerHTML = LANG === 'en'
+      ? '⏳ Data from <b>' + tag + '</b> — the game is now on <b>' + latest + '</b>, automatic regeneration in progress (~5 min after release).'
+      : '⏳ Données du tag <b>' + tag + '</b> — le jeu est passé en <b>' + latest + '</b>, régénération automatique en cours (~5 min après la sortie).';
+  }
+  sub.after(el);
 }
 
 function asList(x) { return !x ? [] : Array.isArray(x) ? x : Object.values(x); }
