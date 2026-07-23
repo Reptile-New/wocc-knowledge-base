@@ -3261,12 +3261,12 @@
       {
         "rank": 4,
         "level": 20,
-        "cost": 115,
+        "cost": 117,
         "effects": [
           {
             "type": "heal",
-            "min": 190,
-            "max": 222
+            "min": 275,
+            "max": 322
           }
         ]
       }
@@ -3497,6 +3497,20 @@
         "type": "heal",
         "min": 62,
         "max": 76
+      }
+    ],
+    "ranks": [
+      {
+        "rank": 2,
+        "level": 20,
+        "cost": 46,
+        "effects": [
+          {
+            "type": "heal",
+            "min": 90,
+            "max": 110
+          }
+        ]
       }
     ],
     "description": "A quick, efficient flash of Light that heals a friendly target for $d."
@@ -4129,6 +4143,18 @@
             "max": 132
           }
         ]
+      },
+      {
+        "rank": 4,
+        "level": 20,
+        "cost": 85,
+        "effects": [
+          {
+            "type": "heal",
+            "min": 160,
+            "max": 192
+          }
+        ]
       }
     ],
     "description": "Heals a friendly target for $d."
@@ -4248,6 +4274,18 @@
             "duration": 30
           }
         ]
+      },
+      {
+        "rank": 4,
+        "level": 20,
+        "cost": 130,
+        "effects": [
+          {
+            "type": "absorb",
+            "amount": 210,
+            "duration": 30
+          }
+        ]
       }
     ],
     "description": "Shields the target, absorbing $d damage for 30 sec."
@@ -4293,7 +4331,7 @@
         "effects": [
           {
             "type": "hot",
-            "total": 140,
+            "total": 205,
             "duration": 15,
             "interval": 3
           }
@@ -4375,8 +4413,8 @@
         "effects": [
           {
             "type": "heal",
-            "min": 230,
-            "max": 270
+            "min": 335,
+            "max": 390
           }
         ]
       }
@@ -4423,8 +4461,8 @@
     "effects": [
       {
         "type": "heal",
-        "min": 120,
-        "max": 142
+        "min": 174,
+        "max": 206
       }
     ],
     "description": "A fast prayer that heals a friendly target for $d."
@@ -4617,6 +4655,19 @@
             "type": "heal",
             "min": 138,
             "max": 164
+          }
+        ]
+      },
+      {
+        "rank": 5,
+        "level": 20,
+        "cost": 115,
+        "castTime": 2.5,
+        "effects": [
+          {
+            "type": "heal",
+            "min": 200,
+            "max": 238
           }
         ]
       }
@@ -5578,8 +5629,8 @@
         "effects": [
           {
             "type": "heal",
-            "min": 175,
-            "max": 208
+            "min": 254,
+            "max": 302
           }
         ]
       }
@@ -5727,7 +5778,7 @@
         "effects": [
           {
             "type": "hot",
-            "total": 116,
+            "total": 168,
             "duration": 12,
             "interval": 3
           }
@@ -5843,7 +5894,7 @@
         "duration": 3600
       }
     ],
-    "description": "Shapeshift into a bear: armor +90%, greatly increased attack power, your attacks build rage and generate 30% more threat. Cast again to return to caster form."
+    "description": "Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 30% more threat. Cast again to return to caster form."
   },
   "bear_charge": {
     "id": "bear_charge",
@@ -6162,6 +6213,26 @@
         "total": 49,
         "duration": 21,
         "interval": 3
+      }
+    ],
+    "ranks": [
+      {
+        "rank": 2,
+        "level": 20,
+        "cost": 72,
+        "effects": [
+          {
+            "type": "heal",
+            "min": 75,
+            "max": 90
+          },
+          {
+            "type": "hot",
+            "total": 71,
+            "duration": 21,
+            "interval": 3
+          }
+        ]
       }
     ],
     "description": "Heals a friendly target for $d and an additional amount over 21 sec."
@@ -6963,6 +7034,25 @@
         "max": 50
       }
     ],
+    "ranks": [
+      {
+        "rank": 2,
+        "level": 20,
+        "cost": 72,
+        "effects": [
+          {
+            "type": "heal",
+            "min": 58,
+            "max": 73
+          },
+          {
+            "type": "directDamage",
+            "min": 40,
+            "max": 50
+          }
+        ]
+      }
+    ],
     "description": "Shocks a friendly target with Holy energy to heal them, or an enemy for $d Holy damage. (Holy signature)"
   },
   "holy_shield": {
@@ -7285,6 +7375,27 @@
         "min": 24,
         "max": 30,
         "radius": 10
+      }
+    ],
+    "ranks": [
+      {
+        "rank": 2,
+        "level": 20,
+        "cost": 90,
+        "effects": [
+          {
+            "type": "aoeHeal",
+            "min": 49,
+            "max": 61,
+            "radius": 10
+          },
+          {
+            "type": "aoeDamage",
+            "min": 24,
+            "max": 30,
+            "radius": 10
+          }
+        ]
       }
     ],
     "description": "Causes an explosion of Mending Light, healing nearby allies for $d and damaging nearby enemies. (Holy signature)"
@@ -8505,6 +8616,21 @@
         "min": 100,
         "max": 122,
         "radius": 30
+      }
+    ],
+    "ranks": [
+      {
+        "rank": 2,
+        "level": 20,
+        "cost": 170,
+        "effects": [
+          {
+            "type": "aoeHeal",
+            "min": 145,
+            "max": 177,
+            "radius": 30
+          }
+        ]
       }
     ],
     "description": "Heals nearby allies for $d. (Priest talent)"

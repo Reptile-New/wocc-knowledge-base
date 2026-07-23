@@ -3722,12 +3722,15 @@
     "armorPerLevel": 34,
     "moveSpeed": 7,
     "aggroRadius": 18,
-    "aoePulse": {
-      "min": 30,
-      "max": 42,
+    "infernoChannel": {
+      "every": 30,
+      "duration": 8,
+      "pulses": 4,
+      "min": 7,
+      "max": 9,
       "radius": 14,
-      "every": 8,
-      "name": "Necrotic Shockwave"
+      "name": "Grave Inferno",
+      "school": "fire"
     },
     "enrage": {
       "belowHpPct": 0.3,
@@ -3927,7 +3930,7 @@
     "dmgPerLevel": 3.4,
     "attackSpeed": 2,
     "armorPerLevel": 16,
-    "moveSpeed": 11,
+    "moveSpeed": 8,
     "aggroRadius": 14,
     "ignoreTaunt": true,
     "loot": [],
