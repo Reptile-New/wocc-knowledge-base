@@ -10,7 +10,7 @@
       }
     ],
     "statBonus": {
-      "str": 5
+      "str": 2
     }
   },
   "enchant_weapon_intellect": {
@@ -24,7 +24,7 @@
       }
     ],
     "statBonus": {
-      "int": 5
+      "int": 2
     }
   },
   "enchant_helmet_fortitude": {
@@ -38,7 +38,7 @@
       }
     ],
     "statBonus": {
-      "sta": 8
+      "sta": 3
     }
   },
   "enchant_neck_spirit": {
@@ -52,7 +52,7 @@
       }
     ],
     "statBonus": {
-      "spi": 5
+      "spi": 3
     }
   },
   "enchant_shoulder_agility": {
@@ -66,7 +66,7 @@
       }
     ],
     "statBonus": {
-      "agi": 5
+      "agi": 2
     }
   },
   "enchant_chest_stamina": {
@@ -84,7 +84,7 @@
       }
     ],
     "statBonus": {
-      "sta": 10
+      "sta": 4
     }
   },
   "enchant_waist_stamina": {
@@ -98,7 +98,7 @@
       }
     ],
     "statBonus": {
-      "sta": 6
+      "sta": 3
     }
   },
   "enchant_legs_stamina": {
@@ -116,7 +116,7 @@
       }
     ],
     "statBonus": {
-      "sta": 8
+      "sta": 3
     }
   },
   "enchant_gloves_agility": {
@@ -130,7 +130,7 @@
       }
     ],
     "statBonus": {
-      "agi": 6
+      "agi": 3
     }
   },
   "enchant_gloves_intellect": {
@@ -144,7 +144,7 @@
       }
     ],
     "statBonus": {
-      "int": 6
+      "int": 3
     }
   },
   "enchant_feet_agility": {
@@ -158,7 +158,7 @@
       }
     ],
     "statBonus": {
-      "agi": 4
+      "agi": 2
     }
   },
   "enchant_ring_spirit": {
@@ -172,7 +172,7 @@
       }
     ],
     "statBonus": {
-      "spi": 4
+      "spi": 2
     }
   },
   "enchant_weapon_agility": {
@@ -186,7 +186,7 @@
       }
     ],
     "statBonus": {
-      "agi": 5
+      "agi": 2
     }
   },
   "enchant_helmet_intellect": {
@@ -204,7 +204,7 @@
       }
     ],
     "statBonus": {
-      "int": 8
+      "int": 4
     }
   },
   "enchant_helmet_armor": {
@@ -222,7 +222,7 @@
       }
     ],
     "statBonus": {
-      "armor": 30
+      "armor": 15
     }
   },
   "enchant_neck_intellect": {
@@ -236,7 +236,7 @@
       }
     ],
     "statBonus": {
-      "int": 5
+      "int": 2
     }
   },
   "enchant_neck_agility": {
@@ -250,7 +250,7 @@
       }
     ],
     "statBonus": {
-      "agi": 5
+      "agi": 2
     }
   },
   "enchant_shoulder_strength": {
@@ -264,7 +264,7 @@
       }
     ],
     "statBonus": {
-      "str": 5
+      "str": 2
     }
   },
   "enchant_shoulder_intellect": {
@@ -278,7 +278,7 @@
       }
     ],
     "statBonus": {
-      "int": 5
+      "int": 2
     }
   },
   "enchant_chest_spirit": {
@@ -296,7 +296,7 @@
       }
     ],
     "statBonus": {
-      "spi": 8
+      "spi": 4
     }
   },
   "enchant_chest_armor": {
@@ -314,7 +314,7 @@
       }
     ],
     "statBonus": {
-      "armor": 40
+      "armor": 20
     }
   },
   "enchant_waist_strength": {
@@ -328,7 +328,7 @@
       }
     ],
     "statBonus": {
-      "str": 6
+      "str": 3
     }
   },
   "enchant_waist_agility": {
@@ -342,7 +342,7 @@
       }
     ],
     "statBonus": {
-      "agi": 6
+      "agi": 3
     }
   },
   "enchant_legs_intellect": {
@@ -360,7 +360,7 @@
       }
     ],
     "statBonus": {
-      "int": 8
+      "int": 4
     }
   },
   "enchant_gloves_strength": {
@@ -374,7 +374,7 @@
       }
     ],
     "statBonus": {
-      "str": 6
+      "str": 3
     }
   },
   "enchant_feet_strength": {
@@ -388,7 +388,7 @@
       }
     ],
     "statBonus": {
-      "str": 4
+      "str": 2
     }
   },
   "enchant_feet_stamina": {
@@ -402,7 +402,7 @@
       }
     ],
     "statBonus": {
-      "sta": 5
+      "sta": 2
     }
   },
   "enchant_ring_strength": {
@@ -416,7 +416,7 @@
       }
     ],
     "statBonus": {
-      "str": 4
+      "str": 2
     }
   },
   "enchant_ring_agility": {
@@ -430,7 +430,7 @@
       }
     ],
     "statBonus": {
-      "agi": 4
+      "agi": 2
     }
   },
   "enchant_ring_intellect": {
@@ -444,7 +444,7 @@
       }
     ],
     "statBonus": {
-      "int": 4
+      "int": 2
     }
   },
   "enchant_weapon_greater_might": {
@@ -462,7 +462,7 @@
       }
     ],
     "statBonus": {
-      "str": 8
+      "str": 5
     }
   },
   "enchant_weapon_greater_spellpower": {
@@ -480,7 +480,7 @@
       }
     ],
     "statBonus": {
-      "int": 8
+      "int": 5
     }
   },
   "enchant_helmet_greater_fortitude": {
@@ -498,7 +498,7 @@
       }
     ],
     "statBonus": {
-      "sta": 12
+      "sta": 6
     }
   },
   "enchant_chest_greater_stamina": {
@@ -516,7 +516,7 @@
       }
     ],
     "statBonus": {
-      "sta": 14
+      "sta": 7
     }
   },
   "enchant_legs_greater_stamina": {
@@ -534,7 +534,7 @@
       }
     ],
     "statBonus": {
-      "sta": 12
+      "sta": 6
     }
   },
   "enchant_gloves_greater_agility": {
@@ -552,7 +552,97 @@
       }
     ],
     "statBonus": {
-      "agi": 9
+      "agi": 6
+    }
+  },
+  "enchant_weapon_runed_edge": {
+    "id": "enchant_weapon_runed_edge",
+    "name": "Enchant Weapon - Runed Edge",
+    "itemSlot": "mainhand",
+    "reagents": [
+      {
+        "itemId": "arcane_essence",
+        "count": 2
+      },
+      {
+        "itemId": "resonant_steel",
+        "count": 1
+      }
+    ],
+    "statBonus": {
+      "str": 3
+    }
+  },
+  "enchant_weapon_runed_focus": {
+    "id": "enchant_weapon_runed_focus",
+    "name": "Enchant Weapon - Runed Sigil",
+    "itemSlot": "mainhand",
+    "reagents": [
+      {
+        "itemId": "arcane_essence",
+        "count": 2
+      },
+      {
+        "itemId": "resonant_timber",
+        "count": 1
+      }
+    ],
+    "statBonus": {
+      "int": 3
+    }
+  },
+  "enchant_chest_runeweave": {
+    "id": "enchant_chest_runeweave",
+    "name": "Enchant Chest - Runed Weave",
+    "itemSlot": "chest",
+    "reagents": [
+      {
+        "itemId": "arcane_essence",
+        "count": 2
+      },
+      {
+        "itemId": "resonant_thread",
+        "count": 1
+      }
+    ],
+    "statBonus": {
+      "spi": 5
+    }
+  },
+  "enchant_legs_runed_hide": {
+    "id": "enchant_legs_runed_hide",
+    "name": "Enchant Legs - Runed Hide",
+    "itemSlot": "legs",
+    "reagents": [
+      {
+        "itemId": "arcane_essence",
+        "count": 2
+      },
+      {
+        "itemId": "resonant_hide",
+        "count": 1
+      }
+    ],
+    "statBonus": {
+      "agi": 4
+    }
+  },
+  "enchant_helmet_runed_links": {
+    "id": "enchant_helmet_runed_links",
+    "name": "Enchant Helmet - Runed Links",
+    "itemSlot": "helmet",
+    "reagents": [
+      {
+        "itemId": "arcane_essence",
+        "count": 2
+      },
+      {
+        "itemId": "resonant_links",
+        "count": 1
+      }
+    ],
+    "statBonus": {
+      "sta": 5
     }
   }
 }

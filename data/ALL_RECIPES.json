@@ -6,12 +6,16 @@
     "resultCount": 1,
     "reagents": [
       {
-        "itemId": "bone_fragments",
+        "itemId": "wolf_fang",
         "count": 2
       },
       {
-        "itemId": "linen_scrap",
-        "count": 1
+        "itemId": "bone_fragments",
+        "count": 4
+      },
+      {
+        "itemId": "smithing_flux",
+        "count": 6
       }
     ],
     "skillReq": 0,
@@ -25,8 +29,12 @@
     "resultCount": 1,
     "reagents": [
       {
-        "itemId": "bone_fragments",
-        "count": 3
+        "itemId": "copper_ore",
+        "count": 4
+      },
+      {
+        "itemId": "smithing_flux",
+        "count": 9
       }
     ],
     "skillReq": 0,
@@ -40,8 +48,12 @@
     "resultCount": 1,
     "reagents": [
       {
-        "itemId": "linen_scrap",
+        "itemId": "homespun_cloth",
         "count": 3
+      },
+      {
+        "itemId": "spool_of_thread",
+        "count": 9
       }
     ],
     "skillReq": 0,
@@ -55,12 +67,16 @@
     "resultCount": 1,
     "reagents": [
       {
+        "itemId": "rough_hide",
+        "count": 4
+      },
+      {
         "itemId": "spider_leg",
         "count": 2
       },
       {
-        "itemId": "bone_fragments",
-        "count": 1
+        "itemId": "spool_of_thread",
+        "count": 5
       }
     ],
     "skillReq": 0,
@@ -95,6 +111,10 @@
       {
         "itemId": "spider_leg",
         "count": 1
+      },
+      {
+        "itemId": "silverleaf_herb",
+        "count": 2
       }
     ],
     "skillReq": 0,
@@ -114,6 +134,14 @@
       {
         "itemId": "spider_leg",
         "count": 1
+      },
+      {
+        "itemId": "homespun_cloth",
+        "count": 3
+      },
+      {
+        "itemId": "spool_of_thread",
+        "count": 5
       }
     ],
     "skillReq": 0,
@@ -127,12 +155,16 @@
     "resultCount": 1,
     "reagents": [
       {
+        "itemId": "rough_hide",
+        "count": 5
+      },
+      {
         "itemId": "spider_leg",
         "count": 2
       },
       {
-        "itemId": "bone_fragments",
-        "count": 1
+        "itemId": "spool_of_thread",
+        "count": 5
       }
     ],
     "skillReq": 0,
@@ -150,8 +182,12 @@
         "count": 3
       },
       {
-        "itemId": "linen_scrap",
-        "count": 1
+        "itemId": "copper_ore",
+        "count": 4
+      },
+      {
+        "itemId": "smithing_flux",
+        "count": 4
       }
     ],
     "skillReq": 0,
@@ -285,11 +321,23 @@
     "resultCount": 1,
     "reagents": [
       {
-        "itemId": "thorium_ore",
-        "count": 3
+        "itemId": "sunpetal_herb",
+        "count": 2
       },
       {
-        "itemId": "linen_scrap",
+        "itemId": "goldleaf_herb",
+        "count": 2
+      },
+      {
+        "itemId": "pristine_silk",
+        "count": 2
+      },
+      {
+        "itemId": "spider_silk",
+        "count": 4
+      },
+      {
+        "itemId": "spool_of_thread",
         "count": 2
       }
     ],
@@ -306,11 +354,19 @@
     "reagents": [
       {
         "itemId": "thorium_ore",
+        "count": 6
+      },
+      {
+        "itemId": "pristine_hide",
         "count": 3
       },
       {
-        "itemId": "spider_leg",
+        "itemId": "rough_hide",
         "count": 2
+      },
+      {
+        "itemId": "tanning_agent",
+        "count": 1
       }
     ],
     "skillReq": 75,
@@ -326,11 +382,11 @@
     "reagents": [
       {
         "itemId": "thorium_ore",
-        "count": 4
+        "count": 7
       },
       {
-        "itemId": "bone_fragments",
-        "count": 2
+        "itemId": "smithing_flux",
+        "count": 5
       }
     ],
     "skillReq": 75,
@@ -345,11 +401,19 @@
     "resultCount": 1,
     "reagents": [
       {
-        "itemId": "bone_fragments",
+        "itemId": "arcanite_bar",
+        "count": 1
+      },
+      {
+        "itemId": "thorium_ore",
+        "count": 5
+      },
+      {
+        "itemId": "wolf_fang",
         "count": 4
       },
       {
-        "itemId": "linen_scrap",
+        "itemId": "smithing_flux",
         "count": 2
       }
     ],
@@ -372,12 +436,16 @@
     "resultCount": 1,
     "reagents": [
       {
-        "itemId": "bone_fragments",
+        "itemId": "thorium_ore",
+        "count": 6
+      },
+      {
+        "itemId": "iron_ore",
         "count": 3
       },
       {
-        "itemId": "linen_scrap",
-        "count": 3
+        "itemId": "smithing_flux",
+        "count": 2
       }
     ],
     "skillReq": 25,
@@ -405,6 +473,14 @@
       {
         "itemId": "spider_leg",
         "count": 2
+      },
+      {
+        "itemId": "venom_gland",
+        "count": 2
+      },
+      {
+        "itemId": "glass_vial",
+        "count": 1
       }
     ],
     "skillReq": 25,

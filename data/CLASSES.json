@@ -73,7 +73,7 @@
       "deep_wounds",
       "enrage_passive"
     ],
-    "color": 13081710
+    "color": 14056020
   },
   "mage": {
     "id": "mage",
@@ -168,7 +168,7 @@
       "perfect_moment",
       "fireball_form"
     ],
-    "color": 6933744
+    "color": 3391985
   },
   "rogue": {
     "id": "rogue",
@@ -227,7 +227,7 @@
       "stealth",
       "kick"
     ],
-    "color": 16774505
+    "color": 16576088
   },
   "paladin": {
     "id": "paladin",
@@ -283,7 +283,7 @@
       "rebuke",
       "sacred_bulwark"
     ],
-    "color": 16092346
+    "color": 16092320
   },
   "hunter": {
     "id": "hunter",
@@ -346,7 +346,7 @@
       "volley",
       "counter_shot"
     ],
-    "color": 11261043
+    "color": 10934351
   },
   "priest": {
     "id": "priest",
@@ -405,7 +405,7 @@
       "mind_flay",
       "flash_heal"
     ],
-    "color": 16777200
+    "color": 13030640
   },
   "shaman": {
     "id": "shaman",
@@ -456,7 +456,7 @@
       "ghost_wolf",
       "earthquake"
     ],
-    "color": 28894
+    "color": 5147370
   },
   "warlock": {
     "id": "warlock",
@@ -524,7 +524,7 @@
       "rain_of_fire",
       "spell_lock"
     ],
-    "color": 9732809
+    "color": 10978790
   },
   "druid": {
     "id": "druid",
@@ -607,6 +607,6 @@
       "skull_bash",
       "primal_reflexes"
     ],
-    "color": 16743690
+    "color": 16747546
   }
 }

@@ -63,7 +63,9 @@
       "ironbark_axe",
       "gathering_sickle",
       "bronze_sickle",
-      "silverleaf_sickle"
+      "silverleaf_sickle",
+      "ironreel_fishing_rod",
+      "silverstream_fishing_rod"
     ],
     "greeting": "Fresh bread, clean water, fair prices. What can I get you?"
   },
@@ -116,8 +118,6 @@
     "facing": -2.7,
     "color": 7371644,
     "questIds": [
-      "q_archetype_acceptance",
-      "q_prof_make_amends",
       "q_prof_hobby_switch"
     ],
     "vendorItems": [
@@ -234,7 +234,11 @@
     },
     "facing": -2.4,
     "color": 11883548,
-    "questIds": [],
+    "questIds": [
+      "q_prof_attune_smith",
+      "q_prof_amends_smith",
+      "q_prof_workorder_forge"
+    ],
     "vendorItems": [
       "copper_mining_pick",
       "iron_mining_pick",
@@ -254,7 +258,11 @@
     },
     "facing": 1.5707963267948966,
     "color": 13208139,
-    "questIds": [],
+    "questIds": [
+      "q_prof_attune_apothecary",
+      "q_prof_amends_apothecary",
+      "q_prof_workorder_kitchens"
+    ],
     "vendorItems": [
       "baked_bread",
       "spring_water",
@@ -275,7 +283,11 @@
     },
     "facing": 0.8,
     "color": 7430568,
-    "questIds": [],
+    "questIds": [
+      "q_prof_attune_outfitter",
+      "q_prof_amends_outfitter",
+      "q_prof_workorder_loom"
+    ],
     "vendorItems": [
       "linen_pouch",
       "travelers_knapsack",
@@ -295,7 +307,11 @@
     },
     "facing": -0.8,
     "color": 11570519,
-    "questIds": [],
+    "questIds": [
+      "q_prof_attune_bombardier",
+      "q_prof_amends_bombardier",
+      "q_prof_workorder_toolworks"
+    ],
     "vendorItems": [
       "handaxe",
       "felling_axe",
@@ -460,7 +476,9 @@
     },
     "facing": 2.3,
     "color": 9067050,
-    "questIds": [],
+    "questIds": [
+      "q_prof_workorder_tannery"
+    ],
     "vendorItems": [
       "travelers_knapsack",
       "tough_jerky",
@@ -694,7 +712,9 @@
     },
     "facing": -0.4,
     "color": 5812380,
-    "questIds": [],
+    "questIds": [
+      "q_prof_workorder_apothecary"
+    ],
     "vendorItems": [
       "minor_healing_potion",
       "minor_mana_potion",

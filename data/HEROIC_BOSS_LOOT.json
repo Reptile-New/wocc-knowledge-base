@@ -2,17 +2,22 @@
   "morthen": [
     {
       "itemId": "morthens_cryptforged_hauberk",
-      "chance": 0.34,
+      "chance": 0.25,
       "rollGroup": "morthen_heroic"
     },
     {
       "itemId": "shadowpulse_handwraps",
-      "chance": 0.33,
+      "chance": 0.25,
       "rollGroup": "morthen_heroic"
     },
     {
       "itemId": "bonechill_striders",
-      "chance": 0.33,
+      "chance": 0.25,
+      "rollGroup": "morthen_heroic"
+    },
+    {
+      "itemId": "lunarward_cinch",
+      "chance": 0.25,
       "rollGroup": "morthen_heroic"
     },
     {
@@ -49,34 +54,44 @@
     },
     {
       "itemId": "mistforged_pauldrons",
-      "chance": 0.34,
+      "chance": 0.25,
       "rollGroup": "vael_heroic2"
     },
     {
       "itemId": "tideguard_faceguard",
-      "chance": 0.33,
+      "chance": 0.25,
       "rollGroup": "vael_heroic2"
     },
     {
       "itemId": "sunken_court_mantle",
-      "chance": 0.33,
+      "chance": 0.25,
+      "rollGroup": "vael_heroic2"
+    },
+    {
+      "itemId": "dreamroot_boots",
+      "chance": 0.25,
       "rollGroup": "vael_heroic2"
     }
   ],
   "ysolei": [
     {
       "itemId": "lunar_tide_greatstaff",
-      "chance": 0.34,
+      "chance": 0.25,
       "rollGroup": "ysolei_heroic"
     },
     {
       "itemId": "tidewoven_trousers",
-      "chance": 0.33,
+      "chance": 0.25,
       "rollGroup": "ysolei_heroic"
     },
     {
       "itemId": "choirmothers_casque",
-      "chance": 0.33,
+      "chance": 0.25,
+      "rollGroup": "ysolei_heroic"
+    },
+    {
+      "itemId": "stormbark_mantle",
+      "chance": 0.25,
       "rollGroup": "ysolei_heroic"
     },
     {
@@ -113,17 +128,22 @@
     },
     {
       "itemId": "gravewyrm_claws",
-      "chance": 0.34,
+      "chance": 0.25,
       "rollGroup": "korzul_heroic2"
     },
     {
       "itemId": "gravescale_girdle",
-      "chance": 0.33,
+      "chance": 0.25,
       "rollGroup": "korzul_heroic2"
     },
     {
       "itemId": "wyrmchoir_handwraps",
-      "chance": 0.33,
+      "chance": 0.25,
+      "rollGroup": "korzul_heroic2"
+    },
+    {
+      "itemId": "wildsoul_maul",
+      "chance": 0.25,
       "rollGroup": "korzul_heroic2"
     }
   ],

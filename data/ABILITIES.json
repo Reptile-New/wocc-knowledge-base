@@ -6839,6 +6839,7 @@
     "school": "physical",
     "requiresTarget": false,
     "offGcd": true,
+    "usableWhileControlled": true,
     "effects": [
       {
         "type": "breakControl"
@@ -6850,7 +6851,7 @@
         "duration": 20
       }
     ],
-    "description": "Transform into a colossus for 20 sec, breaking all control on you and increasing your damage dealt by 20%."
+    "description": "Transform into a colossus for 20 sec, breaking enemy control effects on you (boss control is unaffected) and increasing your damage dealt by 20%."
   },
   "sanguine_aura": {
     "id": "sanguine_aura",
